@@ -37,7 +37,7 @@ const Navbar = () => {
             Dashboard
           </NavLink>
 
-          <NavLink to='' className={({isActive})=>`px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-rose-300 hover:text-rose-600"}`}>
+          <NavLink to='RegisterSignIn' className={({isActive})=>`px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-rose-300 hover:text-rose-600"}`}>
             Sign in/Register
           </NavLink>
         </div>
@@ -70,7 +70,7 @@ const Navbar = () => {
             Dashboard
           </NavLink>
           
-          <NavLink to="register/signIn" onClick={() => setOpen(!open)}  className="text-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg cursor-pointer">
+          <NavLink to="RegisterSignIn" onClick={() => setOpen(!open)}  className="text-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg cursor-pointer">
             Sign in/Register
           </NavLink>
         </div>

@@ -2,11 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaArrowCircleRight } from "react-icons/fa";
 import QuickDonorSearch from "../Component/Home/QuickDonorSearch";
+import TotalUser from "../Component/Home/TotalUser";
 
 const Home = () => {
   return (
     <div className="mt-14">
-      <div className="border p-6 md:p-10">
+      <div className=" p-6 md:p-10">
         <span className="font-bold text-xs px-2 rounded-2xl bg-rose-300 text-rose-500">14 ACTIVE EMERGENCIES NEAR YOU</span>
 
         <div className="grid grid-cols-1 md:grid-cols-2 relative">
@@ -33,6 +34,7 @@ const Home = () => {
       </div>
 
       <QuickDonorSearch/>
+      <TotalUser/>
     </div>
   );
 };
