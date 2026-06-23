@@ -5,19 +5,19 @@ import Footer from "./Component/Layout/Footer";
 import MainRouter from "./Routes/MainRouter";
 
 function App() {
-  useEffect(() => {
-    fetch("http://localhost:5000")
-      .then((res) => res.text())
-      .then((data) => console.log(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:5000")
+  //     .then((res) => res.text())
+  //     .then((data) => console.log(data));
+  // }, []);
 
   return (
     <>
-  <Navbar/>
-  <MainRouter/>
-  <Footer/>
-  </>
-  )
+      <Navbar />
+      <MainRouter />
+      <Footer />
+    </>
+  );
 }
 
 export default App;
