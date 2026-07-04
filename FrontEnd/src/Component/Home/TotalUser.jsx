@@ -14,6 +14,7 @@ const TotalUser = () => {
             key={users}
             className="flex flex-col px-4 py-9 justify-center items-center rounded-2xl font-bold shadow-2xl border bg-slate-200 border-gray-300 m-2 p-4"
           >
+            <span>0</span>
             {users}
           </div>
         ))}

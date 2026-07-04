@@ -10,7 +10,7 @@ const Home = () => {
     <div className="mt-10">
       <div className="p-6 md:p-10 bg-slate-200">
         <span className="font-bold text-xs px-2 rounded-2xl bg-rose-300 text-rose-500">
-          14 ACTIVE EMERGENCIES NEAR YOU
+          0 ACTIVE EMERGENCIES NEAR YOU
         </span>
 
         <div className="grid grid-cols-1 md:grid-cols-2 relative">
@@ -42,7 +42,7 @@ const Home = () => {
           <div className="px-4 py-4 rounded-4xl border"></div>
           <div className="flex flex-col">
             <div>
-              <span>4345+</span> donors
+              <span>0+</span> donors
             </div>
             <span className="text-gray-500">
               already saving lives in your city
@@ -54,6 +54,30 @@ const Home = () => {
 
       <TotalUser />
       <HowToUse />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-2 md:p-20 m-2 md:m-25 border rounded-2xl bg-blue-950">
+        <div>
+          <h1 className="font-bold text-4xl text-white">
+            Be someone's reason to live another day.
+          </h1>
+          <p className="text-slate-400">
+            Join verified donors building a faster, safer blood network.
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 text-center">
+          <NavLink
+            to="/findDonor"
+            className="py-2 rounded-xl font-bold text-white bg-rose-500 hover:bg-rose-400"
+          >
+            Become a donor
+          </NavLink>
+          <NavLink
+            to="/bloodBanks"
+            className="py-2 rounded-xl bg-blue-800 hover:bg-blue-900"
+          >
+            Find a Bank
+          </NavLink>
+        </div>
+      </div>
     </div>
   );
 };

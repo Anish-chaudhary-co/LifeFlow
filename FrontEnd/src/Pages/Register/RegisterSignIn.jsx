@@ -3,10 +3,6 @@ import SignIn from "../../Component/Layout/signIn";
 import Register from "../../Component/Layout/register";
 
 const RegisterSignIn = () => {
-  // const [signIn, setSignIn] = useState(true);
-  // const handleRegister = () => {
-  //   setSignIn(!signIn);
-  // }
   const [register, setRegister] = useState(false);
   return (
     <>

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../Pages/Home";
 import FindDonor from "../Pages/FindDonor";
 import BloodBanks from "../Pages/BloodBanks";
+import RequestBlood from "../Pages/RequestBlood";
 import DashBoard from "../Pages/DashBoard";
 import RegisterSignIn from "../Pages/Register/RegisterSignIn";
 import SignIn from "../Component/Layout/signIn";
@@ -12,6 +13,7 @@ const MainRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/findDonor" element={<FindDonor />} />
       <Route path="/bloodBanks" element={<BloodBanks />} />
+      <Route path="/requestBlood" element={<RequestBlood />} />
       <Route path="/dashBoard" element={<DashBoard />} />
       <Route path="/RegisterSignIn" element={<RegisterSignIn />} />
       <Route path="/signIn" element={<SignIn />} />

@@ -15,45 +15,45 @@ const Footer = () => {
             precision meets human compassion.
           </span>
           <div className="flex gap-4 mt-4">
-            <div>
+            <div className="cursor-pointer hover:text-red-500">
               <FaTwitter />
             </div>
-            <div>
+            <div className="cursor-pointer hover:text-red-500">
               <FaFacebook />
             </div>
-            <div>
+            <div className="cursor-pointer hover:text-red-500">
               <FaInstagram />
             </div>
-            <div>
+            <div className="cursor-pointer hover:text-red-500">
               <FaGoogle />
             </div>
           </div>
         </div>
 
-        <div>
+        <div className="cursor-pointer">
           <span className="font-bold text-gray-500">PLATFORM</span>
           <ul>
-            <li>Find Donor</li>
-            <li>Request Blood</li>
-            <li>Blood Banks</li>
+            <li className="w-fit hover:text-red-500">Find Donor</li>
+            <li className="w-fit hover:text-red-500">Request Blood</li>
+            <li className="w-fit hover:text-red-500">Blood Banks</li>
           </ul>
         </div>
 
-        <div>
+        <div className="cursor-pointer">
           <span className="font-bold text-gray-500">COMPANY</span>
           <ul>
-            <li>Admin</li>
-            <li>Privacy</li>
-            <li>Terms & Condition</li>
+            <li className="w-fit hover:text-red-500">Admin</li>
+            <li className="w-fit hover:text-red-500">Privacy</li>
+            <li className="w-fit hover:text-red-500">Terms & Condition</li>
           </ul>
         </div>
 
-        <div>
+        <div className="cursor-pointer">
           <span className="font-bold text-gray-500">ACCOUNT</span>
           <ul>
-            <li>Sign in</li>
-            <li>Donor Dashboard</li>
-            <li>Patient Dashboard</li>
+            <li className="w-fit hover:text-red-500">Sign in</li>
+            <li className="w-fit hover:text-red-500">Donor Dashboard</li>
+            <li className="w-fit hover:text-red-500">Patient Dashboard</li>
           </ul>
         </div>
       </div>

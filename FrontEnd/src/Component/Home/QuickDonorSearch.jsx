@@ -10,7 +10,7 @@ const QuickDonorSearch = () => {
     console.log(group);
   };
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center m-2">
       {/* for search  */}
       <div className="border border-gray-300 p-4 bg-slate-200 w-6xl mt-8 rounded-4xl text-center shadow-xl">
         <h1 className="font-bold text-2xl">Quick donor search</h1>
@@ -23,7 +23,7 @@ const QuickDonorSearch = () => {
                 onClick={() => {
                   handleBloodGroupClick(items);
                 }}
-                className={`border border-gray-300 rounded-xl ${bloodSelect === items ? "text-white bg-rose-500" : "text-black bg-white"}`}
+                className={`border cursor-pointer border-gray-300 rounded-xl ${bloodSelect === items ? "text-white bg-rose-500" : "text-black bg-white"}`}
               >
                 {items}
               </button>
