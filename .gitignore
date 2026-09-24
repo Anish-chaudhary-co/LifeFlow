@@ -1,3 +1,4 @@
+
 # Dependencies
 node_modules/
 
@@ -16,3 +17,5 @@ backend/.env
 
 # Logs
 *.log
+
+#Update ignore rules
