@@ -210,22 +210,14 @@ const RequestBlood = () => {
             />
           </div>
 
-          <div className="flex flex-col gap-4 md:flex-row md:gap-17">
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="px-4 font-bold text-white p-3 rounded-lg text-center bg-rose-500 hover:bg-rose-700 disabled:opacity-60"
-            >
-              {isSubmitting ? "Saving..." : "Broadcast emergency request"}
-            </button>
-            <button
-              type="button"
-              className="px-4 border border-slate-200 hover:border-rose-500 font-bold p-3 rounded-lg text-center"
-            >
-              Save as draft
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="px-4 md:w-70 font-bold text-white p-3 rounded-lg text-center bg-rose-500 hover:bg-rose-700 disabled:opacity-60"
+          >
+            {isSubmitting ? "Saving..." : "Broadcast emergency request"}
+          </button>
         </div>
       </div>
     </div>
