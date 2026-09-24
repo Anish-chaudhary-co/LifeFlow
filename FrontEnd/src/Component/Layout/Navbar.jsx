@@ -1,10 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaBars } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
+import { UserContext } from "../../Context/AuthContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { notification, setNotification } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  console.log(notification);
+
+  // const handleDashboard = async () => {
+  //   try {
+  //     const data = await notification;
+  //     const log = data.success;
+  //     console.log(log);
+  //     setIsLoggedIn(log);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // handleDashboard();
+
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     if (notification.success) {
+  //       resolve("Dashboard");
+  //     } else {
+  //       reject("Cannot fetch data");
+  //     }
+  //   }, 3000);
+  // });
+
+  // promise
+  //   .then((result) => {
+  //     setIsLoggedIn(result);
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
 
   // pc
   const ActivePage = "bg-rose-400 text-white";
@@ -49,30 +84,33 @@ const Navbar = () => {
             Request Blood
           </NavLink>
           <NavLink
-            to="/bloodBanks"
+            to="/patients"
             className={({ isActive }) =>
               `px-4 py-2 rounded-lg cursor-pointer ${isActive ? ActivePage : NormalPage}`
             }
           >
-            Blood Banks
-          </NavLink>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              `px-4 py-2 rounded-lg cursor-pointer ${isActive ? ActivePage : NormalPage}`
-            }
-          >
-            Dashboard
+            Patients
           </NavLink>
 
-          <NavLink
-            to="RegisterSignIn"
-            className={({ isActive }) =>
-              `px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-rose-300 hover:text-rose-600"}`
-            }
-          >
-            Sign in/Register
-          </NavLink>
+          {user ? (
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-lg cursor-pointer ${isActive ? ActivePage : NormalPage}`
+              }
+            >
+              Dashboard
+            </NavLink>
+          ) : (
+            <NavLink
+              to="RegisterSignIn"
+              className={({ isActive }) =>
+                `px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-rose-300 hover:text-rose-600"}`
+              }
+            >
+              Sign in/Register
+            </NavLink>
+          )}
         </div>
       </div>
 
@@ -81,7 +119,7 @@ const Navbar = () => {
       <div className="flex flex-col md:hidden fixed top-0 right-0 left-0 w-screen bg-rose-400 z-50">
         <div className="flex justify-between p-3">
           <div>
-            <img src="" alt="" />
+            {/* <img src="" alt="" /> */}
             LOGO
           </div>
           <div onClick={() => setOpen(!open)} className="text-xl">
@@ -120,31 +158,33 @@ const Navbar = () => {
             Request Blood
           </NavLink>
           <NavLink
-            to="bloodBanks"
+            to="patients"
             onClick={() => setOpen(!open)}
             className={({ isActive }) =>
               `p-2 rounded-lg cursor-pointer ${isActive ? ActiveMob : NormalMob}`
             }
           >
-            Blood Banks
+            Patients
           </NavLink>
-          <NavLink
-            to="dashBoard"
-            onClick={() => setOpen(!open)}
-            className={({ isActive }) =>
-              `p-2 rounded-lg cursor-pointer ${isActive ? ActiveMob : NormalMob}`
-            }
-          >
-            Dashboard
-          </NavLink>
-
-          <NavLink
-            to="RegisterSignIn"
-            onClick={() => setOpen(!open)}
-            className="text-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg cursor-pointer"
-          >
-            Sign in/Register
-          </NavLink>
+          {user ? (
+            <NavLink
+              to="dashBoard"
+              onClick={() => setOpen(!open)}
+              className={({ isActive }) =>
+                `p-2 rounded-lg cursor-pointer ${isActive ? ActiveMob : NormalMob}`
+              }
+            >
+              Dashboard
+            </NavLink>
+          ) : (
+            <NavLink
+              to="RegisterSignIn"
+              onClick={() => setOpen(!open)}
+              className="text-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg cursor-pointer"
+            >
+              Sign in/Register
+            </NavLink>
+          )}
         </div>
       </div>
     </>

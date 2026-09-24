@@ -1,24 +1,17 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "../Pages/Home";
-import FindDonor from "../Pages/FindDonor";
-import BloodBanks from "../Pages/BloodBanks";
-import RequestBlood from "../Pages/RequestBlood";
-import DashBoard from "../Pages/DashBoard";
-import RegisterSignIn from "../Pages/Register/RegisterSignIn";
-import SignIn from "../Component/Layout/signIn";
-import Register from "../Component/Layout/register";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Navbar from "../Component/Layout/Navbar";
+import Footer from "../Component/Layout/Footer";
+
 const MainRouter = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/findDonor" element={<FindDonor />} />
-      <Route path="/bloodBanks" element={<BloodBanks />} />
-      <Route path="/requestBlood" element={<RequestBlood />} />
-      <Route path="/dashBoard" element={<DashBoard />} />
-      <Route path="/RegisterSignIn" element={<RegisterSignIn />} />
-      <Route path="/signIn" element={<SignIn />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
+    <div>
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 };
 

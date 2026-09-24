@@ -12,17 +12,17 @@ const RegisterSignIn = () => {
             onClick={() => setRegister(true)}
             className={`text-center rounded-2xl w-50 md:w-25 ${register == true ? "bg-rose-200 text-rose-500" : "bg-rose-400 text-gray-600"} `}
           >
-            Register
+            Sign in
           </button>
           <button
             onClick={() => setRegister(false)}
             className={` text-center rounded-2xl w-50 md:w-25 ${register == false ? "bg-rose-200 text-rose-500" : "bg-rose-400 text-gray-600"}`}
           >
-            sign in
+            Register
           </button>
         </div>
 
-        {register ? <Register /> : <SignIn />}
+        {register ? <SignIn /> : <Register />}
       </div>
     </>
   );

@@ -65,7 +65,8 @@ const Home = () => {
         </div>
         <div className="flex flex-col gap-4 text-center">
           <NavLink
-            to="/findDonor"
+            to="/registerSignIn"
+            onClick={() => window.scrollTo(0, 0)}
             className="py-2 rounded-xl font-bold text-white bg-rose-500 hover:bg-rose-400"
           >
             Become a donor

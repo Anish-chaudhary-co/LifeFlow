@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import hospitals from "./hospitals";
+
+const API_URL =
+  "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/requestBlood.php";
+
+const initialState = {
+  BloodType: "",
+  period: "",
+  patientName: "",
+  unitNeeded: "",
+  hospitalName: "",
+  hospitalPhone: "",
+  address: "",
+  notes: "",
+};
 
 const RequestBlood = () => {
   const [selectBlood, setSelectBlood] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [patientData, setPatientData] = useState(initialState);
+  console.log(hospitals);
 
   const bloodGroup = ["All", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-
-  // useEffect(() => {
-  //   if (selectBlood) {
-  //     console.log(selectBlood);
-  //   }
-  // }, [selectBlood]);
-
-  const [patientData, setPatientData] = useState({
-    BloodType: "",
-    period: "",
-    name: "",
-    unitNeeded: "",
-    hospitalName: "",
-    hospitalPhone: "",
-    address: "",
-    others: "",
-  });
 
   const handleSelectBlood = (blood) => {
     setSelectBlood(blood);
@@ -31,20 +32,59 @@ const RequestBlood = () => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "unitNeeded" && Number(value) < 0) {
+      alert("You cannot put negative value");
+      return;
+    }
     setPatientData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (value) => {
-    console.log(patientData);
-    console.log(patientData.value);
+  const handleSubmit = async () => {
+    const requiredFields = [
+      patientData.BloodType,
+      patientData.period,
+      patientData.patientName,
+      patientData.hospitalName,
+      patientData.address,
+    ];
 
-    if (patientData.value === "") {
-      alert("you have to fill the form first.");
-    } else {
-      alert("Nice !!!!");
+    if (requiredFields.some((field) => !field || field.trim() === "")) {
+      alert("Please fill in all required fields before submitting.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...patientData,
+          unitNeeded: Number(patientData.unitNeeded || 0),
+          action: "insert",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Request failed.");
+      }
+
+      alert("Emergency request submitted successfully.");
+      setPatientData(initialState);
+      setSelectBlood(null);
+    } catch (error) {
+      alert(error.message || "Something went wrong while saving the request.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -62,17 +102,17 @@ const RequestBlood = () => {
           <div className="grid grid-cols-3 md:grid-cols-11 mt-1 gap-4">
             {bloodGroup.map((bloods, index) => (
               <button
+                type="button"
                 key={index}
-                onClick={() => {
-                  handleSelectBlood(bloods);
-                }}
-                className={`border p-1 cursor-pointer text-center md:px-6 rounded-2xl ${selectBlood == bloods ? "text-white bg-rose-500" : "text-black bg-white"}`}
+                onClick={() => handleSelectBlood(bloods)}
+                className={`border p-1 cursor-pointer text-center md:px-6 rounded-2xl ${selectBlood === bloods ? "text-white bg-rose-500" : "text-black bg-white"}`}
               >
                 {bloods}
               </button>
             ))}
           </div>
         </div>
+
         <div className="flex flex-col gap-8">
           <div className="mt-5">
             <label className="block">Within time period</label>
@@ -84,13 +124,14 @@ const RequestBlood = () => {
               className="border block w-full h-10 p-2 rounded-lg border-slate-300 outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-400 "
             />
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block">Patient name</label>
               <input
                 type="text"
-                name="name"
-                value={patientData.name}
+                name="patientName"
+                value={patientData.patientName}
                 onChange={handleChange}
                 className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
               />
@@ -100,7 +141,7 @@ const RequestBlood = () => {
               <input
                 type="number"
                 name="unitNeeded"
-                value={patientData.units}
+                value={patientData.unitNeeded}
                 onChange={handleChange}
                 className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
               />
@@ -110,18 +151,37 @@ const RequestBlood = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block">Hospital name</label>
-              <input
+              <select
+                name="hospitalName"
+                value={patientData.hospitalName}
+                onChange={handleChange}
+                className="border w-full h-10 block p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 outline-none focus:ring-rose-400"
+              >
+                <option value="" className="bg-blue-900">
+                  Select hospital
+                </option>
+                {hospitals.map((hospitals, index) => (
+                  <option
+                    id={index}
+                    value={hospitals}
+                    className="bg-slate-200 rounded-lg"
+                  >
+                    {hospitals}
+                  </option>
+                ))}
+              </select>
+              {/* <input
                 type="text"
                 name="hospitalName"
                 value={patientData.hospitalName}
                 onChange={handleChange}
                 className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-              />
+              /> */}
             </div>
             <div>
               <label className="block">Hospital phone</label>
               <input
-                type="text"
+                type="number"
                 name="hospitalPhone"
                 value={patientData.hospitalPhone}
                 onChange={handleChange}
@@ -129,6 +189,7 @@ const RequestBlood = () => {
               />
             </div>
           </div>
+
           <div>
             <span>Address</span>
             <input
@@ -139,11 +200,12 @@ const RequestBlood = () => {
               className="border block w-full h-10 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
+
           <div>
             <label>Notes for donors</label>
             <textarea
-              name="others"
-              value={patientData.others}
+              name="notes"
+              value={patientData.notes}
               onChange={handleChange}
               placeholder="Patient condition, special requirements....."
               className="border block w-full h-30 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
@@ -152,12 +214,17 @@ const RequestBlood = () => {
 
           <div className="flex flex-col gap-4 md:flex-row md:gap-17">
             <button
+              type="button"
               onClick={handleSubmit}
-              className="px-4 font-bold text-white p-3 rounded-lg text-center bg-rose-500 hover:bg-rose-700"
+              disabled={isSubmitting}
+              className="px-4 font-bold text-white p-3 rounded-lg text-center bg-rose-500 hover:bg-rose-700 disabled:opacity-60"
             >
-              Broadcast emergency request
+              {isSubmitting ? "Saving..." : "Broadcast emergency request"}
             </button>
-            <button className="px-4 border border-slate-200 hover:border-rose-500 font-bold  p-3 rounded-lg text-center ">
+            <button
+              type="button"
+              className="px-4 border border-slate-200 hover:border-rose-500 font-bold p-3 rounded-lg text-center"
+            >
               Save as draft
             </button>
           </div>

@@ -12,7 +12,7 @@ const QuickDonorSearch = () => {
   return (
     <div className="flex justify-center items-center m-2">
       {/* for search  */}
-      <div className="border border-gray-300 p-4 bg-slate-200 w-6xl mt-8 rounded-4xl text-center shadow-xl">
+      <div className="border border-gray-300 p-4 bg-slate-200 mt-8 rounded-4xl text-center shadow-xl">
         <h1 className="font-bold text-2xl">Quick donor search</h1>
         <div className="mt-8">
           <span className="text-gray-400">Blood group</span>

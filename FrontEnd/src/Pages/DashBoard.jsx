@@ -1,7 +1,12 @@
 import React from "react";
+import Navbar from "../Component/Dashboard/DashNavbar";
 
 const DashBoard = () => {
-  return <div className="mt-15">this is dashBoard</div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 };
 
 export default DashBoard;
