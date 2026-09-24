@@ -67,8 +67,6 @@ const RequestBlood = () => {
         },
         body: JSON.stringify({
           ...patientData,
-          unitNeeded: Number(patientData.unitNeeded || 0),
-          action: "insert",
         }),
       });
 
