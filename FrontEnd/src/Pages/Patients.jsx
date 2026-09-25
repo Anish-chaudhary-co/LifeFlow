@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../Context/AuthContext";
 const Patients = () => {
-  const API_URL =
-    "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/requestBlood.php";
+  const { patient } = useContext(UserContext);
 
   return (
     <div className="mt-20">
-      <span className="font-bold text-5xl">Patients</span>
+      <span className="font-bold text-5xl">{patient.BloodType}</span>
     </div>
   );
 };

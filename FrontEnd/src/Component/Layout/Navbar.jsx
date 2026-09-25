@@ -8,7 +8,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { notification, setNotification } = useContext(UserContext);
   const { user } = useContext(UserContext);
-  console.log(notification);
 
   // const handleDashboard = async () => {
   //   try {

@@ -1,25 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import hospitals from "./hospitals";
-
-const API_URL =
-  "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/requestBlood.php";
-
-const initialState = {
-  BloodType: "",
-  period: "",
-  patientName: "",
-  unitNeeded: "",
-  hospitalName: "",
-  hospitalPhone: "",
-  address: "",
-  notes: "",
-};
+import { UserContext } from "../Context/AuthContext";
+import { SessionContext } from "../Context/protectedSession";
 
 const RequestBlood = () => {
+  const { setPatient } = useContext(UserContext);
+  const { user, loading } = useContext(SessionContext);
+  if (loading) {
+    return <p>Checking login....</p>;
+  }
+  if (!user) {
+    return <Navigate to="/signIn" replace />;
+  }
+  const initialState = {
+    BloodType: "",
+    period: "",
+    patientName: "",
+    unitNeeded: "",
+    hospitalName: "",
+    hospitalPhone: "",
+    address: "",
+    notes: "",
+  };
   const [selectBlood, setSelectBlood] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [patientData, setPatientData] = useState(initialState);
-  console.log(hospitals);
+  // console.log(hospitals);
+
+  const API_URL =
+    "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/requestBlood.php";
 
   const bloodGroup = ["All", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -48,12 +58,22 @@ const RequestBlood = () => {
       patientData.BloodType,
       patientData.period,
       patientData.patientName,
+      patientData.unitNeeded,
       patientData.hospitalName,
       patientData.address,
     ];
 
-    if (requiredFields.some((field) => !field || field.trim() === "")) {
+    if (
+      requiredFields.some(
+        (field) => !field || (typeof field === "string" && field.trim() === ""),
+      )
+    ) {
       alert("Please fill in all required fields before submitting.");
+      return;
+    }
+
+    if (Number(patientData.unitNeeded) <= 0) {
+      alert("Units needed must be greater than 0.");
       return;
     }
 
@@ -69,8 +89,16 @@ const RequestBlood = () => {
           ...patientData,
         }),
       });
+      setPatient(patientData);
 
-      const result = await response.json();
+      let result = {};
+      try {
+        result = await response.json();
+      } catch {
+        result = {};
+      }
+
+      console.log(result);
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || "Request failed.");
@@ -160,7 +188,7 @@ const RequestBlood = () => {
                 </option>
                 {hospitals.map((hospitals, index) => (
                   <option
-                    id={index}
+                    key={index}
                     value={hospitals}
                     className="bg-slate-200 rounded-lg"
                   >
