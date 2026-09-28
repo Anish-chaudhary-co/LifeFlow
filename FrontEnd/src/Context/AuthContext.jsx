@@ -1,10 +1,11 @@
-import { useState, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 export const UserContext = createContext(null);
 
 const AuthContext = ({ children }) => {
   const [notification, setNotification] = useState(null);
   const [user, setUser] = useState(null);
   const [patient, setPatient] = useState(null);
+
   return (
     <UserContext.Provider
       value={{

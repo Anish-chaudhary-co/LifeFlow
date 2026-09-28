@@ -14,7 +14,7 @@ import MyProfile from "../Component/Dashboard/Myprofile";
 import Appointment from "../Component/Dashboard/Appointment";
 import DonationHistory from "../Component/Dashboard/DonationHistory";
 
-import ProtectedSession from "../Context/protectedSession";
+// import ProtectedSession from "../Context/protectedSession";
 
 const AppRouter = () => {
   return (
@@ -31,15 +31,15 @@ const AppRouter = () => {
         </Route>
 
         {/* for Dashboard */}
-        <Route element={<ProtectedSession />}>
-          <Route path="/dashboard" element={<DashBoard />}>
-            <Route index element={<Navigate to="overview" replace />} />
-            <Route path="overview" element={<Overview />} />
-            <Route path="myProfile" element={<MyProfile />} />
-            <Route path="appointment" element={<Appointment />} />
-            <Route path="donationHistory" element={<DonationHistory />} />
-          </Route>
+        {/* <Route element={<ProtectedSession />}> */}
+        <Route path="/dashboard" element={<DashBoard />}>
+          <Route index element={<Navigate to="overview" replace />} />
+          <Route path="overview" element={<Overview />} />
+          <Route path="myProfile" element={<MyProfile />} />
+          <Route path="appointment" element={<Appointment />} />
+          <Route path="donationHistory" element={<DonationHistory />} />
         </Route>
+        {/* </Route> */}
       </Routes>
     </AuthContext>
   );

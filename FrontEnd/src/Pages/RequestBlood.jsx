@@ -1,18 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useContext, useReducer, useState } from "react";
 import hospitals from "./hospitals";
 import { UserContext } from "../Context/AuthContext";
-import { SessionContext } from "../Context/protectedSession";
+import { useNavigate } from "react-router-dom";
 
 const RequestBlood = () => {
+  const navigate = useNavigate();
   const { setPatient } = useContext(UserContext);
-  const { user, loading } = useContext(SessionContext);
-  if (loading) {
-    return <p>Checking login....</p>;
-  }
-  if (!user) {
-    return <Navigate to="/signIn" replace />;
-  }
   const initialState = {
     BloodType: "",
     period: "",
@@ -82,6 +75,7 @@ const RequestBlood = () => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -89,16 +83,15 @@ const RequestBlood = () => {
           ...patientData,
         }),
       });
-      setPatient(patientData);
-
-      let result = {};
-      try {
-        result = await response.json();
-      } catch {
-        result = {};
-      }
-
+      let result = await response.json();
       console.log(result);
+      console.log(patientData);
+
+      if (result.loggedIn === false) {
+        navigate("/signIn", { replace: true });
+        return;
+      }
+      setPatient(patientData);
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || "Request failed.");

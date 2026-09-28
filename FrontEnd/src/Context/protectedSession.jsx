@@ -1,37 +1,16 @@
-import { useState, useEffect, createContext } from "react";
-export const SessionContext = createContext(null);
+// import { useContext } from "react";
+// import { Navigate, Outlet } from "react-router-dom";
+// import { UserContext } from "./AuthContext";
 
-const protectedSession = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+// const protectedSession = () => {
+//   const { user, loading } = useContext(UserContext);
+//   if (loading) {
+//     return <p>Loading data....</p>;
+//   }
+//   if (!user) {
+//     return <Navigate to="/signIn" replace />;
+//   }
+//   return <Outlet />;
+// };
 
-  useEffect(() => {
-    fetch(
-      "http://localhost/LifeFlow/Blood-Donation/BackEnd/auth/checkSession.php",
-      {
-        credentials: "include",
-      },
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.loggedIn) {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-        setLoading(false);
-      })
-      .catch(() => {
-        setUser(null);
-        setLoading(false);
-      });
-  }, []);
-
-  return (
-    <SessionContext.Provider value={{ user, setUser, loading }}>
-      {children}
-    </SessionContext.Provider>
-  );
-};
-
-export default protectedSession;
+// export default protectedSession;
