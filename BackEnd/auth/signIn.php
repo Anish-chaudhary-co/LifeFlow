@@ -57,7 +57,7 @@ if ($result->num_rows > 0) {
         echo json_encode([
             "success" => true,
             "message" => "Login Successfully.",
-            "user" => [
+            "user" => [ 
                 "id" =>$row['ID'],
                 "email" =>$row['Email']
             ]

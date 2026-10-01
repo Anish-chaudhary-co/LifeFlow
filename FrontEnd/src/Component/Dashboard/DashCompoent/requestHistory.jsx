@@ -1,15 +1,29 @@
-import React, { useState, useContext } from "react";
-import { UserContext } from "../../../Context/AuthContext";
+import React, { useState, useContext, useEffect } from "react";
 
 const requestHistory = () => {
-  const { patient } = useContext(UserContext);
-  const [increase, setIncrease] = useState(1);
-  console.log(patient);
+  const [data, setData] = useState({});
+  useEffect(() => {
+    fetch("http://localhost/fourthProject/dashboard/requestHistory.php", {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((request) => {
+        if (request.success) {
+          console.log(request.user);
 
-  if (patient) {
-    setIncrease(increase + 1);
-    exit;
+          setData(request.user);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  console.log(data);
+
+  if (!data) {
+    return <p>Data is Getting..........</p>;
   }
+
   return (
     <div className="mt-20">
       <h1 className="text-2xl font-bold">Blood request history</h1>
@@ -18,7 +32,7 @@ const requestHistory = () => {
           <tr className="border">
             <th className="border-r p-3">S.N</th>
             <th className="border-r p-3">Name</th>
-            <th className="border-r p-3">Blood Group</th>
+            <th className="border-r p-3">Blood Type</th>
             <th className="border-r p-3">Units</th>
             <th className="border-r p-3">Hospital Name</th>
             <th className="border-r p-3">Hospital Phone</th>
