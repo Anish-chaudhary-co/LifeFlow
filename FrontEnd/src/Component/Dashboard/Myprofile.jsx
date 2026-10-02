@@ -1,8 +1,8 @@
 import React from "react";
-import RequestHistory from "./DashCompoent/requestHistory";
-import PersonalDetailForm from "./DashCompoent/personalDetailForm";
+import RequestHistory from "./DashComponent/requestHistory";
+import PersonalDetailForm from "./DashComponent/personalDetailForm";
 
-const Myprofile = () => {
+const MyProfile = () => {
   return (
     <div>
       <PersonalDetailForm />
@@ -11,4 +11,4 @@ const Myprofile = () => {
   );
 };
 
-export default Myprofile;
+export default MyProfile;

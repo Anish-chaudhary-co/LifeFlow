@@ -1,41 +1,62 @@
 <?php
 session_start();
-    header("Allow-Control-Access-Origin: http://localhost:5173/");
-    header("Allow-Control-Access-Credentials: true");
-    header("Allow-Control-Access-Methods: POST, Get, OPTIONS");
-    header("Allow-Control-Access-Headers: Content-Type");
-    header("Content-Type: application/json");
 
-    
-    if($_SERVER['REQUEST_METHOD'] ===  'OPTIONS'){
-        exit;
-        }
-        require_once "../config/dbConnection.php";
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json; charset=utf-8");
+header("Vary: Origin");
 
- $userId = $_SESSION['user_id'];
-    $sql = "SELECT BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestblood  WHERE user_id=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s",$userID);
-    $stmt -> execute();
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
 
-    $result = $stmt->get_result();
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(405);
+    echo json_encode([
+        "success" => false,
+        "message" => "Method not allowed.",
+    ]);
+    exit;
+}
 
-    if($result->num_rows > 0){
-        $user = $result->fetch_assoc();
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode([
+        "success" => false,
+        "message" => "Please sign in to view request history.",
+    ]);
+    exit;
+}
 
-        echo json_encode([
-            "success" => true,
-            "message" => $user
-        ])
-    }
-    else{
-        echo json_encode([
-            "success" => false,
-            "message" => "Request is not found in the database."
-        ])
-    }
-    $stmt->close();
+require_once "../config/dbConnection.php";
+
+$userId = (int) $_SESSION['user_id'];
+$sql = "SELECT BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to load request history.",
+    ]);
     $conn->close();
+    exit;
+}
 
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$requests = $result->fetch_all(MYSQLI_ASSOC);
 
+echo json_encode([
+    "success" => true,
+    "requests" => $requests,
+]);
+
+$stmt->close();
+$conn->close();
 ?>

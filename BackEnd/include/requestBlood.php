@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
+    // http_response_code(204);
     exit;
 }
 
@@ -51,7 +51,8 @@ if (empty($bloodType) || empty($period) || empty($patientName) || $unitNeeded <=
     exit;
 }
 
-$sql = "INSERT INTO requestBlood (BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+$userId = (int) $_SESSION['user_id'];
+$sql = "INSERT INTO requestBlood (user_id, BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
@@ -63,7 +64,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("sssiisss", $bloodType, $period, $patientName, $unitNeeded, $hospitalName, $hospitalPhone, $address, $notes);
+$stmt->bind_param("isssissss", $userId, $bloodType, $period, $patientName, $unitNeeded, $hospitalName, $hospitalPhone, $address, $notes);
 
 if ($stmt->execute()) {
     echo json_encode([

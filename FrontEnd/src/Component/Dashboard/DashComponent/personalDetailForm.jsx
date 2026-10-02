@@ -1,10 +1,36 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
+import { UserPersonalContext } from "../../../Context/UserPersonalContext";
 
-const personalDetailForm = () => {
-  const [gender, setGender] = useState("");
+const detail = {
+  fullname: "",
+  DOB: "",
+  gender: "",
+  address: "",
+  bloodGroup: "",
+  contact: "",
+};
+const PersonalDetailForm = () => {
+  const { setShowDetail } = useContext(UserPersonalContext);
+
+  const [detailValue, setDetailValue] = useState(detail);
+  console.log("this is submit button");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDetailValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("clicked");
+    setShowDetail(detailValue);
+    console.log(detailValue);
+  };
   return (
     <div className="border p-4 border-slate-200 rounded-2xl shadow-2xl">
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">
           <h3 className="text-2xl font-semibold">Personal Detail:</h3>
           <span className="text-slate-400 font-sans">
@@ -16,15 +42,21 @@ const personalDetailForm = () => {
           <div>
             Full Name
             <input
+              name="fullname"
               type="text"
+              value={detailValue.fullname}
               placeholder="Enter your full name"
+              onChange={handleChange}
               className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
           <div>
             Date of birth
             <input
+              name="DOB"
               type="date"
+              value={detailValue.DOB}
+              onChange={handleChange}
               className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
@@ -35,24 +67,24 @@ const personalDetailForm = () => {
                 type="radio"
                 name="gender"
                 value="male"
-                checked={gender === "male"}
-                onChange={(e) => setGender(e.target.value)}
+                checked={detailValue.gender === "male"}
+                onChange={handleChange}
               />
               Male
               <input
                 type="radio"
                 name="gender"
                 value="female"
-                checked={gender === "female"}
-                onChange={(e) => setGender(e.target.value)}
+                checked={detailValue.gender === "female"}
+                onChange={handleChange}
               />
               Female
               <input
                 type="radio"
                 name="gender"
                 value="others"
-                checked={gender === "others"}
-                onChange={(e) => setGender(e.target.value)}
+                checked={detailValue.gender === "others"}
+                onChange={handleChange}
               />
               Others
             </div>
@@ -60,24 +92,33 @@ const personalDetailForm = () => {
           <div>
             Address
             <input
+              name="address"
               type="text"
+              value={detailValue.address}
               placeholder="Enter your full address"
+              onChange={handleChange}
               className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
           <div>
             Blood Group
             <input
+              name="bloodGroup"
               type="text"
+              value={detailValue.bloodGroup}
               placeholder="Enter your Blood group"
+              onChange={handleChange}
               className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
           <div>
             Contact
             <input
+              name="contact"
               type="number"
+              value={detailValue.contact}
               placeholder="Enter Contact"
+              onChange={handleChange}
               className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
@@ -94,4 +135,4 @@ const personalDetailForm = () => {
   );
 };
 
-export default personalDetailForm;
+export default PersonalDetailForm;
