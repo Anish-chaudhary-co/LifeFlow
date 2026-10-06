@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
+import EditBloodHistory from "./editBloodHistory";
 
 const RequestHistory = () => {
+  const [edit, setEdit] = useState(false);
+  const handleClick = (e) => {
+    e.preventDefault();
+    setEdit((isEditing) => !isEditing);
+  };
   const [data, setData] = useState([]);
   useEffect(() => {
     fetch(
@@ -28,6 +34,7 @@ const RequestHistory = () => {
 
   return (
     <div className="mt-20">
+      {edit && <EditBloodHistory onClose={() => setEdit(false)} />}
       <h1 className="text-2xl font-bold">Blood request history</h1>
       <table className="border mt-4 w-full border-collapse">
         <thead>
@@ -46,7 +53,7 @@ const RequestHistory = () => {
         <tbody className="border-b">
           {data.length > 0 ? (
             data.map((request, index) => (
-              <tr key={`${request.patientName}-${index}`}>
+              <tr key={`${request.patientName}-${index}`} className="border-b">
                 <td className="border-r p-3">{index + 1}</td>
                 <td className="border-r p-3">{request.patientName}</td>
                 <td className="border-r p-3">{request.BloodType}</td>
@@ -58,7 +65,11 @@ const RequestHistory = () => {
                   <p className="line-clamp-2 break-all">{request.notes}</p>
                 </td>
                 <td className="flex gap-3 justify-center p-3">
-                  <button className="border rounded-lg bg-green-400 text-white font-bold px-4">
+                  <button
+                    type="button"
+                    className="border rounded-lg bg-green-400 text-white font-bold px-4"
+                    onClick={handleClick}
+                  >
                     Edit
                   </button>
                   <button className="border rounded-lg bg-red-400 text-white font-bold px-4">
