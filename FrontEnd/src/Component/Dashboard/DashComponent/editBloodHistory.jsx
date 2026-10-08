@@ -3,7 +3,16 @@ import { MdCancel } from "react-icons/md";
 
 const EditBloodHistory = ({ onClose }) => {
   const [data, setData] = useState(null);
-  const [update, setUpdate] = useState();
+
+  const [update, setUpdate] = useState({
+    patientName: "",
+    BloodType: "",
+    hospitalName: "",
+    hospitalPhone: "",
+    unitNeeded: "",
+    address: "",
+    notes: "",
+  });
 
   useEffect(() => {
     fetch(
@@ -32,8 +41,9 @@ const EditBloodHistory = ({ onClose }) => {
   }, []);
 
   //update
+
   const handleUpdate = (e) => {
-    const { name, value } = e.target();
+    const { name, value } = e.target;
     setUpdate((prev) => ({
       ...prev,
       [name]: value,
@@ -41,9 +51,18 @@ const EditBloodHistory = ({ onClose }) => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/Update.php",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        },
       );
     } catch (error) {
       console.log(error);
@@ -60,7 +79,7 @@ const EditBloodHistory = ({ onClose }) => {
               <MdCancel size={35} color="red" />
             </button>
           </div>
-          <form action="">
+          <form action="" onSubmit={handleSubmit}>
             <div className="grid md:grid-cols-2 grid-cols-1 justify-center items-center p-4 m-4">
               <div className="flex flex-col gap-4 m-4">
                 Patient Name
@@ -75,7 +94,7 @@ const EditBloodHistory = ({ onClose }) => {
               <div className="flex flex-col gap-4 m-4">
                 Blood Type
                 <input
-                  type="number"
+                  type="text"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
                   value={data?.BloodType || ""}
                   name="BloodType"
@@ -134,7 +153,10 @@ const EditBloodHistory = ({ onClose }) => {
               </div>
             </div>
             <div className="flex gap-8 relative bottom-8 left-15">
-              <button className="border px-4 py-2 rounded-lg bg-rose-400 text-white font-bold hover:bg-rose-500">
+              <button
+                type="submit"
+                className="border px-4 py-2 rounded-lg bg-rose-400 text-white font-bold hover:bg-rose-500"
+              >
                 Update
               </button>
               <button
