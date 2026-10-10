@@ -32,6 +32,39 @@ const RequestHistory = () => {
       });
   }, []);
 
+  //delete
+  const handleDelete = async (user_id) => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: user_id,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      console.log(result);
+
+      if (result.success) {
+        alert("Blood request deleted successfully");
+
+        // remove deleted item from frontend
+        setData((prev) => prev.filter((item) => item.user_id !== user_id));
+      } else {
+        alert(result.message || "Delete failed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="mt-20">
       {edit && <EditBloodHistory onClose={() => setEdit(false)} />}
@@ -72,7 +105,10 @@ const RequestHistory = () => {
                   >
                     Edit
                   </button>
-                  <button className="border rounded-lg bg-red-400 text-white font-bold px-4">
+                  <button
+                    className="border rounded-lg bg-red-400 text-white font-bold px-4"
+                    onClick={() => handleDelete(request.user_id)}
+                  >
                     Delete
                   </button>
                 </td>
