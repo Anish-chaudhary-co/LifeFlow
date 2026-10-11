@@ -3,8 +3,27 @@ import EditBloodHistory from "./editBloodHistory";
 
 const RequestHistory = () => {
   const [edit, setEdit] = useState(false);
-  const handleClick = (e) => {
-    e.preventDefault();
+
+  //handle Edit click
+  const handleEditClick = async (id) => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/onEdit.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JsON.stringify({
+            id: id,
+          }),
+        },
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
     setEdit((isEditing) => !isEditing);
   };
   const [data, setData] = useState([]);
@@ -33,7 +52,8 @@ const RequestHistory = () => {
   }, []);
 
   //delete
-  const handleDelete = async (user_id) => {
+  const handleDelete = async (id) => {
+    console.log("delete button is clicked");
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
@@ -43,7 +63,7 @@ const RequestHistory = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            user_id: user_id,
+            id: id,
           }),
         },
       );
@@ -55,10 +75,9 @@ const RequestHistory = () => {
       if (result.success) {
         alert("Blood request deleted successfully");
 
-        // remove deleted item from frontend
-        setData((prev) => prev.filter((item) => item.user_id !== user_id));
+        setData((prev) => prev.filter((item) => item.id !== id));
       } else {
-        alert(result.message || "Delete failed");
+        alert(result.message);
       }
     } catch (error) {
       console.log(error);
@@ -101,13 +120,13 @@ const RequestHistory = () => {
                   <button
                     type="button"
                     className="border rounded-lg bg-green-400 text-white font-bold px-4"
-                    onClick={handleClick}
+                    onClick={handleEditClick}
                   >
                     Edit
                   </button>
                   <button
                     className="border rounded-lg bg-red-400 text-white font-bold px-4"
-                    onClick={() => handleDelete(request.user_id)}
+                    onClick={handleEditClick}
                   >
                     Delete
                   </button>

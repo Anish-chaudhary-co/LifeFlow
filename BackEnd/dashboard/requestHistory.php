@@ -34,7 +34,7 @@ if (!isset($_SESSION['user_id'])) {
 require_once "../config/dbConnection.php";
 
 $userId = (int) $_SESSION['user_id'];
-$sql = "SELECT BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE user_id = ?";
+$sql = "SELECT id,BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {

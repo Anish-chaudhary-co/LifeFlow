@@ -16,7 +16,7 @@ const EditBloodHistory = ({ onClose }) => {
 
   useEffect(() => {
     fetch(
-      "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/onEdit.php",
+      "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/updateHistory.php",
       {
         credentials: "include",
       },

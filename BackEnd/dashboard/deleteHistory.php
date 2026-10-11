@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -11,35 +11,44 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
+// Get JSON data from React
 $data = json_decode(file_get_contents("php://input"), true);
 
-
-$user_id = $_SESSION["user_id"] ?? null;
-
-if ($user_id) {
+// Check whether ID was received
+if (!isset($data["id"])) {
     echo json_encode([
-        "success" => true,
-        $data => $user_id;
+        "success" => false,
+        "message" => "ID is required"
     ]);
     exit;
-}else{
-     echo json_encode([
-        "success" => false,
-        "message" => "User ID is required"
-    ]);
 }
 
-$sql = "DELETE FROM bloodrequest WHERE user_id = ?";
+$id = $data["id"];
+
+// Delete query
+$sql = "DELETE FROM requestblood WHERE id = ?";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+
+$stmt->bind_param("i", $id);
 
 if ($stmt->execute()) {
 
-    echo json_encode([
-        "success" => true,
-        "message" => "Blood request deleted successfully"
-    ]);
+    // Check whether a row was actually deleted
+    if ($stmt->affected_rows > 0) {
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Blood request deleted successfully"
+        ]);
+
+    } else {
+
+        echo json_encode([
+            "success" => false,
+            "message" => "No blood request found with this ID"
+        ]);
+    }
 
 } else {
 
