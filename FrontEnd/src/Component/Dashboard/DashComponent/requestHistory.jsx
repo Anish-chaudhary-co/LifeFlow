@@ -4,29 +4,9 @@ import EditBloodHistory from "./editBloodHistory";
 const RequestHistory = () => {
   const [edit, setEdit] = useState(false);
 
-  //handle Edit click
-  const handleEditClick = async (id) => {
-    try {
-      const response = await fetch(
-        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/onEdit.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JsON.stringify({
-            id: id,
-          }),
-        },
-      );
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
-    setEdit((isEditing) => !isEditing);
-  };
   const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState(null);
+
   useEffect(() => {
     fetch(
       "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/requestHistory.php",
@@ -50,6 +30,12 @@ const RequestHistory = () => {
         console.error(error);
       });
   }, []);
+
+  //handle Edit click
+  const handleEditClick = (request) => {
+    setSelectedData(request);
+    setEdit(true);
+  };
 
   //delete
   const handleDelete = async (id) => {
@@ -86,7 +72,12 @@ const RequestHistory = () => {
 
   return (
     <div className="mt-20">
-      {edit && <EditBloodHistory onClose={() => setEdit(false)} />}
+      {edit && (
+        <EditBloodHistory
+          onClose={() => setEdit(false)}
+          selectedData={selectedData}
+        />
+      )}
       <h1 className="text-2xl font-bold">Blood request history</h1>
       <table className="border mt-4 w-full border-collapse">
         <thead>
@@ -120,13 +111,13 @@ const RequestHistory = () => {
                   <button
                     type="button"
                     className="border rounded-lg bg-green-400 text-white font-bold px-4"
-                    onClick={handleEditClick}
+                    onClick={() => handleEditClick(request)}
                   >
                     Edit
                   </button>
                   <button
                     className="border rounded-lg bg-red-400 text-white font-bold px-4"
-                    onClick={handleEditClick}
+                    onClick={() => handleDelete(request.id)}
                   >
                     Delete
                   </button>

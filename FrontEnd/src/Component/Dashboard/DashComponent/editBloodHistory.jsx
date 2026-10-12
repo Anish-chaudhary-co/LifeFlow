@@ -1,44 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MdCancel } from "react-icons/md";
 
-const EditBloodHistory = ({ onClose }) => {
-  const [data, setData] = useState(null);
+const EditBloodHistory = ({ selectedData, onClose }) => {
+  console.log(selectedData);
 
-  const [update, setUpdate] = useState({
-    patientName: "",
-    BloodType: "",
-    hospitalName: "",
-    hospitalPhone: "",
-    unitNeeded: "",
-    address: "",
-    notes: "",
-  });
-
-  useEffect(() => {
-    fetch(
-      "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/updateHistory.php",
-      {
-        credentials: "include",
-      },
-    )
-      .then(async (res) => {
-        const response = await res.json();
-
-        if (!res.ok) {
-          throw new Error(response.message || "Unable to load request data.");
-        }
-
-        return response;
-      })
-      .then((response) => {
-        const result = response.requests?.[0] || null;
-        setData(result);
-        console.log("Edit request:", result);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  const [update, setUpdate] = useState(() => ({
+    id: selectedData?.id || "",
+    patientName: selectedData?.patientName || "",
+    BloodType: selectedData?.BloodType || "",
+    hospitalName: selectedData?.hospitalName || "",
+    hospitalPhone: selectedData?.hospitalPhone || "",
+    unitNeeded: selectedData?.unitNeeded || "",
+    address: selectedData?.address || "",
+    notes: selectedData?.notes || "",
+  }));
 
   //update
 
@@ -50,22 +25,31 @@ const EditBloodHistory = ({ onClose }) => {
     }));
   };
 
+  console.log(update);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost/LifeFlow/Blood-Donation/BackEnd/Update.php",
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/updateHistory.php",
         {
           method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify(update),
         },
       );
+      if (!response.ok) {
+        throw new Error("Unable to update blood request.");
+      }
+      const result = await response.json();
+      if (result.success) {
+        onClose;
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -86,7 +70,7 @@ const EditBloodHistory = ({ onClose }) => {
                 <input
                   type="text"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.patientName || ""}
+                  value={update.patientName}
                   name="patientName"
                   onChange={handleUpdate}
                 />
@@ -96,7 +80,7 @@ const EditBloodHistory = ({ onClose }) => {
                 <input
                   type="text"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.BloodType || ""}
+                  value={update.BloodType}
                   name="BloodType"
                   onChange={handleUpdate}
                 />
@@ -106,7 +90,7 @@ const EditBloodHistory = ({ onClose }) => {
                 <input
                   type="text"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.hospitalName || ""}
+                  value={update.hospitalName}
                   name="hospitalName"
                   onChange={handleUpdate}
                 />
@@ -116,7 +100,7 @@ const EditBloodHistory = ({ onClose }) => {
                 <input
                   type="number"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.hospitalPhone || ""}
+                  value={update.hospitalPhone}
                   name="hospitalPhone"
                   onChange={handleUpdate}
                 />
@@ -126,7 +110,7 @@ const EditBloodHistory = ({ onClose }) => {
                 <input
                   type="number"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.unitNeeded || ""}
+                  value={update.unitNeeded}
                   name="unitNeeded"
                   onChange={handleUpdate}
                 />
@@ -136,7 +120,7 @@ const EditBloodHistory = ({ onClose }) => {
                 <input
                   type="text"
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.address || ""}
+                  value={update.address}
                   name="address"
                   onChange={handleUpdate}
                 />
@@ -147,7 +131,7 @@ const EditBloodHistory = ({ onClose }) => {
                   name="notes"
                   id=""
                   className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                  value={data?.notes || ""}
+                  value={update.notes}
                   onChange={handleUpdate}
                 />
               </div>

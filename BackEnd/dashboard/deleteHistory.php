@@ -11,10 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
-// Get JSON data from React
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Check whether ID was received
 if (!isset($data["id"])) {
     echo json_encode([
         "success" => false,
@@ -25,7 +23,6 @@ if (!isset($data["id"])) {
 
 $id = $data["id"];
 
-// Delete query
 $sql = "DELETE FROM requestblood WHERE id = ?";
 
 $stmt = $conn->prepare($sql);
@@ -34,7 +31,6 @@ $stmt->bind_param("i", $id);
 
 if ($stmt->execute()) {
 
-    // Check whether a row was actually deleted
     if ($stmt->affected_rows > 0) {
 
         echo json_encode([
