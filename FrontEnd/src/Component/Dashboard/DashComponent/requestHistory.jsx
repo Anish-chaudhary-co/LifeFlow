@@ -127,7 +127,7 @@ const RequestHistory = () => {
           ) : (
             <tr>
               <td className="p-3 text-center" colSpan="9">
-                No blood requests found.
+                You have't request for blood.
               </td>
             </tr>
           )}
