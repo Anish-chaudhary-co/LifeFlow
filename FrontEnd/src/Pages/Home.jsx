@@ -72,7 +72,7 @@ const Home = () => {
             Become a donor
           </NavLink>
           <NavLink
-            to="/bloodBanks"
+            to="/findDonor"
             className="py-2 rounded-xl bg-blue-800 hover:bg-blue-900"
           >
             Find a Bank

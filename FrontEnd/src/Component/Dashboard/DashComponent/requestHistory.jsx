@@ -3,11 +3,10 @@ import EditBloodHistory from "./editBloodHistory";
 
 const RequestHistory = () => {
   const [edit, setEdit] = useState(false);
-
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
 
-  useEffect(() => {
+  const fetchRequests = () => {
     fetch(
       "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/requestHistory.php",
       { credentials: "include" },
@@ -29,17 +28,27 @@ const RequestHistory = () => {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  useEffect(() => {
+    fetchRequests();
   }, []);
 
-  //handle Edit click
   const handleEditClick = (request) => {
     setSelectedData(request);
     setEdit(true);
   };
 
-  //delete
+  const handleUpdateRequest = (updatedRequest) => {
+    setData((prev) =>
+      prev.map((item) =>
+        item.id === updatedRequest.id ? updatedRequest : item,
+      ),
+    );
+    setEdit(false);
+  };
+
   const handleDelete = async (id) => {
-    console.log("delete button is clicked");
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
@@ -56,11 +65,8 @@ const RequestHistory = () => {
 
       const result = await response.json();
 
-      console.log(result);
-
       if (result.success) {
         alert("Blood request deleted successfully");
-
         setData((prev) => prev.filter((item) => item.id !== id));
       } else {
         alert(result.message);
@@ -75,6 +81,7 @@ const RequestHistory = () => {
       {edit && (
         <EditBloodHistory
           onClose={() => setEdit(false)}
+          onSave={handleUpdateRequest}
           selectedData={selectedData}
         />
       )}
@@ -116,6 +123,7 @@ const RequestHistory = () => {
                     Edit
                   </button>
                   <button
+                    type="button"
                     className="border rounded-lg bg-red-400 text-white font-bold px-4"
                     onClick={() => handleDelete(request.id)}
                   >
