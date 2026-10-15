@@ -17,16 +17,35 @@ const PersonalDetailForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "unitNeeded" && Number(value) < 0) {
+      alert("You cannot put negative number.");
+      return;
+    }
     setDetailValue((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("clicked");
-    setShowDetail(detailValue);
-    console.log(detailValue);
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/personalDetail.php",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...detailValue,
+          }),
+        },
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="border p-4 border-slate-200 rounded-2xl shadow-2xl">
