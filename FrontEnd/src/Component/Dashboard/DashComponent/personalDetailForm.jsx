@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
-import { UserPersonalContext } from "../../../Context/UserPersonalContext";
+import ProfileShow from "./profileShow";
+import { UserContext } from "../../../Context/profileShowContext";
 
 const detail = {
   fullname: "",
@@ -10,23 +11,24 @@ const detail = {
   contact: "",
 };
 const PersonalDetailForm = () => {
-  const { setShowDetail } = useContext(UserPersonalContext);
-
+  const { setProfile } = useContext(UserContext);
   const [detailValue, setDetailValue] = useState(detail);
-  console.log("this is submit button");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "unitNeeded" && Number(value) < 0) {
-      alert("You cannot put negative number.");
-      return;
-    }
     setDetailValue((prev) => ({
       ...prev,
       [name]: value,
     }));
+    setMessage("");
   };
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
+
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/personalDetail.php",
@@ -42,115 +44,146 @@ const PersonalDetailForm = () => {
         },
       );
       const result = await response.json();
-      console.log(result);
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Unable to save personal details.");
+      } else {
+        setTimeout(() => {
+          setProfile(detailValue);
+        }, 2000);
+        setIsSubmitting(true);
+        console.log(result.success);
+        setMessage(result.message || "Personal details saved successfully.");
+      }
     } catch (error) {
       console.error(error);
+      setMessage(error.message || "Unable to save personal details.");
     }
   };
+
   return (
-    <div className="border p-4 border-slate-200 rounded-2xl shadow-2xl">
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-1">
-          <h3 className="text-2xl font-semibold">Personal Detail:</h3>
-          <span className="text-slate-400 font-sans">
-            Your identifying information.
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-          <div>
-            Full Name
-            <input
-              name="fullname"
-              type="text"
-              value={detailValue.fullname}
-              placeholder="Enter your full name"
-              onChange={handleChange}
-              className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-            />
-          </div>
-          <div>
-            Date of birth
-            <input
-              name="DOB"
-              type="date"
-              value={detailValue.DOB}
-              onChange={handleChange}
-              className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-            />
-          </div>
-          <div>
-            <div className="flex gap-2 md:gap-5">
-              Gender :
-              <input
-                type="radio"
-                name="gender"
-                value="male"
-                checked={detailValue.gender === "male"}
-                onChange={handleChange}
-              />
-              Male
-              <input
-                type="radio"
-                name="gender"
-                value="female"
-                checked={detailValue.gender === "female"}
-                onChange={handleChange}
-              />
-              Female
-              <input
-                type="radio"
-                name="gender"
-                value="others"
-                checked={detailValue.gender === "others"}
-                onChange={handleChange}
-              />
-              Others
+    <>
+      <div className="border p-4 border-slate-200 rounded-2xl shadow-2xl">
+        {isSubmitting ? (
+          <ProfileShow />
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-1">
+              <h3 className="text-2xl font-semibold">Personal Detail:</h3>
+              <span className="text-slate-400 font-sans">
+                Your identifying information.
+              </span>
             </div>
-          </div>
-          <div>
-            Address
-            <input
-              name="address"
-              type="text"
-              value={detailValue.address}
-              placeholder="Enter your full address"
-              onChange={handleChange}
-              className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-            />
-          </div>
-          <div>
-            Blood Group
-            <input
-              name="bloodGroup"
-              type="text"
-              value={detailValue.bloodGroup}
-              placeholder="Enter your Blood group"
-              onChange={handleChange}
-              className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-            />
-          </div>
-          <div>
-            Contact
-            <input
-              name="contact"
-              type="number"
-              value={detailValue.contact}
-              placeholder="Enter Contact"
-              onChange={handleChange}
-              className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-            />
-          </div>
 
-          <div>
-            <input
-              type="submit"
-              className="px-4 py-2 rounded-lg bg-rose-400 hover:bg-rose-500 text-white font-bold"
-            />
-          </div>
-        </div>
-      </form>
-    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
+              <div>
+                Full Name
+                <input
+                  name="fullname"
+                  type="text"
+                  required
+                  value={detailValue.fullname}
+                  placeholder="Enter your full name"
+                  onChange={handleChange}
+                  className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                />
+              </div>
+              <div>
+                Date of birth
+                <input
+                  name="DOB"
+                  type="date"
+                  required
+                  value={detailValue.DOB}
+                  onChange={handleChange}
+                  className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                />
+              </div>
+              <div>
+                <div className="flex gap-2 md:gap-5">
+                  Gender :
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    required
+                    checked={detailValue.gender === "male"}
+                    onChange={handleChange}
+                  />
+                  Male
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={detailValue.gender === "female"}
+                    onChange={handleChange}
+                  />
+                  Female
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="others"
+                    checked={detailValue.gender === "others"}
+                    onChange={handleChange}
+                  />
+                  Others
+                </div>
+              </div>
+              <div>
+                Address
+                <input
+                  name="address"
+                  type="text"
+                  required
+                  value={detailValue.address}
+                  placeholder="Enter your full address"
+                  onChange={handleChange}
+                  className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                />
+              </div>
+              <div>
+                Blood Group
+                <input
+                  name="bloodGroup"
+                  type="text"
+                  required
+                  value={detailValue.bloodGroup}
+                  placeholder="Enter your Blood group"
+                  onChange={handleChange}
+                  className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                />
+              </div>
+              <div>
+                Contact
+                <input
+                  name="contact"
+                  type="tel"
+                  required
+                  value={detailValue.contact}
+                  placeholder="Enter Contact"
+                  onChange={handleChange}
+                  className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                />
+              </div>
+
+              <div>
+                <input
+                  type="submit"
+                  value={isSubmitting ? "Saving..." : "Save details"}
+                  disabled={isSubmitting}
+                  className="px-4 py-2 rounded-lg bg-rose-400 hover:bg-rose-500 text-white font-bold"
+                />
+              </div>
+            </div>
+            {message && (
+              <p className="mt-4" role="status">
+                {message}
+              </p>
+            )}
+          </form>
+        )}
+      </div>
+    </>
   );
 };
 
