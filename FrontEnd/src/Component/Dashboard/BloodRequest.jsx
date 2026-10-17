@@ -1,7 +1,7 @@
 import React from "react";
 
-const Appointment = () => {
+const BloodRequest = () => {
   return <div className="mt-20">this is the Appointment</div>;
 };
 
-export default Appointment;
+export default BloodRequest;

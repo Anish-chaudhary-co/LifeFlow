@@ -79,12 +79,12 @@ const Navbar = () => {
                 <FaUser size={20} /> My profile
               </NavLink>
               <NavLink
-                to="/dashboard/appointment"
+                to="/dashboard/bloodRequest"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
                 }
               >
-                <FaCalendarAlt size={20} /> Appointment
+                <FaCalendarAlt size={20} /> Blood request
               </NavLink>
               <NavLink
                 to="/dashboard/donationHistory"

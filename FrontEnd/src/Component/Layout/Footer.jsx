@@ -5,7 +5,7 @@ import { FaGoogle } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 const Footer = () => {
   return (
-    <div className="p-2 bg-gray-300 shadow-gray-400 shadow-2xl mt-9">
+    <div className="p-2 bg-gray-300 shadow-gray-400 shadow-2xl pt-9">
       <div>LOGO</div>
 
       <div className="grid grid-cols-2 gap-9 pl-5 md:grid-cols-4 justify-between">

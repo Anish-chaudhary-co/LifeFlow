@@ -41,12 +41,12 @@ const Navbar = () => {
   //   });
 
   // pc
-  const ActivePage = "bg-rose-400 text-white";
-  const NormalPage = "hover:bg-rose-200 text-rose-600";
+  const ActivePage = "bg-orange-100";
+  const NormalPage = "hover:bg-orange-100 text-rose-600";
 
   // mobile
-  const ActiveMob = "p-2 bg-rose-300 text-rose-600";
-  const NormalMob = "hover:bg-rose-200 text-rose-600";
+  const ActiveMob = "p-2 bg-orange-100";
+  const NormalMob = "hover:bg-orange-100 text-rose-600";
 
   return (
     <>
@@ -104,7 +104,7 @@ const Navbar = () => {
             <NavLink
               to="RegisterSignIn"
               className={({ isActive }) =>
-                `px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-rose-300 hover:text-rose-600"}`
+                `px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-orange-100 hover:text-rose-600"}`
               }
             >
               Sign in/Register
@@ -179,7 +179,7 @@ const Navbar = () => {
             <NavLink
               to="RegisterSignIn"
               onClick={() => setOpen(!open)}
-              className="text-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg cursor-pointer"
+              className="text-center px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer"
             >
               Sign in/Register
             </NavLink>

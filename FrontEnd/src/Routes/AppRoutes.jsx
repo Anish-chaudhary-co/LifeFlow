@@ -11,7 +11,7 @@ import Register from "../Component/Layout/register";
 import AuthContext from "../Context/AuthContext";
 import Overview from "../Component/Dashboard/Overview";
 import MyProfile from "../Component/Dashboard/Myprofile";
-import Appointment from "../Component/Dashboard/Appointment";
+import BloodRequest from "../Component/Dashboard/BloodRequest";
 import DonationHistory from "../Component/Dashboard/DonationHistory";
 import PersonalDetailContext from "../Context/personalDetailContext";
 import ProfileShowContext from "../Context/profileShowContext";
@@ -47,7 +47,7 @@ const AppRouter = () => {
               </PersonalDetailContext>
             }
           />
-          <Route path="appointment" element={<Appointment />} />
+          <Route path="bloodRequest" element={<BloodRequest />} />
           <Route path="donationHistory" element={<DonationHistory />} />
         </Route>
         {/* </Route> */}

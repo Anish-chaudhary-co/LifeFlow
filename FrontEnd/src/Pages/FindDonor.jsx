@@ -63,21 +63,21 @@ const FindDonor = () => {
   });
 
   return (
-    <div className="mt-20 m-2 md:m-20">
+    <div className="pt-20 p-2 md:p-20 max-h-max bg-slate-200">
       <h1 className="font-bold text-5xl">Find a donor</h1>
       <span className="font-sm text-slate-400">
         {isLoading
           ? "Loading donors..."
           : `${filteredDonors.length} donor${filteredDonors.length === 1 ? "" : "s"} match your filter.`}
       </span>
-      <div className="mt-10 flex  gap-6">
+      <div className="mt-10 flex gap-6">
         <input
           type="search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by name, address, or blood group"
           aria-label="Search donors"
-          className="border px-4 h-10 w-full rounded-3xl focus:ring-2 focus:ring-rose-400 focus:border-rose-400 outline-none"
+          className="border px-4 h-10 w-full rounded-3xl bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 outline-none"
         />
 
         <select
@@ -111,16 +111,28 @@ const FindDonor = () => {
       ) : (
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredDonors.map((donor) => (
-            <article
+            <div
               key={donor.UserId}
-              className="rounded-lg border border-slate-200 p-5 shadow-sm"
+              className="m-2 bg-white rounded-lg border border-orange-200 p-5 shadow-sm"
             >
-              <h2 className="text-xl font-semibold">{donor.FullName}</h2>
-              <p className="mt-2">Blood group: {donor.BloodGroup}</p>
-              <p>Gender: {donor.Gender}</p>
-              <p>Address: {donor.Address}</p>
-              <p>Contact: {donor.Phone}</p>
-            </article>
+              <div className="flex gap-6">
+                <span className="border rounded-4xl p-2">IMG</span>
+                <h2 className="text-xl font-semibold">{donor.FullName}</h2>
+                <span className="rounded-4xl bg-orange-100 p-2 font-semibold text-rose-500">
+                  {donor.BloodGroup}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 pl-10 ">
+                <p className="text-sm text-slate-500">Gender: {donor.Gender}</p>
+                <p className="text-sm text-slate-500">
+                  Address: {donor.Address}
+                </p>
+                <p className="text-sm text-slate-500">Contact: {donor.Phone}</p>
+              </div>
+              <button className="text-center bg-rose-600 font-semibold text-white w-full py-2 rounded-3xl mt-2 hover:bg-rose-300">
+                Contact Donor
+              </button>
+            </div>
           ))}
         </div>
       )}
