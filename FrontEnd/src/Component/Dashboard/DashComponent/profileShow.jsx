@@ -5,7 +5,7 @@ const ProfileShow = () => {
   const { profile } = useContext(profileContext);
 
   return (
-    <div>
+    <div className="mt-20 md:m-0">
       <p>Full Name: {profile.FullName}</p>
       <p>Date of birth: {profile.DateOfBirth}</p>
       <p>Gender: {profile.Gender}</p>

@@ -23,30 +23,35 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once "../config/dbConnection.php";
 
-$sql = "SELECT r.ID, d.UserId, r.FullName, d.Gender, d.DateOfBirth, d.BloodGroup, d.Phone, d.Address
-        FROM registration r
-        INNER JOIN donors d ON r.UserId = d.UserId
-        WHERE r.Role = 'donor'";
+$sql = "SELECT d.UserId, d.FullName, d.Gender, d.DateOfBirth, d.BloodGroup, d.Phone, d.Address
+        FROM registeration r
+        INNER JOIN donors d ON r.ID = d.UserId
+        WHERE r.Role = 'donor'
+        ORDER BY d.FullName";
 
 $result = $conn->query($sql);
 $donors = [];
 
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $donors[] = $row;
-    }
-
-    echo json_encode([
-        "success" => true,
-        "donors" => $donors,
-    ]);
-} else {
+if (!$result) {
+    http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Failed to get donor details.",
+        "message" => "Unable to retrieve donor details.",
         "donors" => [],
     ]);
+    $conn->close();
+    exit;
 }
 
+while ($row = $result->fetch_assoc()) {
+    $donors[] = $row;
+}
+
+echo json_encode([
+    "success" => true,
+    "donors" => $donors,
+]);
+
+$result->free();
 $conn->close();
 ?>

@@ -10,6 +10,7 @@ const detail = {
   bloodGroup: "",
   contact: "",
 };
+const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const PersonalDetailForm = () => {
   const { profile, setProfile } = useContext(profileContext);
   const [detailValue, setDetailValue] = useState(detail);
@@ -117,8 +118,10 @@ const PersonalDetailForm = () => {
 
   return (
     <>
-      <div className="border p-4 border-slate-200 rounded-2xl shadow-2xl">
-        {profile ? (
+      <div className="mt-20 border p-4 border-slate-200 rounded-2xl shadow-2xl">
+        {isLoadingProfile ? (
+          <p role="status">Checking your profile...</p>
+        ) : profile ? (
           <ProfileShow />
         ) : (
           <form onSubmit={handleSubmit}>
@@ -197,15 +200,26 @@ const PersonalDetailForm = () => {
               </div>
               <div>
                 Blood Group
-                <input
+                <select
                   name="bloodGroup"
-                  type="text"
-                  required
                   value={detailValue.bloodGroup}
-                  placeholder="Enter your Blood group"
                   onChange={handleChange}
-                  className="border py-2 w-full p-4 rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
-                />
+                  required
+                  className="border py-2 ml-4 font-semibold md:w-full rounded-xl border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                >
+                  <option value="" disabled>
+                    Select your blood group
+                  </option>
+                  {bloodGroups.map((group) => (
+                    <option
+                      key={group}
+                      value={group}
+                      className="font-semibold rounded-2xl"
+                    >
+                      {group}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 Contact

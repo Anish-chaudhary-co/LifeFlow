@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { MdCancel } from "react-icons/md";
+import Hospitals from "../../../Pages/hospitals";
+import hospitals from "../../../Pages/hospitals";
 
+const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const EditBloodHistory = ({ selectedData, onClose, onSave }) => {
   const [update, setUpdate] = useState({
     id: selectedData?.id || "",
@@ -97,13 +100,18 @@ const EditBloodHistory = ({ selectedData, onClose, onSave }) => {
             </div>
             <div className="flex flex-col gap-4 m-4">
               Blood Type
-              <input
-                type="text"
-                className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                value={update.BloodType}
+              <select
                 name="BloodType"
+                value={update.BloodType}
                 onChange={handleUpdate}
-              />
+                className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
+              >
+                {bloodGroups.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex flex-col gap-4 m-4">
               Within time period
@@ -117,13 +125,18 @@ const EditBloodHistory = ({ selectedData, onClose, onSave }) => {
             </div>
             <div className="flex flex-col gap-4 m-4">
               Hospital Name
-              <input
-                type="text"
-                className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
-                value={update.hospitalName}
+              <select
                 name="hospitalName"
+                value={update.hospitalName}
                 onChange={handleUpdate}
-              />
+                className="border border-slate-500 rounded-lg p-2 focus:ring-2 focus:border-rose-400 focus:ring-rose-400 outline-none"
+              >
+                {Hospitals.map((hospital) => (
+                  <option key={hospital} value={hospital}>
+                    {hospital}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex flex-col gap-4 m-4">
               Hospital Phone
