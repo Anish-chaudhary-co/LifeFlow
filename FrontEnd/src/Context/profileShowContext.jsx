@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { UserPersonalContext } from "./UserPersonalContext";
+import { createContext, useState } from "react";
+export const profileContext = createContext(null);
 
 const profileShowContext = ({ children }) => {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(false);
   return (
-    <UserPersonalContext.Provider value={{ profile, setProfile }}>
+    <profileContext.Provider value={{ profile, setProfile }}>
       {children}
-    </UserPersonalContext.Provider>
+    </profileContext.Provider>
   );
 };
 

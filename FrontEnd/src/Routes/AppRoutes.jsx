@@ -14,6 +14,7 @@ import MyProfile from "../Component/Dashboard/Myprofile";
 import Appointment from "../Component/Dashboard/Appointment";
 import DonationHistory from "../Component/Dashboard/DonationHistory";
 import PersonalDetailContext from "../Context/personalDetailContext";
+import ProfileShowContext from "../Context/profileShowContext";
 
 // import ProtectedSession from "../Context/protectedSession";
 
@@ -40,7 +41,9 @@ const AppRouter = () => {
             path="myProfile"
             element={
               <PersonalDetailContext>
-                <MyProfile />
+                <ProfileShowContext>
+                  <MyProfile />
+                </ProfileShowContext>
               </PersonalDetailContext>
             }
           />

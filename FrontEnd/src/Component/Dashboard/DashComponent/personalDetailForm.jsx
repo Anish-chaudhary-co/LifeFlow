@@ -1,6 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import ProfileShow from "./profileShow";
-import { UserContext } from "../../../Context/profileShowContext";
+import { profileContext } from "../../../Context/profileShowContext";
 
 const detail = {
   fullname: "",
@@ -11,10 +11,58 @@ const detail = {
   contact: "",
 };
 const PersonalDetailForm = () => {
-  const { setProfile } = useContext(UserContext);
+  const { profile, setProfile } = useContext(profileContext);
   const [detailValue, setDetailValue] = useState(detail);
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProfile = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/profileDetail.php",
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+        const result = await response.json();
+
+        if (response.status === 404 && !result.success) {
+          if (isMounted) {
+            setProfile(null);
+          }
+          return;
+        }
+
+        if (!response.ok || !result.success || !result.profile) {
+          throw new Error(result.message || "Unable to load your profile.");
+        }
+
+        if (isMounted) {
+          setProfile(result.profile);
+        }
+      } catch (error) {
+        console.error(error);
+        if (isMounted) {
+          setMessage(error.message || "Unable to load your profile.");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingProfile(false);
+        }
+      }
+    };
+
+    loadProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setProfile]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +76,7 @@ const PersonalDetailForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setIsSubmitting(true);
 
     try {
       const response = await fetch(
@@ -48,23 +97,28 @@ const PersonalDetailForm = () => {
       if (!response.ok || !result.success) {
         throw new Error(result.message || "Unable to save personal details.");
       } else {
-        setTimeout(() => {
-          setProfile(detailValue);
-        }, 2000);
-        setIsSubmitting(true);
-        console.log(result.success);
+        setProfile({
+          FullName: detailValue.fullname,
+          DateOfBirth: detailValue.DOB,
+          Gender: detailValue.gender,
+          Address: detailValue.address,
+          BloodGroup: detailValue.bloodGroup,
+          Phone: detailValue.contact,
+        });
         setMessage(result.message || "Personal details saved successfully.");
       }
     } catch (error) {
       console.error(error);
       setMessage(error.message || "Unable to save personal details.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <>
       <div className="border p-4 border-slate-200 rounded-2xl shadow-2xl">
-        {isSubmitting ? (
+        {profile ? (
           <ProfileShow />
         ) : (
           <form onSubmit={handleSubmit}>

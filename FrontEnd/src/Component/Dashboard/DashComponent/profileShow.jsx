@@ -1,10 +1,19 @@
 import { useContext } from "react";
-import { UserContext } from "../../../Context/profileShowContext";
-import { use } from "react";
+import { profileContext } from "../../../Context/profileShowContext";
 
-const profileShow = () => {
-  const { profile } = useContext(UserContext);
-  return <div>{profile.fullName}</div>;
+const ProfileShow = () => {
+  const { profile } = useContext(profileContext);
+
+  return (
+    <div>
+      <p>Full Name: {profile.FullName}</p>
+      <p>Date of birth: {profile.DateOfBirth}</p>
+      <p>Gender: {profile.Gender}</p>
+      <p>Address: {profile.Address}</p>
+      <p>Blood Group: {profile.BloodGroup}</p>
+      <p>Contact: {profile.Phone}</p>
+    </div>
+  );
 };
 
-export default profileShow;
+export default ProfileShow;
