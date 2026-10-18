@@ -108,8 +108,8 @@ const RequestBlood = () => {
   };
 
   return (
-    <div>
-      <div className="bg-slate-100 border-slate-300 shadow-2xl border mt-20 m-2 md:m-30 rounded-xl p-4 md:p-8">
+    <div className="bg-slate-100 pt-20 md:p-30">
+      <div className="bg-white border-slate-300 shadow-2xl border m-2 rounded-xl p-4 md:p-8">
         <h1 className="text-3xl font-bold">Create an emergency request</h1>
         <p className="text-slate-500">
           Your request will be broadcast to verified donors matching blood

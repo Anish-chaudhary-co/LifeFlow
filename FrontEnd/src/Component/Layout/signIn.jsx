@@ -66,7 +66,7 @@ const signIn = () => {
   };
   return (
     <>
-      <div className="m-2 mt-9">
+      <div className="m-2 mt-20">
         <Notification />
         <div className="flex flex-col items-center">
           <h1 className="text-3xl md:text-5xl font-bold">Welcome back</h1>
