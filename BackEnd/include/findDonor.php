@@ -26,7 +26,6 @@ require_once "../config/dbConnection.php";
 $sql = "SELECT d.UserId, d.FullName, d.Gender, d.DateOfBirth, d.BloodGroup, d.Phone, d.Address
         FROM registeration r
         INNER JOIN donors d ON r.ID = d.UserId
-        WHERE r.Role = 'donor'
         ORDER BY d.FullName";
 
 $result = $conn->query($sql);

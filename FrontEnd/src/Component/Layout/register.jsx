@@ -9,9 +9,9 @@ const register = () => {
   const { setNotification } = useContext(UserContext);
   const [selected, setSelected] = useState("");
   const [formData, setFormData] = useState({
-    role: "",
     fullName: "",
     email: "",
+    age: "",
     password: "",
     conformPassword: "",
   });
@@ -23,6 +23,8 @@ const register = () => {
     }));
   };
 
+  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -30,10 +32,16 @@ const register = () => {
       if (
         !formData.fullName ||
         !formData.email ||
+        !formData.age ||
         !formData.password ||
         !formData.conformPassword
       ) {
         alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (Number(formData.age) < 18) {
+        alert("Age must be 18 or greater than 18.");
         return;
       }
 
@@ -60,7 +68,6 @@ const register = () => {
       );
     }
   };
-  const roles = ["Patient", "Donor"];
   return (
     <>
       <Notification />
@@ -88,9 +95,9 @@ const register = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col border border-slate-200 shadow-2xl rounded-lg p-4 gap-5"
+          className="flex flex-col border border-slate-200 shadow-2xl rounded-xl py-12 p-4 gap-5"
         >
-          <div className="flex justify-center gap-8">
+          {/* <div className="flex justify-center gap-8">
             {roles.map((items) => (
               <button
                 type="button"
@@ -104,15 +111,16 @@ const register = () => {
                 {items}
               </button>
             ))}
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2">
             Full Name
             <input
               name="fullName"
               type="text"
+              required
               onChange={handleChange}
               placeholder="Enter your fullname"
-              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl"
+              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl focus:ring-1 focus:border-rose-500 focus:ring-rose-500 outline-none"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -120,9 +128,22 @@ const register = () => {
             <input
               name="email"
               type="email"
+              required
               onChange={handleChange}
               placeholder="Enter you Email"
-              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl"
+              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl focus:ring-1 focus:border-rose-400 focus:ring-rose-500 outline-none"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            Age
+            <input
+              name="age"
+              type="number"
+              min="0"
+              required
+              onChange={handleChange}
+              placeholder="Must be 18 year old."
+              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl focus:ring-1 focus:border-rose-400 focus:ring-rose-500 outline-none"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -130,9 +151,10 @@ const register = () => {
             <input
               name="password"
               type="password"
+              required
               onChange={handleChange}
               placeholder="Enter password"
-              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl"
+              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl focus:ring-1 focus:border-rose-600 focus:ring-rose-500 outline-none"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -140,9 +162,10 @@ const register = () => {
             <input
               name="conformPassword"
               type="password"
+              required
               onChange={handleChange}
               placeholder="Re-enter password"
-              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl"
+              className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl focus:ring-1 focus:border-rose-400 focus:ring-rose-500 outline-none"
             />
           </div>
 

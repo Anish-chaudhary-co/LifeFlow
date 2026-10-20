@@ -13,11 +13,13 @@ require_once "../config/dbConnection.php";
 $data = json_decode(file_get_contents("php://input"), true) ?? [];
 $fullname = trim($data['fullName'] ?? "");
 $email = trim($data['email'] ?? "");
+$ageInput = trim((string) ($data['age'] ?? ""));
+$age = filter_var($ageInput, FILTER_VALIDATE_INT);
 $password = $data['password'] ?? "";
 $conPassword = $data['conformPassword'] ?? "";
-$role = trim($data['role'] ?? "");
 
-if (empty($fullname) || empty($email) || empty($password) || empty($conPassword) || empty($role)) {
+
+if ($fullname === "" || $email === "" || $ageInput === "" || $password === "" || $conPassword === "") {
     echo json_encode([
         "success" => false,
         "message" => "Please fill in all required fields."
@@ -42,6 +44,23 @@ if ($password !== $conPassword) {
     exit;
 }
 
+if ($age === false) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Please enter a valid age."
+    ]);
+    exit;
+}
+
+if ($age < 18) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Age must be at least 18."
+    ]);
+    exit;
+}
+
+
 $checkSql = "SELECT ID FROM registeration WHERE email=?";
 
 $stmt = $conn->prepare($checkSql);
@@ -63,7 +82,7 @@ $stmt->close();
 
 
 
-$sql = "INSERT INTO registeration (FullName, Email, Password, Role) VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO registeration (FullName, Email, age, Password) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
@@ -75,7 +94,7 @@ if (!$stmt) {
     exit;
 }
 $hashPassword = password_hash($password,PASSWORD_DEFAULT);
-$stmt->bind_param("ssss", $fullname, $email, $hashPassword, $role);
+$stmt->bind_param("ssis", $fullname, $email, $age, $hashPassword);
 
 if ($stmt->execute()) {
     echo json_encode([
@@ -93,4 +112,3 @@ if ($stmt->execute()) {
 $stmt->close();
 require_once "../config/dbClose.php";
 ?>
-
