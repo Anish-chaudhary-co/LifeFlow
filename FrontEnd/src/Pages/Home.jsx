@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FaArrowCircleRight } from "react-icons/fa";
 import QuickDonorSearch from "../Component/Home/QuickDonorSearch";
@@ -6,6 +6,32 @@ import TotalUser from "../Component/Home/TotalUser";
 import HowToUse from "../Component/Home/howToUse";
 
 const Home = () => {
+  const [count, setCount] = useState(null);
+
+  const handleUserCount = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/homeUserCount.php",
+        {
+          method: "GET",
+          credentials: "include",
+        },
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message);
+      }
+      const data = JSON.parse(result.totalUsers);
+      setCount(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleUserCount();
+  }, []);
+
   return (
     <div className="mt-10">
       <div className="p-6 md:p-10 bg-slate-200">
@@ -42,7 +68,7 @@ const Home = () => {
           <div className="px-4 py-4 rounded-4xl border"></div>
           <div className="flex flex-col">
             <div>
-              <span>0+</span> donors
+              <span>{count}+</span> donors
             </div>
             <span className="text-gray-500">
               already saving lives in your city
