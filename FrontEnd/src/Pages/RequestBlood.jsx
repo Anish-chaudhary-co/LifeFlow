@@ -134,9 +134,9 @@ const RequestBlood = () => {
 
         <div className="flex flex-col gap-8">
           <div className="mt-5">
-            <label className="block">Within time period</label>
+            <label className="block">Required date:</label>
             <input
-              type="text"
+              type="date"
               name="period"
               value={patientData.period}
               onChange={handleChange}
@@ -216,7 +216,7 @@ const RequestBlood = () => {
               name="address"
               value={patientData.address}
               onChange={handleChange}
-              className="border block w-full h-10 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+              className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
 

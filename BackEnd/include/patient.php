@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once "../config/dbConnection.php";
 
-$sql = "SELECT id, BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood";
+$sql = "SELECT id, BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes, DATE(created_at) AS created_date FROM requestBlood";
 $result = $conn->query($sql);
 
 if (!$result) {

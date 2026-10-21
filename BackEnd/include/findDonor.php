@@ -23,10 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once "../config/dbConnection.php";
 
-$sql = "SELECT d.UserId, d.FullName, d.Gender, d.DateOfBirth, d.BloodGroup, d.Phone, d.Address
-        FROM registeration r
-        INNER JOIN donors d ON r.ID = d.UserId
-        ORDER BY d.FullName";
+$sql = "SELECT * FROM donors";
 
 $result = $conn->query($sql);
 $donors = [];

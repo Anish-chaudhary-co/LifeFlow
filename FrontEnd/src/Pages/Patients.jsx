@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-
+import {
+  FaTint,
+  FaCalendarAlt,
+  FaHospital,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 const Patients = () => {
   const [request, setRequest] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -70,37 +76,49 @@ const Patients = () => {
               key={patient.id}
               className="rounded-lg border border-orange-200 shadow-2xl bg-white  p-5 relative"
             >
-              <div className="flex gap-6">
+              <div className="flex gap-6 relative">
                 <div>
                   <span className="border p-2 rounded-xl bg-rose-400 text-white font-semibold">
                     {patient.BloodType}
                   </span>
+                  <p className="absolute md:top-4 top-2 right-1 md:right-4 px-2 rounded-3xl bg-rose-400 shadow-[0_4px_10px_2px_rgba(0,0,0,0.25)]">
+                    {patient.created_date}
+                  </p>
                 </div>
                 <div className="flex flex-col">
                   <h2 className="text-xl font-semibold">
                     {patient.patientName}
                   </h2>
-                  <div className="mt-2 text-slate-500">
-                    <p>
-                      <strong>Units:</strong> {patient.unitNeeded} Unit needed
+                  <div className="mt-2">
+                    <p className="flex gap-2 text-rose-400">
+                      <FaTint />
+                      {patient.unitNeeded} Unit needed
                     </p>
-                    <p>
-                      <strong>Required by:</strong> {patient.period}
+                    <p className="flex gap-2 text-green-400">
+                      <strong>Needed Date:</strong>
+                      <FaCalendarAlt />
+                      {patient.period}
                     </p>
-                    <p>
-                      <strong>Hospital:</strong> {patient.hospitalName}
-                    </p>
-                    <p>
-                      <strong>Hospital phone:</strong> {patient.hospitalPhone}
-                    </p>
-                    <p>
-                      <strong>Address:</strong> {patient.address}
+                    <div className="flex gap-2">
+                      <p className="flex gap-2">
+                        <FaHospital />
+                        {patient.hospitalName},
+                      </p>
+                      <p className="flex gap-2">
+                        <FaPhone />
+                        {patient.hospitalPhone}
+                      </p>
+                    </div>
+
+                    <p className="flex gap-2">
+                      <FaMapMarkerAlt />
+                      {patient.address}
                     </p>
                   </div>
                   {patient.notes && (
                     <p>
                       <strong>Notes:</strong>
-                      <div className="px-2 border border-rose-200 w-full rounded-2xl bg-green-200">
+                      <div className="px-2 py-4 border border-rose-200 w-full rounded-sm">
                         {patient.notes}
                       </div>
                     </p>
