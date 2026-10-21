@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FaArrowCircleRight } from "react-icons/fa";
-import QuickDonorSearch from "../Component/Home/QuickDonorSearch";
-import TotalUser from "../Component/Home/TotalUser";
 import HowToUse from "../Component/Home/howToUse";
 
 const Home = () => {
@@ -76,9 +74,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <QuickDonorSearch />
 
-      <TotalUser />
       <HowToUse />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-2 md:p-20 m-2 md:m-25 border rounded-2xl bg-blue-950">
         <div>

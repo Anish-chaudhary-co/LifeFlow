@@ -14,6 +14,7 @@ const API_URL =
   "http://localhost/LifeFlow/Blood-Donation/BackEnd/auth/logout.php";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(null);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -63,6 +64,7 @@ const Navbar = () => {
               </span>
               <NavLink
                 to="/dashboard/overview"
+                onClick={(e) => setPage("Dashboard/Overview")}
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"}`
                 }
@@ -71,6 +73,7 @@ const Navbar = () => {
                 OverView
               </NavLink>
               <NavLink
+                onClick={(e) => setPage("Dashboard/My Profile")}
                 to="/dashboard/myProfile"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
@@ -79,6 +82,7 @@ const Navbar = () => {
                 <FaUser size={20} /> My profile
               </NavLink>
               <NavLink
+                onClick={(e) => setPage("Dashboard/Blood request")}
                 to="/dashboard/bloodRequest"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
@@ -87,6 +91,7 @@ const Navbar = () => {
                 <FaCalendarAlt size={20} /> Blood request
               </NavLink>
               <NavLink
+                onClick={(e) => setPage("Dashboard/Donation history")}
                 to="/dashboard/donationHistory"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
@@ -118,11 +123,12 @@ const Navbar = () => {
             </div>
           </div>
         </aside>
-
         {/* side content to show */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 bg-slate-100">
+          <h1 className="font-bold text-3xl mt-20">{page}</h1>
           <Outlet />
-        </main>
+        </main>{" "}
+        +
       </div>
 
       {/* for mobile */}
@@ -178,13 +184,13 @@ const Navbar = () => {
                 <FaUser size={20} /> My profile
               </NavLink>
               <NavLink
-                to="/dashboard/appointment"
+                to="/dashboard/bloodRequest"
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
                 }
               >
-                <FaCalendarAlt size={20} /> Appointment
+                <FaCalendarAlt size={20} /> Blood request
               </NavLink>
               <NavLink
                 to="/dashboard/donationHistory"

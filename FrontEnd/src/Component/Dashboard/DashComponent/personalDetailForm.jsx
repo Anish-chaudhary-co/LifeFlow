@@ -118,7 +118,7 @@ const PersonalDetailForm = () => {
 
   return (
     <>
-      <div className="mt-20 border p-4 border-slate-200 rounded-2xl shadow-2xl">
+      <div className="mt-20 border p-4 border-slate-200 rounded-2xl shadow-2xl bg-white">
         {isLoadingProfile ? (
           <p role="status">Checking your profile...</p>
         ) : profile ? (
