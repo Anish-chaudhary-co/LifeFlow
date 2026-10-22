@@ -49,6 +49,26 @@ const FindDonor = () => {
     };
   }, []);
 
+  const handleSendRequest = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/api/findDonorSend.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(filteredDonors),
+        },
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
   const filteredDonors = donors.filter((donor) => {
     const matchesBloodGroup =

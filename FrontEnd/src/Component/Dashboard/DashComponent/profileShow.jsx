@@ -13,7 +13,7 @@ const ProfileShow = () => {
 
   return (
     <div className="md:mt-20 md:m-0 md:p-4">
-      <div className="border p-2 md:p-8 rounded-lg border-slate-400">
+      <div className="border p-2 md:p-8 rounded-lg border-slate-200 shadow-2xl">
         <div className="flex gap-4 md:gap-20">
           <img
             src="#"
@@ -21,10 +21,8 @@ const ProfileShow = () => {
             className="w-15 h-15  md:w-40 md:h-40 border rounded-4xl"
           />
           <div>
-            <div className="">
-              <span className="font-bold text-sm md:text-xl text-rose-500">
-                VERIFIED DONOR
-              </span>
+            <div>
+              <p className="font-bold text-sm text-rose-500">VERIFIED DONOR</p>
               <p className="font-bold text-xl md:text-5xl">
                 {profile.FullName}
               </p>

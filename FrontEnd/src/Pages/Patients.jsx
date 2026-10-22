@@ -5,6 +5,7 @@ import {
   FaHospital,
   FaPhone,
   FaMapMarkerAlt,
+  FaGenderless,
 } from "react-icons/fa";
 const Patients = () => {
   const [request, setRequest] = useState([]);
@@ -114,20 +115,28 @@ const Patients = () => {
                       <FaMapMarkerAlt />
                       {patient.address}
                     </p>
-                  </div>
-                  {patient.notes && (
-                    <p>
-                      <strong>Notes:</strong>
-                      <div className="px-2 py-4 border border-rose-200 w-full rounded-sm">
-                        {patient.notes}
-                      </div>
+                    <p className="flex gap-2">
+                      <FaGenderless />
+                      {patient.gender}
                     </p>
-                  )}
+                  </div>
+                  <div className="flex">
+                    {patient.notes && (
+                      <p>
+                        <strong>Notes:</strong>
+                        <div className="px-2 py-4 border border-rose-200 w-full rounded-sm line-clamp-3 break-all">
+                          {patient.notes}
+                        </div>
+                      </p>
+                    )}
+                  </div>
+                  <div className="">
+                    <button className="px-2 bg-rose-400 text-white font-semibold hover:bg-rose-300 rounded-lg mt-4 h-10">
+                      View request
+                    </button>
+                  </div>
                 </div>
               </div>
-              <button className="px-2 p-2 bg-rose-400 text-white font-semibold hover:bg-rose-300 rounded-lg mt-4 md:absolute bottom-4 right-4">
-                View request
-              </button>
             </article>
           ))}
         </div>

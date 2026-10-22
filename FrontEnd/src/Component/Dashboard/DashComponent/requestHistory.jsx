@@ -86,61 +86,54 @@ const RequestHistory = () => {
         />
       )}
       <h1 className="text-2xl font-bold">Blood request history</h1>
-      <table className="border mt-4 w-full border-collapse">
-        <thead>
-          <tr className="border">
-            <th className="border-r p-3">S.N</th>
-            <th className="border-r p-3">Name</th>
-            <th className="border-r p-3">Blood Type</th>
-            <th className="border-r p-3">Units</th>
-            <th className="border-r p-3">Hospital Name</th>
-            <th className="border-r p-3">Hospital Phone</th>
-            <th className="border-r p-3">Address</th>
-            <th className="border-r p-3">Notes</th>
-            <th className="border-r p-3">Action</th>
-          </tr>
-        </thead>
-        <tbody className="border-b">
-          {data.length > 0 ? (
-            data.map((request, index) => (
-              <tr key={`${request.patientName}-${index}`} className="border-b">
-                <td className="border-r p-3">{index + 1}</td>
-                <td className="border-r p-3">{request.patientName}</td>
-                <td className="border-r p-3">{request.BloodType}</td>
-                <td className="border-r p-3">{request.unitNeeded}</td>
-                <td className="border-r p-3">{request.hospitalName}</td>
-                <td className="border-r p-3">{request.hospitalPhone}</td>
-                <td className="border-r p-3">{request.address}</td>
-                <td className="border-r p-3">
-                  <p className="line-clamp-2 break-all">{request.notes}</p>
-                </td>
-                <td className="flex gap-3 justify-center p-3">
-                  <button
-                    type="button"
-                    className="border rounded-lg bg-green-400 text-white font-bold px-4"
-                    onClick={() => handleEditClick(request)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="border rounded-lg bg-red-400 text-white font-bold px-4"
-                    onClick={() => handleDelete(request.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="p-3 text-center" colSpan="9">
-                You have't request for blood.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <div className="flex flex-col gap-10 mt-4">
+        {data.map((request, index) => (
+          <div className="border rounded-4xl p-6 bg-white border-slate-200 shadow-2xl">
+            <div className="flex gap-4">
+              <span className="px-3 py-3 rounded-4xl font-bold bg-rose-500 text-white">
+                {request.BloodType}
+              </span>
+              <h1 className="font-semibold text-2xl">{request.patientName}</h1>
+            </div>
+            <div className="flex md:flex-row flex-col justify-between gap-40">
+              <div className="mt-2 text-slate-600">
+                <p>
+                  {request.unitNeeded}
+                  <strong className="pl-2">unit needed</strong>
+                </p>
+                <p>{request.hospitalName}</p>
+                <p>{request.hospitalPhone}</p>
+                <p>
+                  <strong>Personal address:</strong>
+                  {request.address}
+                </p>
+              </div>
+              <div>
+                <strong>Notes:</strong>
+                <div className="border border-slate-500 rounded-2xl bg-rose-400 text-white p-3 h-min">
+                  <p className="line-clamp-5 break-all">{request.notes}</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  className="border rounded-lg bg-green-400 text-white font-bold h-10 px-4"
+                  onClick={() => handleEditClick(request)}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="border rounded-lg bg-red-400 text-white font-bold h-10 px-4"
+                  onClick={() => handleDelete(request.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
