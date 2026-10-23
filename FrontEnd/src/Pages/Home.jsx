@@ -55,9 +55,9 @@ const Home = () => {
             >
               Find Donor <FaArrowCircleRight className="mt-1" />
             </NavLink>
-            <NavLink to="/donateBlood" className="py-2 px-2 border rounded-lg">
+            {/* <NavLink to="/donateBlood" className="py-2 px-2 border rounded-lg">
               Donate Blood
-            </NavLink>
+            </NavLink> */}
           </div>
         </div>
 
