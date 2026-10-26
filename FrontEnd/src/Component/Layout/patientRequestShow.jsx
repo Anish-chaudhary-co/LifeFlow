@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import {
+  FaTint,
+  FaCalendarAlt,
+  FaHospital,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaGenderless,
+} from "react-icons/fa";
 
 const patientRequestShow = ({ selectRequest, sendRequest, setSendRequest }) => {
   const [RequestData, setRequestData] = useState([]);
