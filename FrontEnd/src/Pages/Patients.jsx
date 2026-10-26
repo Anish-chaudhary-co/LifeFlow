@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PatientRequestShow from "../Component/Layout/patientRequestShow";
 import {
   FaTint,
   FaCalendarAlt,
@@ -11,6 +12,8 @@ const Patients = () => {
   const [request, setRequest] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [sendRequest, setSendRequest] = useState(false);
+  const [selectRequest, setSelectRequest] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -55,8 +58,20 @@ const Patients = () => {
     };
   }, []);
 
+  const handleViewRequest = (patientData) => {
+    setSendRequest(!sendRequest);
+    setSelectRequest(patientData);
+  };
+
   return (
     <div className="p-2 md:p-30 bg-slate-100">
+      {sendRequest && (
+        <PatientRequestShow
+          selectRequest={selectRequest}
+          sendRequest={sendRequest}
+          setSendRequest={setSendRequest}
+        />
+      )}
       <h1 className="font-bold text-3xl">Patient blood requests</h1>
       {isLoading ? (
         <p className="mt-4" role="status">
@@ -72,9 +87,9 @@ const Patients = () => {
         </p>
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-          {request.map((patient) => (
-            <article
-              key={patient.id}
+          {request.map((patient, index) => (
+            <div
+              key={index}
               className="rounded-lg border border-orange-200 shadow-2xl bg-white  p-5 relative"
             >
               <div className="flex gap-6 relative">
@@ -122,22 +137,25 @@ const Patients = () => {
                   </div>
                   <div className="flex">
                     {patient.notes && (
-                      <p>
+                      <div>
                         <strong>Notes:</strong>
-                        <div className="px-2 py-4 border border-rose-200 w-full rounded-sm line-clamp-3 break-all">
+                        <p className="px-2 py-2 border border-rose-200 w-full rounded-sm line-clamp-3 break-all">
                           {patient.notes}
-                        </div>
-                      </p>
+                        </p>
+                      </div>
                     )}
                   </div>
                   <div className="">
-                    <button className="px-2 bg-rose-400 text-white font-semibold hover:bg-rose-300 rounded-lg mt-4 h-10">
+                    <button
+                      onClick={() => handleViewRequest(patient)}
+                      className="px-2 bg-rose-400 text-white font-semibold hover:bg-rose-300 rounded-lg mt-4 h-10"
+                    >
                       View request
                     </button>
                   </div>
                 </div>
               </div>
-            </article>
+            </div>
           ))}
         </div>
       )}
