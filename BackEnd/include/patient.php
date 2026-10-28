@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
@@ -37,7 +36,7 @@ if (!$result) {
     exit;
 }
 
-$patient = $result->fetch_all(MYSQLI_ASSOC);
+$patient = $result->fetch_all(MYSQLI_ASSOC); 
 
 echo json_encode([
     "success" => true,
