@@ -9,7 +9,8 @@ import {
 } from "react-icons/fa";
 
 const patientRequestShow = ({ selectRequest, sendRequest, setSendRequest }) => {
-  const [RequestData, setRequestData] = useState([]);
+  const data = { ...selectRequest };
+  const [RequestData, setRequestData] = useState(data);
 
   const handleResponseMessage = (e) => {
     e.preventDefault();
@@ -19,7 +20,30 @@ const patientRequestShow = ({ selectRequest, sendRequest, setSendRequest }) => {
       [name]: value,
     }));
   };
-  const handleResponse = async () => {
+
+  // const handelUserDetail = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost/LifeFlow/Blood-Donation/api/getUSerDetail.php",
+  //       {
+  //         method: "GET",
+  //         credentials: "include",
+  //       },
+  //     );
+  //     const result = await response.json();
+  //     if (!response.ok || result.success) {
+  //       throw new Error("Unable to get use data.");
+  //     }
+  //     if (result.success) {
+  //       console.log(result);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const handleResponse = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/api/patientResponse.php",
@@ -27,8 +51,9 @@ const patientRequestShow = ({ selectRequest, sendRequest, setSendRequest }) => {
           method: "POST",
           credentials: "include",
           headers: {
-            body: JSON.stringify(RequestData),
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify({ ...RequestData }),
         },
       );
       const result = await response.json();
@@ -39,13 +64,6 @@ const patientRequestShow = ({ selectRequest, sendRequest, setSendRequest }) => {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const click = (e) => {
-    e.preventDefault();
-    setRequestData(selectRequest);
-    setSendRequest(!sendRequest);
-    console.log(RequestData);
   };
 
   return (
@@ -98,14 +116,13 @@ const patientRequestShow = ({ selectRequest, sendRequest, setSendRequest }) => {
           <div className="grid grid-cols-1 gap-2 mt-8">
             <textarea
               name="responseMsg"
-              value={RequestData.responseMsg}
               onChange={handleResponseMessage}
               placeholder="Please give a message to patient......"
               className="border p-2 rounded-lg "
             ></textarea>
             <div className="flex gap-4">
               <button
-                onClick={click}
+                onClick={handleResponse}
                 className="px-3 h-10 w-25 bg-rose-500 rounded-lg font-bold text-white hover:bg-rose-300"
               >
                 Response
