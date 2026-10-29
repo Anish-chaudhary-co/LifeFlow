@@ -33,9 +33,9 @@ $patientId = (int) ($data['user_id']);
 $message = trim((String) ($data['responseMsg'] ?? ''));
 
 
-$insetSql = "INSERT INTO requestresponse (request_id, donor_id, message) VALUES (?, ?, ?)";
+$insetSql = "INSERT INTO requestresponse (request_id, donor_id, patient_id, message) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($insetSql);
-$stmt ->bind_param("iis",$patientID,$donorID, $message);
+$stmt ->bind_param("iis",$patientID,$donorID,$patientID $message);
 
 
 if($stmt -> execute()){
