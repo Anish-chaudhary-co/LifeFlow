@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once "../config/dbConnection.php";
 
-$sql = "SELECT rb.id, rb.BloodType, rb.period, rb.patientName, rb.unitNeeded, rb.hospitalName, rb.hospitalPhone, rb.address, rb.notes, d.Gender AS gender, DATE(rb.created_at) AS created_date FROM requestBlood rb INNER JOIN registeration r ON rb.user_id = r.ID INNER JOIN donors d ON r.ID = d.UserId";
+$sql = "SELECT rb.user_id, rb.id, rb.BloodType, rb.period, rb.patientName, rb.unitNeeded, rb.hospitalName, rb.hospitalPhone, rb.address, rb.notes, d.Gender AS gender, DATE(rb.created_at) AS created_date FROM requestBlood rb INNER JOIN registeration r ON rb.user_id = r.ID INNER JOIN donors d ON r.ID = d.UserId";
 $result = $conn->query($sql);
 
 if (!$result) {

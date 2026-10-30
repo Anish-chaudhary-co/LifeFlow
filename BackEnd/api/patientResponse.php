@@ -12,40 +12,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once "../config/dbConnection.php";
-
-
-if(!isset($_SESSION['user-id'])){
-    http_response_code(401);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
     echo json_encode([
         "success" => false,
-        "message" => "Login first to donate blood."
-        ]);
-        exit;
-        };
-                
-$donorId = (int) $_SESSION['user_id'];
-
-
-$data = json_decode(file_get_contents("php://input"),true) ?? [];
-
-$patientId = (int) ($data['user_id']);
-$message = trim((String) ($data['responseMsg'] ?? ''));
-
-
-$insetSql = "INSERT INTO requestresponse (request_id, donor_id, patient_id, message) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($insetSql);
-$stmt ->bind_param("iis",$patientID,$donorID,$patientID $message);
-
-
-if($stmt -> execute()){
-    echo json_encode([
-        "insertSuccess" => true,
-        "message" => "Successfully send the message to donate blood."
+        "message" => "Method not allowed.",
     ]);
     exit;
 }
 
+require_once "../config/dbConnection.php";
+
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode([
+        "success" => false,
+        "message" => "Login first to respond to a patient request.",
+    ]);
+    $conn->close();
+    exit;
+}
+
+$data = json_decode(file_get_contents("php://input"), true);
+if (!is_array($data)) {
+    http_response_code(400);
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid JSON payload.",
+    ]);
+    $conn->close();
+    exit;
+}
+
+$requestId = (filter_var($data["requestId"]) ?? null, FILTER_VALIDATE_INT);
+$patientId = (filter_var($data["patientId"]) ?? null, FILTER_VALIDATE_INT);
+$message =trim($data["responseMsg"] ?? "");
+
+if ($requestId === false || $requestId < 1 || $patientId === false || $patientId < 1 || $message === "") {
+    http_response_code(400);
+    echo json_encode([
+        "success" => false,
+        "message" => "A valid patient request and response message are required.",
+    ]);
+    $conn->close();
+    exit;
+}
+
+$donorId = (int) $_SESSION["user_id"];
+$sql = "INSERT INTO requestresponse (request_id, donor_id, patient_id, message) VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to prepare the patient response.",
+    ]);
+    $conn->close();
+    exit;
+}
+
+$stmt->bind_param("iiis", $requestId, $donorId, $patientId, $message);
+
+if (!$stmt->execute()) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to save the patient response.",
+    ]);
+    $stmt->close();
+    $conn->close();
+    exit;
+}
+
+$stmt->close();
 $conn->close();
 
-?>
+echo json_encode([
+    "success" => true,
+    "message" => "Successfully sent the response to the patient.",
+]);
