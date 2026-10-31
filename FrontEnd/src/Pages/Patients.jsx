@@ -12,7 +12,7 @@ const Patients = () => {
   const [request, setRequest] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [sendRequest, setSendRequest] = useState(false);
+  const [cancelRequest, setCancelRequest] = useState(false);
   const [selectRequest, setSelectRequest] = useState(null);
 
   useEffect(() => {
@@ -59,17 +59,17 @@ const Patients = () => {
   }, []);
 
   const handleViewRequest = (patientData) => {
-    setSendRequest(!sendRequest);
+    setCancelRequest(!cancelRequest);
     setSelectRequest(patientData);
   };
 
   return (
     <div className="p-2 md:p-30 bg-slate-100">
-      {sendRequest && (
+      {cancelRequest && (
         <PatientRequestShow
           selectRequest={selectRequest}
-          sendRequest={sendRequest}
-          setSendRequest={setSendRequest}
+          cancelRequest={cancelRequest}
+          setCancelRequest={setCancelRequest}
         />
       )}
       <h1 className="font-bold text-3xl">Patient blood requests</h1>

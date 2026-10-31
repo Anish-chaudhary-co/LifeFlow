@@ -1,7 +1,7 @@
 <?php
 session_start();
 header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Methods: POST,GET, OPTIONS");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=utf-8");
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     http_response_code(405);
     echo json_encode([
         "success" => false,
@@ -44,8 +44,8 @@ if (!is_array($data)) {
     exit;
 }
 
-$requestId = (filter_var($data["requestId"]) ?? null, FILTER_VALIDATE_INT);
-$patientId = (filter_var($data["patientId"]) ?? null, FILTER_VALIDATE_INT);
+$requestId = filter_var($data["requestId"] ?? null, FILTER_VALIDATE_INT);
+$patientId = filter_var($data["patientId"] ?? null, FILTER_VALIDATE_INT);
 $message =trim($data["responseMsg"] ?? "");
 
 if ($requestId === false || $requestId < 1 || $patientId === false || $patientId < 1 || $message === "") {

@@ -12,11 +12,9 @@ import AuthContext from "../Context/AuthContext";
 import Overview from "../Component/Dashboard/Overview";
 import MyProfile from "../Component/Dashboard/Myprofile";
 import BloodRequest from "../Component/Dashboard/BloodRequest";
-import DonationHistory from "../Component/Dashboard/DonationHistory";
+import RequestResponse from "../Component/Dashboard/RequestResponse";
 import PersonalDetailContext from "../Context/personalDetailContext";
 import ProfileShowContext from "../Context/profileShowContext";
-
-// import ProtectedSession from "../Context/protectedSession";
 
 const AppRouter = () => {
   return (
@@ -33,7 +31,6 @@ const AppRouter = () => {
         </Route>
 
         {/* for Dashboard */}
-        {/* <Route element={<ProtectedSession />}> */}
         <Route path="/dashboard" element={<DashBoard />}>
           <Route index element={<Navigate to="overview" replace />} />
           <Route path="overview" element={<Overview />} />
@@ -48,9 +45,8 @@ const AppRouter = () => {
             }
           />
           <Route path="bloodRequest" element={<BloodRequest />} />
-          <Route path="donationHistory" element={<DonationHistory />} />
+          <Route path="requestResponse" element={<RequestResponse />} />
         </Route>
-        {/* </Route> */}
       </Routes>
     </AuthContext>
   );

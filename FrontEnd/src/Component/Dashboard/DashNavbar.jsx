@@ -92,12 +92,12 @@ const Navbar = () => {
               </NavLink>
               <NavLink
                 onClick={(e) => setPage("Dashboard/Donation history")}
-                to="/dashboard/donationHistory"
+                to="/dashboard/requestResponse"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
                 }
               >
-                <MdHistory size={20} /> Donation history
+                <MdHistory size={20} /> Request Response
               </NavLink>
             </div>
 
@@ -193,13 +193,13 @@ const Navbar = () => {
                 <FaCalendarAlt size={20} /> Blood request
               </NavLink>
               <NavLink
-                to="/dashboard/donationHistory"
+                to="/dashboard/requestResponse"
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
                 }
               >
-                <MdHistory size={20} /> Donation history
+                <MdHistory size={20} /> Request Response
               </NavLink>
             </div>
 

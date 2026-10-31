@@ -8,7 +8,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-const PatientRequestShow = ({ selectRequest, setSendRequest }) => {
+const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
   const [RequestData, setRequestData] = useState(selectRequest);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -27,7 +27,6 @@ const PatientRequestShow = ({ selectRequest, setSendRequest }) => {
     e.preventDefault();
     setIsSubmitting(true);
     setFeedback("");
-
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/api/patientResponse.php",
@@ -48,9 +47,12 @@ const PatientRequestShow = ({ selectRequest, setSendRequest }) => {
       if (!response.ok || !result.success) {
         throw new Error(result.message || "Unable to send the response.");
       }
-      console.log(result.message);
+      if (result.success) {
+        setCancelRequest(false);
+        console.log(result.message);
 
-      setFeedback(result.message);
+        setFeedback(result.message);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -128,7 +130,7 @@ const PatientRequestShow = ({ selectRequest, setSendRequest }) => {
               </button>
               <button
                 type="button"
-                onClick={() => setSendRequest(false)}
+                onClick={() => setCancelRequest(false)}
                 className="border px-3 h-10 w-25 bg-white  rounded-lg font-bold hover:bg-rose-300"
               >
                 Cancel
@@ -137,7 +139,7 @@ const PatientRequestShow = ({ selectRequest, setSendRequest }) => {
           </div>
           <button
             type="button"
-            onClick={() => setSendRequest(false)}
+            onClick={() => setCancelRequest(false)}
             className="absolute top-2 right-2 hover:rose-500"
           >
             <FaTimes />
