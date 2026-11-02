@@ -54,6 +54,7 @@ const RequestHistory = () => {
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
         {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -65,14 +66,15 @@ const RequestHistory = () => {
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && result.success) {
         alert("Blood request deleted successfully");
         setData((prev) => prev.filter((item) => item.id !== id));
       } else {
-        alert(result.message);
+        throw new Error(result.message || "Unable to delete blood request.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      alert(error.message || "Unable to delete blood request.");
     }
   };
 
@@ -88,7 +90,10 @@ const RequestHistory = () => {
       <h1 className="text-2xl font-bold">Blood request history</h1>
       <div className="flex flex-col gap-10 mt-4">
         {data.map((request, index) => (
-          <div className="border rounded-4xl p-6 bg-white border-slate-200 shadow-2xl">
+          <div
+            key={index}
+            className="border rounded-4xl p-6 bg-white border-slate-200 shadow-2xl"
+          >
             <div className="flex gap-4">
               <span className="px-3 py-3 rounded-4xl font-bold bg-rose-500 text-white">
                 {request.BloodType}
