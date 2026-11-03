@@ -1,7 +1,7 @@
 <?php
 session_start();
 header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=utf-8");
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] !== "GET") {
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
     echo json_encode([
         "success" => false,
@@ -32,8 +32,29 @@ if (!isset($_SESSION["user_id"])) {
 
 require_once "../config/dbConnection.php";
 
+$data = json_decode(file_get_contents("php://input"), true);
+$requestId = filter_var(
+    is_array($data) ? ($data["requestId"] ?? null) : null,
+    FILTER_VALIDATE_INT
+);
+
+if ($requestId === false || $requestId === null || $requestId < 1) {
+    http_response_code(400);
+    echo json_encode([
+        "success" => false,
+        "message" => "A valid blood request ID is required.",
+    ]);
+    $conn->close();
+    exit;
+}
+
 $userId = (int) $_SESSION["user_id"];
-$sql = "SELECT id, request_id, donor_id, patient_id, message, status FROM requestresponse WHERE patient_id = ?";
+$sql = "SELECT rr.id, rr.request_id, rr.donor_id, rr.patient_id, rr.message, rr.status,
+               d.FullName, d.Gender, d.DateOfBirth, d.BloodGroup, d.Phone, d.Address
+        FROM requestresponse rr
+        INNER JOIN donors d ON d.UserId = rr.donor_id
+        WHERE rr.patient_id = ? AND rr.request_id = ?
+        ORDER BY rr.id DESC";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
@@ -46,7 +67,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $userId);
+$stmt->bind_param("ii", $userId, $requestId);
 
 if (!$stmt->execute()) {
     http_response_code(500);
@@ -60,10 +81,11 @@ if (!$stmt->execute()) {
 }
 
 $result = $stmt->get_result();
-$requestData = $result->fetch_assoc();
+$responseData = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-if (!$requestData) {
+if (!$responseData) {
+    http_response_code(404);
     echo json_encode([
         "success" => false,
         "message" => "No response was found for your blood request.",
@@ -72,50 +94,12 @@ if (!$requestData) {
     exit;
 }
 
-$donorId = (int) $requestData["donor_id"];
-$donorSql = "SELECT FullName, Gender, DateOfBirth, BloodGroup, Phone, Address FROM donors WHERE UserId = ?";
-$stmt = $conn->prepare($donorSql);
-
-if (!$stmt) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Unable to prepare the donor query.",
-    ]);
-    $conn->close();
-    exit;
-}
-
-$stmt->bind_param("i", $donorId);
-
-if (!$stmt->execute()) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Unable to fetch donor details.",
-    ]);
-    $stmt->close();
-    $conn->close();
-    exit;
-}
-
-$donorData = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
 $conn->close();
-
-if (!$donorData) {
-    http_response_code(404);
-    echo json_encode([
-        "success" => false,
-        "message" => "Donor details were not found.",
-    ]);
-    exit;
-}
 
 echo json_encode([
     "success" => true,
-    "data" => $requestData,
-    "donorDetail" => $donorData,
+    "data" => $responseData,
+    "donorDetail" => $responseData,
     "message" => "Successfully fetched the response and donor details.",
 ]);
 ?>
