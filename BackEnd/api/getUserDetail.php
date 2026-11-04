@@ -33,12 +33,9 @@ if (!isset($_SESSION["user_id"])) {
 require_once "../config/dbConnection.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
-$requestId = filter_var(
-    is_array($data) ? ($data["requestId"] ?? null) : null,
-    FILTER_VALIDATE_INT
-);
+$requestId = filter_var($data["requestId"] ?? null, FILTER_VALIDATE_INT);
 
-if ($requestId === false || $requestId === null || $requestId < 1) {
+if ($requestId === null || $requestId < 1) {
     http_response_code(400);
     echo json_encode([
         "success" => false,

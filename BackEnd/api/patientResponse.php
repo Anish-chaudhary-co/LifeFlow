@@ -46,6 +46,7 @@ if (!is_array($data)) {
 
 $requestId = filter_var($data["requestId"] ?? null, FILTER_VALIDATE_INT);
 $patientId = filter_var($data["patientId"] ?? null, FILTER_VALIDATE_INT);
+$status = "Pending";
 $message =trim($data["responseMsg"] ?? "");
 
 if ($requestId === false || $requestId < 1 || $patientId === false || $patientId < 1 || $message === "") {
@@ -59,7 +60,7 @@ if ($requestId === false || $requestId < 1 || $patientId === false || $patientId
 }
 
 $donorId = (int) $_SESSION["user_id"];
-$sql = "INSERT INTO requestresponse (request_id, donor_id, patient_id, message) VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO requestresponse (request_id, donor_id, patient_id, message, status) VALUES (?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
@@ -72,7 +73,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("iiis", $requestId, $donorId, $patientId, $message);
+$stmt->bind_param("iiiss", $requestId, $donorId, $patientId, $message, $status);
 
 if (!$stmt->execute()) {
     http_response_code(500);

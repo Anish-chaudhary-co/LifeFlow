@@ -15,13 +15,23 @@ import BloodRequest from "../Component/Dashboard/BloodRequest";
 import RequestResponse from "../Component/Dashboard/RequestResponse";
 import PersonalDetailContext from "../Context/personalDetailContext";
 import ProfileShowContext from "../Context/profileShowContext";
+import CheckSession from "../Context/checkSession";
 
 const AppRouter = () => {
   return (
     <AuthContext>
       <Routes>
         <Route path="/" element={<MainRouter />}>
-          <Route index element={<Home />} />
+          <Route
+            index
+            element={
+              <CheckSession>
+                <AuthContext>
+                  <Home />
+                </AuthContext>
+              </CheckSession>
+            }
+          />
           <Route path="findDonor" element={<FindDonor />} />
           <Route path="patients" element={<Patients />} />
           <Route path="requestBlood" element={<RequestBlood />} />

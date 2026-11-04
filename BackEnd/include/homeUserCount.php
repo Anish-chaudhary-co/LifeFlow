@@ -23,13 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 // require_once "../config.dbConnection.php";
 require_once __DIR__ . "/../config/dbConnection.php";
 
-$sql = "SELECT COUNT(*) AS totalUsers FROM registeration";
+$sql = "SELECT COUNT(DISTINCT UserId) AS totalDonors FROM donors";
 $result = $conn->query($sql);
+if (!$result) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to retrieve donor count.",
+    ]);
+    $conn->close();
+    exit;
+}
+
 $row = $result->fetch_assoc();
 
 echo json_encode([
     "success" => true,
-    "totalUsers" => $row['totalUsers'],
+    "totalDonors" => $row['totalDonors'],
 ]);
 
 $conn->close();

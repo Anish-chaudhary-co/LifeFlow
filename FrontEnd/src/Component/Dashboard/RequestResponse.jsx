@@ -47,9 +47,29 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
       isMounted = false;
     };
   }, [request.id]);
+
+  const handleConfirm = async (donorID) => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/api/findDonorSendUpdateStatus.php",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: donorID,
+          }),
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="flex justify-center items-center fixed inset-0 z-50 bg-black/70">
-      <div className="max-h-[80vh] w-full max-w-lg overflow-y-auto p-6 rounded-lg relative bg-white shadow-2xl">
+      <div className="max-h-[80vh] w-full max-w-lg overflow-y-auto p-6 rounded-lg relative bg-slate-300 shadow-2xl">
         <FaTimes
           className="absolute top-3 right-3 cursor-pointer"
           onClick={() => setShowResponseDetail(false)}
@@ -64,7 +84,10 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
         {!gettingResponse &&
           !feedback &&
           responseDetail.map((donor) => (
-            <div key={donor.id} className="mb-4 rounded-lg border p-4">
+            <div
+              key={donor.id}
+              className="bg-white mb-4 rounded-lg shadow-2xl p-4 relative"
+            >
               <p>
                 <strong>Name:</strong> {donor.FullName}
               </p>
@@ -86,11 +109,14 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
               <p>
                 <strong>Message:</strong> {donor.message}
               </p>
-              {donor.status && (
-                <p>
-                  <strong>Status:</strong> {donor.status}
-                </p>
-              )}
+              <div>
+                <button
+                  onClick={() => handleConfirm(donor.id)}
+                  className="py-2 px-8 bg-rose-400 absolute right-4 bottom-4 rounded-lg text-white font-semibold"
+                >
+                  OK
+                </button>
+              </div>
             </div>
           ))}
       </div>

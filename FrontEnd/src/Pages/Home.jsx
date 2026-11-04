@@ -1,37 +1,56 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { FaArrowCircleRight } from "react-icons/fa";
 import HowToUse from "../Component/Home/howToUse";
+import Notification from "../Component/Layout/notification";
+
+import { CheckSessionContext } from "../Context/checkSession";
+import { UserContext } from "../Context/AuthContext";
 
 const Home = () => {
-  const [count, setCount] = useState(null);
-
-  const handleUserCount = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/homeUserCount.php",
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.message);
-      }
-      const data = JSON.parse(result.totalUsers);
-      setCount(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { userSession } = useContext(CheckSessionContext);
+  const { setNotification } = useContext(UserContext);
 
   useEffect(() => {
+    if (!userSession) {
+      return;
+    }
+
+    setNotification(userSession);
+    console.log(userSession);
+  }, [userSession, setNotification]);
+
+  const [count, setCount] = useState(null);
+
+  useEffect(() => {
+    const handleUserCount = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/LifeFlow/Blood-Donation/BackEnd/include/homeUserCount.php",
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.message || "Could not load donor count.");
+        }
+
+        const total = Number(result.totalDonors);
+
+        setCount(total);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     handleUserCount();
   }, []);
 
   return (
     <div className="mt-10">
+      <Notification />
       <div className="p-6 md:p-10 bg-slate-200">
         <span className="font-bold text-xs px-2 rounded-2xl bg-rose-300 text-rose-500">
           0 ACTIVE EMERGENCIES NEAR YOU
@@ -55,7 +74,6 @@ const Home = () => {
             >
               Find Donor <FaArrowCircleRight className="mt-1" />
             </NavLink>
-        
           </div>
         </div>
 
@@ -64,7 +82,7 @@ const Home = () => {
           <div className="px-4 py-4 rounded-4xl border"></div>
           <div className="flex flex-col">
             <div>
-              <span>{count}+</span> donors
+              <span>{count}</span> donors
             </div>
             <span className="text-gray-500">
               already saving lives in your city
