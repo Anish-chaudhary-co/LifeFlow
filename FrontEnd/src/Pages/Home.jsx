@@ -64,13 +64,13 @@ const Home = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 relative">
               <div className="flex flex-col gap-3">
-                <h2 className="font-bold text-4xl text-white">
-                  Every drop is a{" "}
-                  <span className="text-rose-500">LifeLine</span>.
+                <h2 className="font-bold text-4xl text-white mt-4">
+                  आज तपाईंको रक्तदान,{" "}
+                  <span className="text-rose-500">भोलि कसैको मुस्कान।</span>
                 </h2>
                 <p className="text-white">
-                  LifeFlow matches verified donors with patients in critical
-                  need instantly, locally, and securely.
+                  LifeFlow ले गम्भीर अवस्थामा रहेका बिरामीहरूलाई प्रमाणित
+                  रक्तदाताहरूसँग छिटो, सहज र सुरक्षित रूपमा जोड्छ।
                 </p>
                 {/* for show the number of donor */}
                 <div className="flex mt-8 gap-4 text-white">

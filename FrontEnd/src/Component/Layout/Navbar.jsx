@@ -42,17 +42,17 @@ const Navbar = () => {
   //   });
 
   // pc
-  const ActivePage = "bg-orange-100";
-  const NormalPage = "hover:bg-orange-100 text-rose-600";
+  const ActivePage = "bg-rose-500 text-white";
+  const NormalPage = "hover:bg-rose-100 text-rose-600";
 
   // mobile
-  const ActiveMob = "p-2 bg-orange-100";
-  const NormalMob = "hover:bg-orange-100 text-rose-600";
+  const ActiveMob = "p-2 bg-rose-500 text-white";
+  const NormalMob = "text-rose-600";
 
   return (
     <>
       {/* for PC */}
-      <div className="fixed top-0 right-0 left-0 z-50 font-semibold bg-rose-300 md:flex justify-between items-center hidden shadow-2xl">
+      <div className="fixed top-0 right-0 left-0 z-50 font-semibold bg-white border-b border-rose-100 shadow-rose-200 shadow-lg md:flex justify-between items-center hidden">
         <div>
           <img src={Logo} alt="Logo" className="ml-20 h-15 w-35" />
         </div>
@@ -104,7 +104,7 @@ const Navbar = () => {
             <NavLink
               to="RegisterSignIn"
               className={({ isActive }) =>
-                `px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-orange-100 hover:text-rose-600"}`
+                `px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer ${isActive ? ActivePage : "hover:bg-rose-200 hover:text-rose-500"}`
               }
             >
               Sign in/Register
@@ -115,18 +115,21 @@ const Navbar = () => {
 
       {/* mobile */}
 
-      <div className="flex flex-col md:hidden fixed top-0 right-0 left-0 font-semibold w-screen bg-rose-400 z-50">
+      <div className="flex flex-col md:hidden fixed top-0 right-0 left-0 font-semibold w-screen bg-white border-b border-rose-100 shadow-rose-200 shadow-lg z-50">
         <div className="flex justify-between items-center">
           <div>
             <img src={Logo} alt="Logo" className="h-10 w-25" />
           </div>
-          <div onClick={() => setOpen(!open)} className="text-xl pr-2">
+          <div
+            onClick={() => setOpen(!open)}
+            className="text-xl text-red-500 pr-2"
+          >
             {open ? <FaTimes /> : <FaBars />}
           </div>
         </div>
 
         <div
-          className={`flex flex-col bg-gray-700 shadow-2xl overflow-hidden transition-all duration-200 ${open ? "max-h-70 p-2 gap-4" : "max-h-0 p-0"}`}
+          className={`flex flex-col bg-rose-100 shadow-2xl overflow-hidden transition-all duration-200 ${open ? "max-h-70 p-2 gap-4" : "max-h-0 p-0"}`}
         >
           <NavLink
             to="/"
