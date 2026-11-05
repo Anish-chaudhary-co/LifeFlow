@@ -1,4 +1,6 @@
 import { useState } from "react";
+import showBg from "../../assets/showBg.png";
+
 import {
   FaTint,
   FaHospital,
@@ -6,6 +8,8 @@ import {
   FaMapMarkerAlt,
   FaGenderless,
   FaTimes,
+  FaCommentDots,
+  FaPaperPlane,
 } from "react-icons/fa";
 
 const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
@@ -62,51 +66,59 @@ const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
 
   return (
     <div className="flex justify-center items-center fixed inset-0 z-50 bg-black/80">
-      <div className="p-4 w-98 md:w-[500px] bg-white shadow-2xl border rounded-2xl m-2 ">
+      <div
+        className="p-4 w-98 md:w-[700px]  bg-white shadow-2xl border rounded-2xl m-2 bg-no-repeat bg-cover"
+        style={{ backgroundImage: `url(${showBg})` }}
+      >
         <form onSubmit={handleResponse} className="relative">
-          <div className="flex gap-4 md:gap-18">
-            <span className="flex  items-center px-2 h-10 rounded-3xl bg-rose-500 text-white font-semibold">
+          <div className="flex gap-4 md:gap-4">
+            <span className="flex  items-center px-4 h-12 rounded-xl bg-rose-400 text-white text-xl font-bold">
               {selectRequest.BloodType}
             </span>
+            <span className="border border-rose-500"></span>
             <span>
               <h1 className="font-bold text-2xl">
                 {selectRequest.patientName}
               </h1>
-
               <p className="flex gap-2 text-red-500">
                 <FaTint color="red" />
                 {selectRequest.unitNeeded}
                 <strong>Unit Needed</strong>
               </p>
-              <div className="flex gap-2 font-black">
-                <FaHospital />
-                <p>{selectRequest.hospitalName}</p>
-              </div>
-              <div className="flex gap-2 font-black">
-                <FaPhone />
-                <p>{selectRequest.hospitalPhone}</p>
-              </div>
-              <div className="flex gap-2 font-black">
-                <FaMapMarkerAlt />
-                <p>{selectRequest.address}</p>
-              </div>
-              <div className="flex gap-2 font-black">
-                <FaGenderless />
-                <p>{selectRequest.gender}</p>
-              </div>
             </span>
           </div>
+          <span className="flex flex-col gap-2 font-semibold">
+            <div className="flex gap-2 font-black">
+              <FaHospital />
+              <p>{selectRequest.hospitalName}</p>
+            </div>
+            <div className="flex gap-2 font-black">
+              <FaPhone />
+              <p>{selectRequest.hospitalPhone}</p>
+            </div>
+            <div className="flex gap-2 font-black">
+              <FaMapMarkerAlt />
+              <p>{selectRequest.address}</p>
+            </div>
+            <div className="flex gap-2 font-black">
+              <FaGenderless />
+              <p>{selectRequest.gender}</p>
+            </div>
+          </span>
+          <hr className="text-red-500 mt-2" />
 
-          <p className="text-green-400">
-            <strong>Request on : </strong>
-            {selectRequest.created_date}
-          </p>
-          <p>
-            <strong className="text-rose-500">
-              Needed blood in {selectRequest.period}.
-            </strong>
-          </p>
-
+          <div className="flex gap-4 mt-2">
+            <p className="text-green-400">
+              <strong>Request on : </strong>
+              {selectRequest.created_date}
+            </p>
+            <p className="border border-red-500"></p>
+            <p>
+              <strong className="text-rose-500">
+                Needed blood in {selectRequest.period}.
+              </strong>
+            </p>
+          </div>
           <div className="grid grid-cols-1 gap-2 mt-8">
             <textarea
               name="responseMsg"
@@ -124,14 +136,15 @@ const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-3 h-10 w-25 bg-rose-500 rounded-lg font-bold text-white hover:bg-rose-300"
+                className="flex gap-2 items-center px-3 h-10 bg-rose-500 rounded-lg font-bold text-white hover:bg-rose-300"
               >
-                {isSubmitting ? "Sending..." : "Response"}
+                <FaPaperPlane color="white" />
+                {isSubmitting ? "Sending..." : "Send Response"}
               </button>
               <button
                 type="button"
                 onClick={() => setCancelRequest(false)}
-                className="border px-3 h-10 w-25 bg-white  rounded-lg font-bold hover:bg-rose-300"
+                className="border border-rose-400 px-3 h-10 w-25 bg-white  rounded-lg font-bold hover:bg-rose-300"
               >
                 Cancel
               </button>

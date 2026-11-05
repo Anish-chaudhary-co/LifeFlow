@@ -33,7 +33,16 @@ const AppRouter = () => {
             }
           />
           <Route path="findDonor" element={<FindDonor />} />
-          <Route path="patients" element={<Patients />} />
+          <Route
+            path="patients"
+            element={
+              <CheckSession>
+                <AuthContext>
+                  <Patients />
+                </AuthContext>
+              </CheckSession>
+            }
+          />
           <Route path="requestBlood" element={<RequestBlood />} />
           <Route path="RegisterSignIn" element={<RegisterSignIn />} />
           <Route path="signIn" element={<SignIn />} />

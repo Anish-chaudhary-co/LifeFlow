@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import BackGround from "../assets/background.png";
+import FindDonorDetail from "../Component/Layout/findDonorDetail";
 
 const bloodGroup = ["All", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -8,6 +10,7 @@ const FindDonor = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [openDonor, setOpenDonor] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -83,80 +86,101 @@ const FindDonor = () => {
   });
 
   return (
-    <div className="pt-20 p-2 md:p-20 max-h-max bg-slate-200">
-      <h1 className="font-bold text-5xl">Find a donor</h1>
-      <span className="font-sm text-slate-400">
-        {isLoading
-          ? "Loading donors..."
-          : `${filteredDonors.length} donor${filteredDonors.length === 1 ? "" : "s"} match your filter.`}
-      </span>
-      <div className="mt-10 flex gap-6">
-        <input
-          type="search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by name, address, or blood group"
-          aria-label="Search donors"
-          className="border px-4 h-10 w-full rounded-3xl bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 outline-none"
-        />
+    <>
+      <div
+        className="pt-20 p-2 md:p-20 h-full w-full bg-cover"
+        style={{ backgroundImage: `url(${BackGround})` }}
+      >
+        <h1 className="font-bold text-5xl">Find a donor</h1>
+        <span className="font-sm text-slate-400">
+          {isLoading
+            ? "Loading donors..."
+            : `${filteredDonors.length} donor${filteredDonors.length === 1 ? "" : "s"} match your filter.`}
+        </span>
+        <div className="mt-10 flex gap-6">
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search by name, address, or blood group"
+            aria-label="Search donors"
+            className="border px-4 h-10 w-full rounded-3xl bg-white focus:ring-2 focus:ring-rose-400 focus:border-rose-400 outline-none"
+          />
 
-        <select
-          value={bloodGroupFilter}
-          onChange={(e) => {
-            setBloodGroupFilter(e.target.value);
-          }}
-          aria-label="Filter by blood group"
-          className="px-6 text-center font-semibold bg-rose-400 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 outline-none focus:ring-rose-400"
-        >
-          {bloodGroup.map((group) => (
-            <option
-              key={group}
-              value={group}
-              className="font-semibold text-center bg-white rounded-2xl"
-            >
-              {group}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {errorMessage ? (
-        <p className="mt-10" role="alert">
-          {errorMessage}
-        </p>
-      ) : !isLoading && filteredDonors.length === 0 ? (
-        <p className="mt-10" role="status">
-          No donors match your search.
-        </p>
-      ) : (
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredDonors.map((donor) => (
-            <div
-              key={donor.UserId}
-              className="m-2 bg-white rounded-lg border border-orange-200 p-5 shadow-sm"
-            >
-              <div className="flex gap-6">
-                <span className="border rounded-4xl p-2">IMG</span>
-                <h2 className="text-xl font-semibold">{donor.FullName}</h2>
-                <span className="rounded-4xl bg-orange-100 p-2 font-semibold text-rose-500">
-                  {donor.BloodGroup}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 pl-10 ">
-                <p className="text-sm text-slate-500">Gender: {donor.Gender}</p>
-                <p className="text-sm text-slate-500">
-                  Address: {donor.Address}
-                </p>
-                <p className="text-sm text-slate-500">Contact: {donor.Phone}</p>
-              </div>
-              <button className="text-center bg-rose-600 font-semibold text-white w-full py-2 rounded-3xl mt-2 hover:bg-rose-300">
-                Contact Donor
-              </button>
-            </div>
-          ))}
+          <select
+            value={bloodGroupFilter}
+            onChange={(e) => {
+              setBloodGroupFilter(e.target.value);
+            }}
+            aria-label="Filter by blood group"
+            className="px-6 text-center font-semibold bg-rose-400 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 outline-none focus:ring-rose-400"
+          >
+            {bloodGroup.map((group) => (
+              <option
+                key={group}
+                value={group}
+                className="font-semibold text-center bg-white rounded-2xl"
+              >
+                {group}
+              </option>
+            ))}
+          </select>
         </div>
-      )}
-    </div>
+
+        {errorMessage ? (
+          <p className="mt-10" role="alert">
+            {errorMessage}
+          </p>
+        ) : !isLoading && filteredDonors.length === 0 ? (
+          <p className="mt-10" role="status">
+            No donors match your search.
+          </p>
+        ) : (
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {filteredDonors.map((donor) => (
+              <div
+                key={donor.UserId}
+                className=" m-2 bg-white rounded-lg border border-rose-200 shadow-rose-200 p-5 shadow-lg"
+              >
+                <div className="flex gap-4">
+                  <div className="flex gap-3">
+                    <span className="border rounded-4xl p-2 h-9">IMG</span>
+                    <span className="border h-8 text-red-500"></span>
+                  </div>
+                  <div className="flex flex-col">
+                    <h2 className="text-xl font-bold">{donor.FullName}</h2>
+
+                    <p className="text-sm font-semibold">
+                      Gender: {donor.Gender}
+                    </p>
+                    <p className="text-sm font-semibold">
+                      Address: {donor.Address}
+                    </p>
+                    <p className="text-sm font-semibold">
+                      Contact: {donor.Phone}
+                    </p>
+                  </div>
+
+                  <span className="rounded-4xl bg-rose-200 p-2 h-10 font-semibold text-red-500">
+                    {donor.BloodGroup}
+                  </span>
+                </div>
+                <hr className="mt-4 text-red-500" />
+                <button
+                  onClick={() => setOpenDonor(true)}
+                  className="text-center bg-rose-600 font-semibold text-white w-full py-2 rounded-3xl mt-4 hover:bg-rose-300"
+                >
+                  Donor Details
+                </button>
+                {openDonor && (
+                  <FindDonorDetail setOpenDonor={setOpenDonor} donor={donor} />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

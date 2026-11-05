@@ -1,4 +1,5 @@
 import { useContext, useReducer, useState } from "react";
+import BackGround from "../assets/background.png";
 import hospitals from "./hospitals";
 import { UserContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -108,7 +109,10 @@ const RequestBlood = () => {
   };
 
   return (
-    <div className="bg-slate-100 pt-20 md:p-30">
+    <div
+      className="pt-20 md:p-30 bg-cover bg-center"
+      style={{ backgroundImage: `url(${BackGround})` }}
+    >
       <div className="bg-white border-slate-300 shadow-2xl border m-2 rounded-xl p-4 md:p-8">
         <h1 className="text-3xl font-bold">Create an emergency request</h1>
         <p className="text-slate-500">
