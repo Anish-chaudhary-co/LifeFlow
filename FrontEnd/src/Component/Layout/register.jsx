@@ -1,9 +1,16 @@
 import { useContext } from "react";
 import { useState } from "react";
-import { FaFacebook } from "react-icons/fa";
-import { FaGoogle } from "react-icons/fa";
 import { UserContext } from "../../Context/AuthContext";
 import Notification from "./notification";
+import Background from "../../assets/bloodRequest.png";
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaBirthdayCake,
+  FaRedoAlt,
+  FaUserPlus,
+} from "react-icons/fa";
 
 const register = () => {
   const { setNotification } = useContext(UserContext);
@@ -71,12 +78,15 @@ const register = () => {
   return (
     <>
       <Notification />
-      <div className="flex flex-col justify-center items-center gap-9 m-2">
-        <div>
+      <div
+        className="flex flex-col justify-center items-center gap-9 font-semibold bg-cover"
+        style={{ backgroundImage: `url(${Background})` }}
+      >
+        <div className="mt-6">
           <h1 className="text-3xl font-bold">Create your account</h1>
-          <span className="text-gray-400 text-sm">
+          {/* <span className="text-gray-400 text-sm">
             Choose your role to get started
-          </span>
+          </span> */}
         </div>
 
         {/* <div className="flex gap-8">
@@ -95,7 +105,7 @@ const register = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col border border-slate-200 shadow-2xl rounded-xl py-12 p-4 gap-5"
+          className="flex flex-col border border-slate-200 shadow-2xl rounded-xl py-12 p-4 gap-5 mb-9"
         >
           {/* <div className="flex justify-center gap-8">
             {roles.map((items) => (
@@ -113,7 +123,10 @@ const register = () => {
             ))}
           </div> */}
           <div className="flex flex-col gap-2">
-            Full Name
+            <label className="flex gap-2 items-center">
+              <FaUser color="red" />
+              Full Name
+            </label>
             <input
               name="fullName"
               type="text"
@@ -124,7 +137,10 @@ const register = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            Email
+            <label className="flex gap-2 items-center">
+              <FaEnvelope color="red" />
+              Email
+            </label>
             <input
               name="email"
               type="email"
@@ -135,7 +151,10 @@ const register = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            Age
+            <label className="flex gap-2 items-center">
+              <FaBirthdayCake color="red" />
+              Age
+            </label>
             <input
               name="age"
               type="number"
@@ -147,7 +166,10 @@ const register = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            Password
+            <label className="flex gap-2 items-center">
+              <FaLock color="red" />
+              Password
+            </label>
             <input
               name="password"
               type="password"
@@ -158,7 +180,10 @@ const register = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            Re-password
+            <label className="flex gap-2 items-center">
+              <FaRedoAlt color="red" />
+              Re-password
+            </label>
             <input
               name="conformPassword"
               type="password"
@@ -168,13 +193,11 @@ const register = () => {
               className="border px-4 py-2 md:w-97 border-gray-400 rounded-2xl focus:ring-1 focus:border-rose-400 focus:ring-rose-500 outline-none"
             />
           </div>
-
           <input
             type="submit"
             value="Create account"
-            className="border py-2 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-400"
+            className="border w-full py-2 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-400"
           />
-
           {/* <div className="flex items-center gap-2 text-gray-400 text-xs">
             <hr className="flex-1" />
             <span>OR CONTINUE WITH</span>

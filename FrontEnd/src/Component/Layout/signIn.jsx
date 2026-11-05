@@ -1,9 +1,9 @@
-import { FaFacebook } from "react-icons/fa";
-import { FaGoogle } from "react-icons/fa";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/AuthContext";
 import Notification from "./notification";
+import Background from "../../assets/bloodRequest.png";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 const signIn = () => {
   const { setNotification } = useContext(UserContext);
   const { setUser } = useContext(UserContext);
@@ -66,9 +66,12 @@ const signIn = () => {
   };
   return (
     <>
-      <div className="m-2 mt-20">
+      <div
+        className="font-semibold bg-cover"
+        style={{ backgroundImage: `url(${Background})` }}
+      >
         <Notification />
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center pt-20">
           <h1 className="text-3xl md:text-5xl font-bold">Welcome back</h1>
           <span className="text-gray-400">
             Sign in to access your dashboard
@@ -78,10 +81,14 @@ const signIn = () => {
           <form
             action=""
             onSubmit={handleSubmit}
-            className="flex flex-col border border-slate-200 rounded-lg shadow-2xl gap-8 p-4 md:w-97"
+            className="flex flex-col border border-slate-200 rounded-lg shadow-2xl gap-8 p-4 md:w-97 mb-20"
           >
             <div className="flex flex-col gap-2 ">
-              Email
+              <label className="flex gap-2 items-center">
+                <FaEnvelope color="red" />
+                Email
+              </label>
+
               <input
                 type="email"
                 name="email"
@@ -91,7 +98,11 @@ const signIn = () => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              Password
+              <label className="flex gap-2 items-center">
+                <FaLock color="red" />
+                Password
+              </label>
+
               <input
                 name="password"
                 type="password"

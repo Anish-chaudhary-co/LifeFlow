@@ -1,8 +1,20 @@
 import { useContext, useReducer, useState } from "react";
 import BackGround from "../assets/background.png";
+import BloodRequest from "../assets/bloodRequest.png";
 import hospitals from "./hospitals";
 import { UserContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  FaTint,
+  FaCalendarAlt,
+  FaHospital,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaVenusMars,
+  FaUser,
+  FaStickyNote,
+  FaPaperPlane,
+} from "react-icons/fa";
 
 const RequestBlood = () => {
   const navigate = useNavigate();
@@ -113,15 +125,26 @@ const RequestBlood = () => {
       className="pt-20 md:p-30 bg-cover bg-center"
       style={{ backgroundImage: `url(${BackGround})` }}
     >
-      <div className="bg-white border-slate-300 shadow-2xl border m-2 rounded-xl p-4 md:p-8">
-        <h1 className="text-3xl font-bold">Create an emergency request</h1>
-        <p className="text-slate-500">
-          Your request will be broadcast to verified donors matching blood
-          group.
-        </p>
-
+      <div
+        className="bg-rose-100 border-rose-300 shadow-rose-200 shadow-xl font-semibold border m-2 rounded-xl p-4 md:p-8 min-h-screen  bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${BloodRequest})` }}
+      >
+        <div className="flex gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">
+              Create an <span className="text-red-500">emergency</span> request
+            </h1>
+            <p className="text-slate-500">
+              Your request will be broadcast to verified donors matching blood
+              group.
+            </p>
+          </div>
+        </div>
         <div className="mt-12">
-          <span>Blood group request</span>
+          <span className="flex gap-2 items-center">
+            <FaTint color="red" />
+            Blood group request
+          </span>
           <div className="grid grid-cols-3 md:grid-cols-11 mt-1 gap-4">
             {bloodGroup.map((bloods, index) => (
               <button
@@ -137,48 +160,62 @@ const RequestBlood = () => {
         </div>
 
         <div className="flex flex-col gap-8">
-          <div className="mt-5">
-            <label className="block">Required date:</label>
+          <div className="mt-5 ">
+            <label className="flex gap-3 items-center">
+              <FaCalendarAlt color="red" />
+              Required date:
+            </label>
             <input
               type="date"
               name="period"
               value={patientData.period}
               onChange={handleChange}
-              className="border block w-full h-10 p-2 rounded-lg border-slate-300 outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-400 "
+              className="border block w-full h-10 p-2 rounded-lg border-slate-400 outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-400 "
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block">Patient name</label>
+              <label className="flex gap-2 items-center">
+                <FaUser color="red" />
+                Patient name
+              </label>
               <input
                 type="text"
                 name="patientName"
+                placeholder="Enter patient name.."
                 value={patientData.patientName}
                 onChange={handleChange}
-                className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                className="border block w-full h-10 p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
               />
             </div>
             <div>
-              <label className="block">Units needed</label>
+              <label className="flex gap-2 items-center">
+                <FaTint color="red" />
+                Units needed
+              </label>
               <input
                 type="number"
                 name="unitNeeded"
+                placeholder="e.g.2,3,4..."
                 value={patientData.unitNeeded}
                 onChange={handleChange}
-                className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                className="border block w-full h-10 p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block">Hospital name</label>
+              <label className="flex gap-2 items-center">
+                <FaHospital color="red" />
+                Hospital name
+              </label>
               <select
                 name="hospitalName"
                 value={patientData.hospitalName}
                 onChange={handleChange}
-                className="border w-full h-10 block p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 outline-none focus:ring-rose-400"
+                className="border w-full h-10 block p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 outline-none focus:ring-rose-400"
               >
                 <option value="" className="bg-blue-900">
                   Select hospital
@@ -198,40 +235,51 @@ const RequestBlood = () => {
                 name="hospitalName"
                 value={patientData.hospitalName}
                 onChange={handleChange}
-                className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                className="border block w-full h-10 p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
               /> */}
             </div>
             <div>
-              <label className="block">Hospital phone</label>
+              <label className="flex gap-2 items-center">
+                <FaPhone color="red" />
+                Hospital phone
+              </label>
               <input
                 type="number"
                 name="hospitalPhone"
+                placeholder="Enter hospital phone.."
                 value={patientData.hospitalPhone}
                 onChange={handleChange}
-                className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+                className="border block w-full h-10 p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
               />
             </div>
           </div>
 
           <div>
-            <span>Address</span>
+            <span className="flex gap-2 items-center">
+              <FaMapMarkerAlt color="red" />
+              Address
+            </span>
             <input
               type="text"
               name="address"
+              placeholder="Enter full address.."
               value={patientData.address}
               onChange={handleChange}
-              className="border block w-full h-10 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+              className="border block w-full h-10 p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
 
           <div>
-            <label>Notes for donors</label>
+            <label className="flex gap-2 items-center">
+              <FaStickyNote color="red" />
+              Notes for donors
+            </label>
             <textarea
               name="notes"
               value={patientData.notes}
               onChange={handleChange}
-              placeholder="Patient condition, special requirements....."
-              className="border block w-full h-30 p-2 rounded-lg border-slate-300 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
+              placeholder="Add any additional notes (e.g. special requirement etc).."
+              className="border block w-full h-30 p-2 rounded-lg border-slate-400 focus:border-rose-400 focus:ring-2 focus:ring-rose-400 outline-none"
             />
           </div>
 
@@ -239,8 +287,9 @@ const RequestBlood = () => {
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="px-4 md:w-70 font-bold text-white p-3 rounded-lg text-center bg-rose-500 hover:bg-rose-700 disabled:opacity-60"
+            className="flex gap-2 items-center px-4 md:w-70 font-bold text-white p-3 rounded-lg text-center bg-rose-500 hover:bg-rose-700 disabled:opacity-60"
           >
+            <FaPaperPlane />
             {isSubmitting ? "Saving..." : "Broadcast emergency request"}
           </button>
         </div>

@@ -3,10 +3,14 @@ import { FaTwitter } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import Logo from "../../assets/logo.png";
+
 const Footer = () => {
   return (
-    <div className="p-2 bg-gray-300 shadow-gray-400 shadow-2xl pt-9">
-      <div>LOGO</div>
+    <div className="p-2 bg-gray-300 shadow-gray-400 shadow-2xl pt-9 font-semibold">
+      <div>
+        <img src={Logo} alt="logo" className="h-20 w-50" />
+      </div>
 
       <div className="grid grid-cols-2 gap-9 pl-5 md:grid-cols-4 justify-between">
         <div>

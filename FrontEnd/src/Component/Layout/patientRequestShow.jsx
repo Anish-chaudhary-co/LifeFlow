@@ -6,10 +6,11 @@ import {
   FaHospital,
   FaPhone,
   FaMapMarkerAlt,
-  FaGenderless,
+  FaVenusMars,
   FaTimes,
   FaCommentDots,
   FaPaperPlane,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
@@ -87,39 +88,45 @@ const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
               </p>
             </span>
           </div>
-          <span className="flex flex-col gap-2 font-semibold">
-            <div className="flex gap-2 font-black">
+          <span className="flex flex-col gap-2 font-semibold mt-6">
+            <div className="flex gap-2 font-semibold">
               <FaHospital />
               <p>{selectRequest.hospitalName}</p>
             </div>
-            <div className="flex gap-2 font-black">
+            <div className="flex gap-2 font-semibold">
               <FaPhone />
               <p>{selectRequest.hospitalPhone}</p>
             </div>
-            <div className="flex gap-2 font-black">
+            <div className="flex gap-2 font-semibold">
               <FaMapMarkerAlt />
               <p>{selectRequest.address}</p>
             </div>
-            <div className="flex gap-2 font-black">
-              <FaGenderless />
+            <div className="flex gap-2 font-semibold">
+              <FaVenusMars />
               <p>{selectRequest.gender}</p>
             </div>
           </span>
           <hr className="text-red-500 mt-2" />
 
           <div className="flex gap-4 mt-2">
-            <p className="text-green-400">
-              <strong>Request on : </strong>
+            <p className="flex gap-2 items-center text-green-400">
+              <FaCalendarAlt />
+              <strong>Request on: </strong>
               {selectRequest.created_date}
             </p>
             <p className="border border-red-500"></p>
             <p>
-              <strong className="text-rose-500">
-                Needed blood in {selectRequest.period}.
+              <strong className="flex gap-2 items-center text-rose-500">
+                <FaCalendarAlt />
+                Needed blood in : {selectRequest.period}.
               </strong>
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-2 mt-8">
+          <span className="flex gap-2 mt-2 items-center font-semibold">
+            <FaCommentDots color="red" />
+            Your message to the patient
+          </span>
+          <div className="grid grid-cols-1 gap-2 mt-2">
             <textarea
               name="responseMsg"
               onChange={handleResponseMessage}

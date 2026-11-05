@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { FaBars } from "react-icons/fa";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
+import Logo from "../../assets/logo.png";
 import { UserContext } from "../../Context/AuthContext";
 
 const Navbar = () => {
@@ -51,10 +52,9 @@ const Navbar = () => {
   return (
     <>
       {/* for PC */}
-      <div className="fixed top-0 right-0 left-0 z-50 bg-rose-300 md:flex justify-between hidden py-2 shadow-2xl">
+      <div className="fixed top-0 right-0 left-0 z-50 font-semibold bg-rose-300 md:flex justify-between items-center hidden shadow-2xl">
         <div>
-          <img src="#" alt="" />
-          LOGO
+          <img src={Logo} alt="Logo" className="ml-20 h-15 w-35" />
         </div>
 
         <div className="flex gap-15 pr-6">
@@ -115,13 +115,12 @@ const Navbar = () => {
 
       {/* mobile */}
 
-      <div className="flex flex-col md:hidden fixed top-0 right-0 left-0 w-screen bg-rose-400 z-50">
-        <div className="flex justify-between p-3">
+      <div className="flex flex-col md:hidden fixed top-0 right-0 left-0 font-semibold w-screen bg-rose-400 z-50">
+        <div className="flex justify-between items-center">
           <div>
-            {/* <img src="" alt="" /> */}
-            LOGO
+            <img src={Logo} alt="Logo" className="h-10 w-25" />
           </div>
-          <div onClick={() => setOpen(!open)} className="text-xl">
+          <div onClick={() => setOpen(!open)} className="text-xl pr-2">
             {open ? <FaTimes /> : <FaBars />}
           </div>
         </div>

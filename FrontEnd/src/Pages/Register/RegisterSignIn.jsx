@@ -6,7 +6,7 @@ const RegisterSignIn = () => {
   const [register, setRegister] = useState(false);
   return (
     <>
-      <div className="mt-20 md:relative">
+      <div className="mt-15 md:relative">
         <div className="flex justify-between md:absolute top-2 right-8 m-2 gap-2 bg-rose-400 p-1 rounded-2xl md:w-50">
           <button
             onClick={() => setRegister(true)}
