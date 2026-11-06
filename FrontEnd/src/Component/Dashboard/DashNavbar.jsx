@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { NavLink, useNavigate, Outlet } from "react-router-dom";
+import DasBackground from "../../assets/dasBackground.png";
 import { FaHome } from "react-icons/fa";
 import { MdHelpOutline } from "react-icons/md";
 import { MdSettings } from "react-icons/md";
@@ -45,8 +46,11 @@ const Navbar = () => {
   };
   return (
     <>
-      <div className="md:flex hidden min-h-screen">
-        <aside className="h-screen w-72 border-r border-slate-300 bg-white p-6">
+      <div className="md:flex hidden min-h-screen font-semibold">
+        <aside
+          className="h-screen w-72 border-r border-slate-300 bg-white p-6 bg-cover"
+          style={{ backgroundImage: `url(${DasBackground})` }}
+        >
           <div className="flex justify-between">
             <p className="font-bold text-xl">logo</p>
             <NavLink
@@ -124,7 +128,10 @@ const Navbar = () => {
           </div>
         </aside>
         {/* side content to show */}
-        <main className="flex-1 p-6 bg-slate-100">
+        <main
+          className="flex-1 p-6 bg-slate-100 bg-cover bg-center"
+          style={{ backgroundImage: `url(${DasBackground})` }}
+        >
           <h1 className="font-bold text-3xl mt-20">{page}</h1>
           <Outlet />
         </main>{" "}

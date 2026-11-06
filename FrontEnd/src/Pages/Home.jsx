@@ -87,7 +87,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="mt-8 md:absolute bottom-2 right-50">
+            <div className="mt-4 md:absolute bottom-2 right-50">
               <NavLink
                 to="/findDonor"
                 className="flex gap-2 text-center py-2 px-2 border text-white bg-rose-500 rounded-lg"
