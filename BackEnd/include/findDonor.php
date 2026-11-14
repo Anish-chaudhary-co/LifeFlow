@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -23,31 +25,52 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 require_once "../config/dbConnection.php";
 
+$userId = $_SESSION['user_id'] ?? null;
+
 $sql = "SELECT * FROM donors";
 
-$result = $conn->query($sql);
-$donors = [];
+if ($userId !== null) {
+    $sql .= " WHERE UserId <> ?";
+}
 
-if (!$result) {
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Unable to retrieve donor details.",
-        "donors" => [],
+        "message" => "Unable to prepare the findDonor query.",
+        "donors" => []
     ]);
     $conn->close();
     exit;
 }
 
-while ($row = $result->fetch_assoc()) {
-    $donors[] = $row;
+if ($userId !== null) {
+    $stmt->bind_param("i", $userId);
 }
+
+if (!$stmt->execute()) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to load find Donor page.",
+        "donors" => []
+    ]);
+    $stmt->close();
+    $conn->close();
+    exit;
+}
+
+$result = $stmt->get_result();
+$donors = $result->fetch_all(MYSQLI_ASSOC);
 
 echo json_encode([
     "success" => true,
-    "donors" => $donors,
+    "donors" => $donors
 ]);
 
 $result->free();
+$stmt->close();
 $conn->close();
 ?>

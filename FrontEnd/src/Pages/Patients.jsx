@@ -112,12 +112,12 @@ const Patients = () => {
                   <span className="p-2 rounded-xl bg-rose-200 text-red-500 text-xl font-bold">
                     {patient.BloodType}
                   </span>
-                  <p className="absolute md:top-4 top-2 right-1 md:right-4 px-2 rounded-3xl bg-rose-200 shadow-[0_4px_10px_2px_rgba(0,0,0,0.25)]">
+                  <div className="absolute md:top-4 top-2 right-1 md:right-4 px-2 rounded-3xl bg-rose-200 shadow-[0_4px_10px_2px_rgba(0,0,0,0.25)]">
                     <div className="flex gap-2 text-red-500">
                       <FaCalendarAlt size={16} className="mt-1" />
                       {patient.created_date}
                     </div>
-                  </p>
+                  </div>
                 </div>
                 <div className="flex flex-col font-semibold">
                   <h2 className="text-xl font-bold">{patient.patientName}</h2>

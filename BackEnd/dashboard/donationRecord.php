@@ -33,7 +33,7 @@ if (!isset($_SESSION["user_id"])) {
 $patientID = (int) $_SESSION["user_id"];
 require_once "../config/dbConnection.php";
 
-$sql = "SELECT COUNT(*) AS successfully_donated
+$sql = "SELECT COUNT(*) AS successfully_donated, created_at AS cratedDate
         FROM requestresponse
         WHERE patient_id = ? AND status = 'successfully_donated'";
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import DasBackground from "../../assets/dasBackground.png";
 import { FaTint, FaCalendarAlt } from "react-icons/fa";
+import ActivityChart from "./DashComponent/activeChart";
 const Overview = () => {
   const date = new Date();
   console.log(date);
@@ -41,6 +42,8 @@ const Overview = () => {
           Your small act can make a lasting difference.
         </span>
       </div>
+      {/* active Chart */}
+      <ActivityChart />
 
       <div className="flex flex-col gap-2 border border-green-500 rounded-xl p-3 mt-4 w-full bg-green-200">
         <span className="text-bold">You're eligible to donate</span>
@@ -71,7 +74,7 @@ const Overview = () => {
           </span>
           <span>
             <p>Next Eligible Date</p>
-            <p className="font-bold text-4xl">5</p>
+            <p className="font-bold text-4xl">{overview.created_at}</p>
           </span>
         </div>
         <div
