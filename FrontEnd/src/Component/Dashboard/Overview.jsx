@@ -22,13 +22,16 @@ const Overview = () => {
           },
         );
         const result = await response.json();
-        setOverview(result.data);
-        console.log(result);
+        if (result.success) {
+          setOverview(result.data);
+          console.log(result.data);
+        }
       } catch (error) {
         console.error(error);
       }
     };
     handleOverview();
+    console.log(overview.createDate ?? 0);
   }, []);
 
   return (
@@ -74,7 +77,7 @@ const Overview = () => {
           </span>
           <span>
             <p>Next Eligible Date</p>
-            <p className="font-bold text-4xl">{overview.created_at}</p>
+            <p className="font-bold text-4xl">{month ?? "-"}</p>
           </span>
         </div>
         <div
