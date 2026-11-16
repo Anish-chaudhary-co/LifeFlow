@@ -37,6 +37,7 @@ $sql = "SELECT
             rb.hospitalPhone,
             rb.address,
             rb.notes,
+            rb.status,
             d.Gender AS gender,
             DATE(rb.created_at) AS created_date
         FROM requestBlood rb

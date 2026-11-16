@@ -44,6 +44,7 @@ const PatientRequestShow = ({ selectRequest, setCancelRequest }) => {
           body: JSON.stringify({
             requestId: RequestData.id,
             patientId: RequestData.user_id,
+            status: RequestData.status,
             responseMsg: RequestData.responseMsg ?? "",
           }),
         },
