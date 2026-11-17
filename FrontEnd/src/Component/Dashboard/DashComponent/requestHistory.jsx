@@ -50,7 +50,7 @@ const RequestHistory = () => {
     setEdit(false);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (requestId) => {
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
@@ -61,7 +61,7 @@ const RequestHistory = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: id,
+            requestId: requestId,
           }),
         },
       );
@@ -70,7 +70,7 @@ const RequestHistory = () => {
 
       if (response.ok && result.success) {
         alert("Blood request deleted successfully");
-        setData((prev) => prev.filter((item) => item.id !== id));
+        setData((prev) => prev.filter((item) => item.id !== requestId));
       } else {
         throw new Error(result.message || "Unable to delete blood request.");
       }

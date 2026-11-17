@@ -33,9 +33,10 @@ if (!isset($_SESSION["user_id"])) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$id = filter_var($data['id'] ?? NULL , FILTER_VALIDATE_INT);
+$requestId = filter_var($data['requestId'] ?? NULL , FILTER_VALIDATE_INT);
+$userId = (INT) $_SESSION['user_id'];
 
-if($id === false  || $id === null){
+if($requestId === false  || $requestId === null){
     http_response_code(400);
     echo json_encode([
         "success" => false,
@@ -46,7 +47,6 @@ if($id === false  || $id === null){
 
 require_once __DIR__ . "/../config/dbConnection.php";
 
-$userId = (int) $_SESSION["user_id"];
 $sql = "DELETE FROM requestBlood WHERE id = ? AND user_id = ?";
 $stmt = $conn->prepare($sql);
 
@@ -60,7 +60,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("ii", $id, $userId);
+$stmt->bind_param("ii", $requestId, $userId);
 
 if (!$stmt->execute()) {
     http_response_code(500);
