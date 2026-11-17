@@ -50,7 +50,7 @@ $sql = "SELECT rr.id, rr.request_id, rr.donor_id, rr.patient_id, rr.message, rr.
                d.FullName, d.Gender, d.DateOfBirth, d.BloodGroup, d.Phone, d.Address
         FROM requestresponse rr
         INNER JOIN donors d ON d.UserId = rr.donor_id
-        WHERE rr.patient_id = ? AND rr.request_id = ?
+        WHERE rr.patient_id = ? AND rr.request_id = ? AND status = 'Pending'
         ORDER BY rr.id DESC";
 $stmt = $conn->prepare($sql);
 

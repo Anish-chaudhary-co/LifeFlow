@@ -95,13 +95,13 @@ const Navbar = () => {
                 <FaCalendarAlt size={20} /> Blood request
               </NavLink>
               <NavLink
-                onClick={(e) => setPage("Dashboard/Donation history")}
-                to="/dashboard/requestResponse"
+                onClick={(e) => setPage("Dashboard/Confirmed Donor")}
+                to="/dashboard/confirmDonor"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
                 }
               >
-                <MdHistory size={20} /> Request Response
+                <MdHistory size={20} /> Confirmed Donor
               </NavLink>
             </div>
 
@@ -207,6 +207,15 @@ const Navbar = () => {
                 }
               >
                 <MdHistory size={20} /> Request Response
+              </NavLink>
+              <NavLink
+                to="/dashboard/confirmDonor"
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
+                }
+              >
+                <MdHistory size={20} /> Confirmed Donor
               </NavLink>
             </div>
 

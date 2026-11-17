@@ -62,6 +62,7 @@ const ProfileShow = () => {
           </p>
         </div>
       </div>
+
       <div className="flex gap-2 border border-slate-400 p-4 mt-10 rounded-lg  ">
         <div>
           <FaShieldAlt size={40} color="green" />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import EditBloodHistory from "./editBloodHistory";
-import RequestResponse from "../RequestResponse";
+import ViewResponse from "../viewResponse";
 
 const RequestHistory = () => {
   const [edit, setEdit] = useState(false);
@@ -156,7 +156,7 @@ const RequestHistory = () => {
             </div>
           ))}
           {showResponseDetail && (
-            <RequestResponse
+            <ViewResponse
               setShowResponseDetail={setShowResponseDetail}
               request={selectedData}
             />

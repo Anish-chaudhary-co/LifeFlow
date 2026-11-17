@@ -48,7 +48,6 @@ $requestId = filter_var($data["requestId"] ?? null, FILTER_VALIDATE_INT);
 $patientId = filter_var($data["patientId"] ?? null, FILTER_VALIDATE_INT);
 $status = "Pending";
 $message =trim($data["responseMsg"] ?? "");
-$status =trim($data["status"] ?? "");
 
 if ($requestId === false || $requestId < 1 || $patientId === false || $patientId < 1 || $message === "") {
     http_response_code(400);
@@ -86,6 +85,11 @@ if (!$stmt->execute()) {
     $conn->close();
     exit;
 }
+
+$sqlStatus = "UPDATE requestblood SET status = 'in-progress' WHERE id = ?";
+$stmt = $conn->prepare($sqlStatus);
+$stmt->bind_param("i",$requestId);
+$stmt->execute();
 
 $stmt->close();
 $conn->close();

@@ -13,6 +13,7 @@ import Overview from "../Component/Dashboard/Overview";
 import MyProfile from "../Component/Dashboard/Myprofile";
 import BloodRequest from "../Component/Dashboard/BloodRequest";
 import RequestResponse from "../Component/Dashboard/RequestResponse";
+import SuccessfulDonatedConfirm from "../Component/Dashboard/DashComponent/successfulDonatedConfirm";
 import PersonalDetailContext from "../Context/personalDetailContext";
 import ProfileShowContext from "../Context/profileShowContext";
 import CheckSession from "../Context/checkSession";
@@ -65,6 +66,7 @@ const AppRouter = () => {
           />
           <Route path="bloodRequest" element={<BloodRequest />} />
           <Route path="requestResponse" element={<RequestResponse />} />
+          <Route path="confirmDonor" element={<SuccessfulDonatedConfirm />} />
         </Route>
       </Routes>
     </AuthContext>

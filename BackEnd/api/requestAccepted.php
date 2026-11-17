@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Credentials: true");
@@ -19,33 +20,37 @@ if($_SERVER["REQUEST_METHOD"] !== "POST"){
     ]);
     exit;
 }
+$patientID = (INT) $_SESSION['user_id'];
 require_once "../config/dbConnection.php";
 
 $data = json_decode(file_get_contents("php://input"),true);
-$id = (INT) $data['id'];
+$requestID = (INT) $data['id'];
+ 
+$status = "Accepted";
 
-$status = "Confirm";
+$responseUpdate = $conn->prepare("UPDATE requestresponse SET status = ? WHERE request_id = ? AND patient_id = ?");
 
-$sql = "UPDATE requestresponse SET status = ? WHERE id = ?";
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    http_response_code(500);
+$responseUpdate->bind_param("sii",$status,$requestID,$patientID);
+
+$requestUpdate = $conn->prepare("UPDATE requestblood SET status = ? WHERE id = ?");
+
+$requestUpdate->bind_param("si",$status,$requestID);
+
+if(!$responseUpdate->execute()  || !$requestUpdate->execute()){
+        http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Unable to prepare the response query.",
+        "message" => "Could not update the request blood table status.",
     ]);
-    $conn->close();
     exit;
 }
 
-$stmt->bind_param("si",$status,$id);
-$stmt->execute();
-
+$conn->commit();
 echo json_encode([
     "success" => true,
-    "message" => "Successfully conform the response.",
+    "message" => "Request accepted successfully.",
 ]);
 
-$conn->close();
+
 
 ?>
