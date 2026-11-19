@@ -35,7 +35,7 @@ require_once "../config/dbConnection.php";
 
 $sql = "SELECT COUNT(*) AS successfully_donated, MAX(created_at) AS createDate
         FROM requestresponse
-        WHERE patient_id = ? AND status = 'successfully_donated'";
+        WHERE patient_id = ? AND status = 'Successfully Donated'";
 
 $stmt = $conn->prepare($sql);
 
@@ -69,7 +69,7 @@ $conn->close();
 
 echo json_encode([
     "success" => true,
-    "data" => $data ?? ["successfully_donated" => 0],
+    "data" => $data ?? ["Successfully Donated" => 0],
     "message" => "Successfully fetched"
 ]);
 ?>

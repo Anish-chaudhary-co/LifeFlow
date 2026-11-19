@@ -65,11 +65,12 @@ if (
 }
 
 $status = "Successfully Donated";
+$userID = (INT) $_SESSION['user_id'];
 
 require_once __DIR__ . "/../config/dbConnection.php";
 
 $sql = "INSERT INTO successful_donation
-        (request_id, response_id, units_donated, donation_data, confirmed_at, status)
+        (request_id, response_id, units_donated, donation_date, confirmed_at, status)
         VALUES (?, ?, ?, NOW(), ?, ?)";
 
 $updateSuccessful = $conn->prepare($sql);
@@ -92,6 +93,9 @@ $updateSuccessful->bind_param(
     $status
 );
 
+$requestUpdate = $conn->prepare("UPDATE requestblood SET status = ? WHERE id = ? AND user_id = ?");
+$requestUpdate->bind_param("sii",$status, $requestId, $userID);
+
 if (!$updateSuccessful->execute()) {
     http_response_code(500);
     echo json_encode([
@@ -102,6 +106,16 @@ if (!$updateSuccessful->execute()) {
     $conn->close();
     exit;
 }
+if (!$requestUpdate->execute()) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to update request status."
+    ]);
+    $requestUpdate->close();
+    $conn->close();
+    exit;
+}
 
 echo json_encode([
     "success" => true,
@@ -109,5 +123,6 @@ echo json_encode([
 ]);
 
 $updateSuccessful->close();
+$requestUpdate->close();
 $conn->close();
 ?>
