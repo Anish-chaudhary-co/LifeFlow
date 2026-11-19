@@ -96,6 +96,15 @@ const Navbar = () => {
               </NavLink>
               <NavLink
                 onClick={(e) => setPage("Dashboard/Confirmed Donor")}
+                to="/dashboard/requestResponse"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
+                }
+              >
+                <MdHistory size={20} /> Request response
+              </NavLink>
+              <NavLink
+                onClick={(e) => setPage("Dashboard/Confirmed Donor")}
                 to="/dashboard/confirmDonor"
                 className={({ isActive }) =>
                   `flex items-center gap-3 text-slate-600 p-2 rounded-lg hover:text-black hover:bg-rose-500 ${isActive ? "bg-rose-400" : "bg-white"} `
@@ -139,7 +148,7 @@ const Navbar = () => {
       </div>
 
       {/* for mobile */}
-      <div className="md:hidden">
+      <div className="md:hidden mt-20">
         <div className="flex fixed top-0 justify-between items-center w-screen h-16 border-b border-slate-300 bg-rose-400 px-6">
           <p className="font-bold text-xl">logo</p>
           <button

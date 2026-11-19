@@ -43,6 +43,7 @@ $sql = $conn->prepare("
         rr.donor_id,
         rr.patient_id,
         rr.status AS responseStatus,
+        rr.created_at AS confirmDate,
 
         rb.id AS requestBloodID,
         rb.user_id,

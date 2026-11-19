@@ -24,6 +24,34 @@ const successfulDonatedConfirm = () => {
   useEffect(() => {
     handleConfirmDonor();
   }, []);
+
+  const handleSuccessfulDonated = async (data) => {
+    try {
+      const response = await fetch(
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/successfulDonated.php",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            successfulData: {
+              request_id: data.request_id,
+              response_id: data.id,
+              unit_donated: data.unit,
+              confirmDate: data.confirmDate,
+            },
+          }),
+        },
+      );
+      const text = await response.text();
+      const result = JSON.parse(text);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
       {donorData.map((data) => (
@@ -87,7 +115,10 @@ const successfulDonatedConfirm = () => {
             <h1>Did you receive the blood from this donor?</h1>
             <p>Only confirm if the donation was actually completed.</p>
             <div className="flex gap-4">
-              <button className="text-white font-bold py-2 rounded-2xl border bg-green-500 w-full">
+              <button
+                onClick={() => handleSuccessfulDonated(data)}
+                className="text-white font-bold py-2 rounded-2xl border bg-green-500 w-full"
+              >
                 Confirm Received
               </button>
               <button className="text-white font-bold py-2 rounded-2xl border bg-slate-500 w-full">
