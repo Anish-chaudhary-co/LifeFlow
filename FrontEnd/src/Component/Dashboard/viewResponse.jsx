@@ -31,6 +31,7 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
         }
         if (isMounted) {
           setResponseDetail(result.donorDetail);
+          console.log(result);
         }
       } catch (error) {
         if (isMounted) {

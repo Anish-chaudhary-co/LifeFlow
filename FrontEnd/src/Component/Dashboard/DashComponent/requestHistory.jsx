@@ -50,7 +50,7 @@ const RequestHistory = () => {
     setEdit(false);
   };
 
-  const handleDelete = async (requestId) => {
+  const handleDelete = async (request) => {
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
@@ -61,7 +61,7 @@ const RequestHistory = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            requestId: requestId,
+            requestId: request.id,
           }),
         },
       );
@@ -141,7 +141,7 @@ const RequestHistory = () => {
                   <button
                     type="button"
                     className="border rounded-lg bg-red-400 text-white font-bold h-10 px-4"
-                    onClick={() => handleDelete(request.id)}
+                    onClick={() => handleDelete()}
                   >
                     Delete
                   </button>

@@ -96,6 +96,10 @@ $updateSuccessful->bind_param(
 $requestUpdate = $conn->prepare("UPDATE requestblood SET status = ? WHERE id = ? AND user_id = ?");
 $requestUpdate->bind_param("sii",$status, $requestId, $userID);
 
+
+$responseUpdate = $conn->prepare("UPDATE requestresponse SET status = ? WHERE id = ? AND request_id = ? AND patient_id = ?");
+$responseUpdate->bind_param("siii",$status, $responseId, $requestId, $userID);
+
 if (!$updateSuccessful->execute()) {
     http_response_code(500);
     echo json_encode([
@@ -117,12 +121,25 @@ if (!$requestUpdate->execute()) {
     exit;
 }
 
+if (!$responseUpdate->execute()) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to update response status."
+    ]);
+    $responseUpdate->close();
+    $conn->close();
+    exit;
+}
+
 echo json_encode([
     "success" => true,
-    "message" => "Donation successfully confirmed."
+    "messageForSuccessful_Donation" => "Donation successfully confirmed.",
+    "requestUpdate" => "successfully update requestblood table status."
 ]);
 
 $updateSuccessful->close();
 $requestUpdate->close();
+$responseUpdate->close();
 $conn->close();
 ?>

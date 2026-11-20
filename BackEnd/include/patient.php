@@ -27,25 +27,25 @@ require_once "../config/dbConnection.php";
 $userId = $_SESSION["user_id"] ?? null;
 
 $sql = "SELECT
-            rb.user_id,
-            rb.id,
-            rb.BloodType,
-            rb.period,
-            rb.patientName,
-            rb.unitNeeded,
-            rb.hospitalName,
-            rb.hospitalPhone,
-            rb.address,
-            rb.notes,
-            rb.status,
-            d.Gender AS gender,
-            DATE(rb.created_at) AS created_date
-        FROM requestBlood rb
-        INNER JOIN registeration r ON rb.user_id = r.ID
-        INNER JOIN donors d ON r.ID = d.UserId";
+    rb.user_id,
+    rb.id,
+    rb.BloodType,
+    rb.period,
+    rb.patientName,
+    rb.unitNeeded,
+    rb.hospitalName,
+    rb.hospitalPhone,
+    rb.address,
+    rb.notes,
+    rb.status,
+    d.Gender AS gender,
+    DATE(rb.created_at) AS created_date
+FROM requestBlood rb
+INNER JOIN registeration r ON rb.user_id = r.ID
+LEFT JOIN donors d ON r.ID = d.UserId";
 
 if ($userId !== null) {
-    $sql .= " WHERE rb.user_id <> ?";
+    $sql .= " WHERE rb.user_id <> ? AND rb.status = 'Pending'";
 }
 
 $stmt = $conn->prepare($sql);

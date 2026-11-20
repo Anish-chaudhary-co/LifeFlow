@@ -46,10 +46,11 @@ INNER JOIN donors AS d
     ON d.UserId = rr.donor_id
 
 WHERE
-    rr.patient_id = ?
+    rr.donor_id = ?
     AND rr.status IN ('Accepted','Confirm') 
 
 ORDER BY rr.id DESC;";
+
 $stmt = $conn->prepare($sql);
 if(!$stmt){
     echo json_encode([

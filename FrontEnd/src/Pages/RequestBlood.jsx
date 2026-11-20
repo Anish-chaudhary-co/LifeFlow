@@ -241,7 +241,7 @@ const RequestBlood = () => {
             <div>
               <label className="flex gap-2 items-center">
                 <FaPhone color="red" />
-                Hospital phone
+                Patient Contact
               </label>
               <input
                 type="number"

@@ -47,10 +47,11 @@ if($requestId === false  || $requestId === null){
 
 require_once __DIR__ . "/../config/dbConnection.php";
 
-$sql = "DELETE FROM requestBlood WHERE id = ? AND user_id = ?";
+$deleteResponse = "DELETE FROM requestresponse WHERE id = ? AND user_id = ?";
+$deleteRequest = "DELETE FROM requestBlood WHERE id = ? AND user_id = ?";
 $stmt = $conn->prepare($sql);
 
-if (!$stmt) {
+if (!$deleteRequest) {
     http_response_code(500);
     echo json_encode([
         "success" => false,
@@ -60,7 +61,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("ii", $requestId, $userId);
+$deleteRequest->bind_param("ii", $requestId, $userId);
 
 if (!$stmt->execute()) {
     http_response_code(500);
@@ -68,7 +69,7 @@ if (!$stmt->execute()) {
         "success" => false,
         "message" => "Failed to delete blood request.",
     ]);
-} elseif ($stmt->affected_rows > 0) {
+} elseif ($deleteRequest->affected_rows > 0) {
     echo json_encode([
         "success" => true,
         "message" => "Blood request deleted successfully.",
@@ -81,6 +82,6 @@ if (!$stmt->execute()) {
     ]);
 }
 
-$stmt->close();
+$deleteRequest->close();
 $conn->close();
 ?>

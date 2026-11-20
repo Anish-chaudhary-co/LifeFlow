@@ -48,10 +48,10 @@ if ($requestId === null || $requestId < 1) {
 $userId = (int) $_SESSION["user_id"];
 $status = "Confirm";
 
-$requestUpdate = $conn->prepare("UPDATE requestblood set status = ? WHERE id = ? AND user_id = ? AND status = 'Successfully Donated'");
-$requestUpdate->bind_param("sii",$status,$requestId,$userId);
+$requestUpdate = $conn->prepare("UPDATE requestblood set status = ? WHERE id = ? AND status = 'Accepted'");
+$requestUpdate->bind_param("si",$status,$requestId);
 
-$responseUpdate = $conn->prepare("UPDATE requestresponse set status = ? WhERE request_id = ? AND patient_id = ? AND status = 'Accepted'");
+$responseUpdate = $conn->prepare("UPDATE requestresponse set status = ? WhERE request_id = ? AND donor_id = ? AND status = 'Accepted'");
 $responseUpdate->bind_param("sii",$status, $requestId, $userId);
 if(!$requestUpdate->execute()){
           http_response_code(500);

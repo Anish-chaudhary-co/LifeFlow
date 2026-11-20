@@ -7,7 +7,7 @@ const RequestResponse = () => {
   const handleAcceptedRequest = async () => {
     try {
       const response = await fetch(
-        "http://localhost/LifeFlow/Blood-Donation/BackEnd/Dashboard/requestResponse.php",
+        "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/requestResponse.php",
         {
           method: "GET",
           credentials: "include",

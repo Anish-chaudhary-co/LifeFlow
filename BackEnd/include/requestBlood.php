@@ -41,6 +41,7 @@ $hospitalName = trim((string)($data['hospitalName'] ?? ''));
 $hospitalPhone = trim((string)($data['hospitalPhone'] ?? ''));
 $address = trim((string)($data['address'] ?? ''));
 $notes = trim((string)($data['notes'] ?? ''));
+$status = "Pending";
 
 if (empty($bloodType) || empty($period) || empty($patientName) || $unitNeeded <= 0 || empty($hospitalName) || empty($address)) {
     echo json_encode([
@@ -52,7 +53,7 @@ if (empty($bloodType) || empty($period) || empty($patientName) || $unitNeeded <=
 }
 
 $userId = (int) $_SESSION['user_id'];
-$sql = "INSERT INTO requestBlood (user_id, BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO requestBlood (user_id, BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
@@ -64,12 +65,12 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("isssissss", $userId, $bloodType, $period, $patientName, $unitNeeded, $hospitalName, $hospitalPhone, $address, $notes);
+$stmt->bind_param("isssisssss", $userId, $bloodType, $period, $patientName, $unitNeeded, $hospitalName, $hospitalPhone, $address, $notes, $status);
 
-if ($stmt->execute()) {
+if (!$stmt->execute()) {
     echo json_encode([
-        "success" => true,
-        "message" => "Successfully submitted."
+        "success" => false,
+        "message" => "Unable to request blood."
     ]);
     $stmt->close();
     require_once "../config/dbClose.php";
@@ -77,8 +78,8 @@ if ($stmt->execute()) {
 }
 
 echo json_encode([
-    "success" => false,
-    "message" => "Unable to save request."
+    "success" => true,
+    "message" => "successfully insert request.",
 ]);
 
 $stmt->close();
