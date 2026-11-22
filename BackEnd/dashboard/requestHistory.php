@@ -55,7 +55,7 @@ $userId = (int) $_SESSION['user_id'];
 //           AND rr.patient_id = ?";
 
 
-$sql = "SELECT id,BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE status = 'Pending' AND user_id = ?";
+$sql = "SELECT id,BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE status IN ('in-progress','Pending') AND user_id = ?";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {

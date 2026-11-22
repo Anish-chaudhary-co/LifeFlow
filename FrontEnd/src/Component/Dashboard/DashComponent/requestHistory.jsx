@@ -54,8 +54,6 @@ const RequestHistory = () => {
   };
 
   const handleDelete = async (request) => {
-    console.log(request.id);
-
     try {
       const response = await fetch(
         "http://localhost/LifeFlow/Blood-Donation/BackEnd/dashboard/deleteHistory.php",
@@ -89,8 +87,6 @@ const RequestHistory = () => {
     setSelectedData(request);
     setShowResponseDetail(true);
   };
-
-  console.log(data);
 
   return (
     <>

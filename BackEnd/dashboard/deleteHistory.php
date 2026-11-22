@@ -35,6 +35,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $requestId = filter_var($data['requestId'] ?? NULL , FILTER_VALIDATE_INT);
 $userId = (INT) $_SESSION['user_id'];
+$status = "Cancel";
 
 if($requestId === false  || $requestId === null){
     http_response_code(400);
@@ -47,57 +48,53 @@ if($requestId === false  || $requestId === null){
 
 require_once __DIR__ . "/../config/dbConnection.php";
 
-$deleteResponse = $conn->prepare("DELETE FROM requestresponse WHERE request_id = ? AND patient_id = ?");
+$conn->begin_transaction();
+try {
 
-if(!$deleteResponse){
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Unable to prepare delete response."
-    ]);
-    $conn->close();
-    exit;
-}
+    // $deleteResponse = $conn->prepare("DELETE FROM requestresponse WHERE request_id = ? AND patient_id = ?");
+    // $deleteResponse->bind_param("ii",$requestId, $userId);
+    $deleteResponse = $conn->prepare("UPDATE requestresponse SET status = ? WHERE request_id = ? AND patient_id = ?");
+    $deleteResponse->bind_param("sii",$status, $requestId, $userId);
+    $deleteResponse->execute();
 
-$deleteResponse->bind_param("ii",$requestId, $userId);
+    // $deleteRequest = $conn->prepare("DELETE FROM requestBlood WHERE id = ? AND user_id = ?");
+    // $deleteRequest->bind_param("ii", $requestId, $userId);
+    $deleteRequest = $conn->prepare("UPDATE requestBlood SET status = ? WHERE id = ? AND user_id = ?");
+    $deleteRequest->bind_param("sii",$status, $requestId, $userId);
+    $deleteRequest->execute();
 
-$deleteRequest = $conn->prepare("DELETE FROM requestBlood WHERE id = ? AND user_id = ?");
+    // if($deleteRequest->affected_rows === 0){
+    //     $conn->rollback();
+    //     http_response_code(401);
 
+    //     echo json_encode([
+    //         "success" => false,
+    //         "message" => "Blood request not found"
+    //     ]);
+    //     exit;
+    // }
 
-if (!$deleteRequest) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Unable to prepare the delete request.",
-    ]);
-    $conn->close();
-    exit;
-}
+    $conn->commit();
 
-
-
-$deleteRequest->bind_param("ii", $requestId, $userId);
-
-if (!$deleteResponse->execute() || !$deleteRequest->execute()) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Failed to delete blood request from request response and request blood table.",
-    ]);
-} elseif ($deleteResponse->affected_rows > 0 && $deleteRequest->affected_rows > 0) {
     echo json_encode([
         "success" => true,
-        "message" => "Blood request deleted successfully.",
+        "message" => "Blood request and response request both deleted successfully",
     ]);
-} else {
-    http_response_code(404);
+
+    $deleteRequest->close();
+    $deleteResponse->close();
+
+} catch (Throwable $error) {
+    
+    $conn->rollback();
+    http_response_code(500);
+
     echo json_encode([
         "success" => false,
-        "message" => "No blood request found with this ID.",
+        "message" => "Unable to delete blood request",
     ]);
 }
 
-$deleteResponse->close();
-$deleteRequest->close();
 $conn->close();
+
 ?>
