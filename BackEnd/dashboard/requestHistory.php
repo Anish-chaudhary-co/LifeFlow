@@ -34,7 +34,28 @@ if (!isset($_SESSION['user_id'])) {
 require_once "../config/dbConnection.php";
 
 $userId = (int) $_SESSION['user_id'];
-$sql = "SELECT id,BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE user_id = ?";
+
+///// this query for the fetch data which status is pending in the request response table.
+// $sql = "SELECT 
+//             rr.request_id,
+//             rr.status AS response_status,
+//             rb.id,
+//             rb.BloodType,
+//             rb.period,
+//             rb.patientName,
+//             rb.unitNeeded,
+//             rb.hospitalName,
+//             rb.hospitalPhone,
+//             rb.address,
+//             rb.notes
+//         FROM requestresponse AS rr
+//         INNER JOIN requestblood AS rb 
+//             ON rr.request_id = rb.id
+//         WHERE rr.status = 'Pending'
+//           AND rr.patient_id = ?";
+
+
+$sql = "SELECT id,BloodType, period, patientName, unitNeeded, hospitalName, hospitalPhone, address, notes FROM requestBlood WHERE status = 'Pending' AND user_id = ?";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {

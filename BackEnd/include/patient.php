@@ -42,10 +42,10 @@ $sql = "SELECT
     DATE(rb.created_at) AS created_date
 FROM requestBlood rb
 INNER JOIN registeration r ON rb.user_id = r.ID
-LEFT JOIN donors d ON r.ID = d.UserId";
+LEFT JOIN donors d ON r.ID = d.UserId WHERE rb.status = 'Pending'";
 
 if ($userId !== null) {
-    $sql .= " WHERE rb.user_id <> ? AND rb.status = 'Pending'";
+    $sql .= " AND rb.user_id <> ?";
 }
 
 $stmt = $conn->prepare($sql);

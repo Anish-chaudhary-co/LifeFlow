@@ -49,7 +49,7 @@ WHERE
     rr.donor_id = ?
     AND rr.status IN ('Accepted','Confirm') 
 
-ORDER BY rr.id DESC;";
+ORDER BY rr.id DESC";
 
 $stmt = $conn->prepare($sql);
 if(!$stmt){

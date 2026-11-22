@@ -25,7 +25,10 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
             }),
           },
         );
-        const result = await response.json();
+        const text = await response.text();
+        const result = JSON.parse(text);
+        console.log(result);
+
         if (!response.ok || !result.success) {
           throw new Error(result.message || "Unable to get response.");
         }
@@ -49,6 +52,8 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
     };
   }, [request.id]);
 
+  console.log(responseDetail);
+
   const handleAccept = async (request_id) => {
     try {
       const response = await fetch(
@@ -66,6 +71,7 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
       );
       const result = await response.json();
       console.log(result);
+      setShowResponseDetail(false);
     } catch (error) {
       console.error(error);
     }
@@ -87,6 +93,7 @@ const RequestResponse = ({ setShowResponseDetail, request }) => {
       );
       const result = await response.json();
       console.log(result);
+      setShowResponseDetail(false);
     } catch (error) {
       console.error(error);
     }

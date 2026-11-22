@@ -47,9 +47,22 @@ if($requestId === false  || $requestId === null){
 
 require_once __DIR__ . "/../config/dbConnection.php";
 
-$deleteResponse = "DELETE FROM requestresponse WHERE id = ? AND user_id = ?";
-$deleteRequest = "DELETE FROM requestBlood WHERE id = ? AND user_id = ?";
-$stmt = $conn->prepare($sql);
+$deleteResponse = $conn->prepare("DELETE FROM requestresponse WHERE request_id = ? AND patient_id = ?");
+
+if(!$deleteResponse){
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unable to prepare delete response."
+    ]);
+    $conn->close();
+    exit;
+}
+
+$deleteResponse->bind_param("ii",$requestId, $userId);
+
+$deleteRequest = $conn->prepare("DELETE FROM requestBlood WHERE id = ? AND user_id = ?");
+
 
 if (!$deleteRequest) {
     http_response_code(500);
@@ -61,15 +74,17 @@ if (!$deleteRequest) {
     exit;
 }
 
+
+
 $deleteRequest->bind_param("ii", $requestId, $userId);
 
-if (!$stmt->execute()) {
+if (!$deleteResponse->execute() || !$deleteRequest->execute()) {
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Failed to delete blood request.",
+        "message" => "Failed to delete blood request from request response and request blood table.",
     ]);
-} elseif ($deleteRequest->affected_rows > 0) {
+} elseif ($deleteResponse->affected_rows > 0 && $deleteRequest->affected_rows > 0) {
     echo json_encode([
         "success" => true,
         "message" => "Blood request deleted successfully.",
@@ -82,6 +97,7 @@ if (!$stmt->execute()) {
     ]);
 }
 
+$deleteResponse->close();
 $deleteRequest->close();
 $conn->close();
 ?>

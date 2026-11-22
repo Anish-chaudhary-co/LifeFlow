@@ -14,10 +14,9 @@ const RequestResponse = () => {
         },
       );
       const result = await response.json();
-      const value = result.acceptedData;
-      console.log(value[0].status);
+      const value = result.acceptedData ?? [];
 
-      if (value[0].status === "Confirm") {
+      if (value[0]?.status === "Confirm") {
         setConfirm("Confirmed");
       }
       setAcceptData(result.acceptedData);
@@ -69,9 +68,8 @@ const RequestResponse = () => {
               <button
                 disabled={accept.status === "Confirm"}
                 onClick={() => handleConfirm(accept.request_id)}
-                className="px-3 py-2 rounded-lg bg-rose-300 text-white hover:bg-rose-500 "
               >
-                {confirm}
+                {accept.status === "Confirm" ? "Confirmed" : "Confirm"}
               </button>
             </div>
           </div>
