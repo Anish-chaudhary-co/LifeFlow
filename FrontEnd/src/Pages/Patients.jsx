@@ -3,6 +3,7 @@ import BackGround from "../assets/background.png";
 import PatientRequestShow from "../Component/Layout/patientRequestShow";
 import { CheckSessionContext } from "../Context/checkSession";
 import { UserContext } from "../Context/AuthContext";
+import { DonorEligibilityContext } from "../Context/eligibleContext";
 import {
   FaTint,
   FaCalendarAlt,
@@ -20,10 +21,12 @@ const Patients = () => {
   const [cancelRequest, setCancelRequest] = useState(false);
   const [selectRequest, setSelectRequest] = useState(null);
   const { userSession } = useContext(CheckSessionContext);
+  const { eligible } = useContext(DonorEligibilityContext);
   const { setNotification } = useContext(UserContext);
 
   useEffect(() => {
     let isMounted = true;
+    console.log(eligible);
 
     const handlePatient = async () => {
       try {
@@ -162,14 +165,20 @@ const Patients = () => {
                       </div>
                     )}
                   </div>
-                  <div className="">
-                    <button
-                      onClick={() => handleViewRequest(patient)}
-                      className="px-2 py-2 bg-red-500 text-white font-semibold hover:bg-rose-300 rounded-lg mt-4"
-                    >
-                      View request
-                    </button>
-                  </div>
+                  {eligible === "Not Eligible" ? (
+                    <div className="text-red-500 border mt-2 text-center">
+                      You're not Eligible to donate blood.
+                    </div>
+                  ) : (
+                    <div className="">
+                      <button
+                        onClick={() => handleViewRequest(patient)}
+                        className="px-2 py-2 bg-red-500 text-white font-semibold hover:bg-rose-300 rounded-lg mt-4"
+                      >
+                        View request
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

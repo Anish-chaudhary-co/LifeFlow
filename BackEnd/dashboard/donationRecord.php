@@ -64,11 +64,47 @@ if (!$stmt->execute()) {
 $result = $stmt->get_result();
 $data = $result->fetch_assoc();
 
+if ($data["createDate"] !== null) {
+
+    $lastDonation = new DateTime($data["createDate"]);
+
+    $nextEligibleDate = clone $lastDonation;
+    $nextEligibleDate->modify("+60 days");
+
+    $today = new DateTime("today");
+
+    if ($today < $nextEligibleDate) {
+
+        $remainingDays = $today->diff($nextEligibleDate)->days;
+
+        $eligibilityStatus = "Not Eligible";
+
+    } else {
+
+        $remainingDays = 0;
+        $eligibilityStatus = "Eligible";
+    }
+
+    $data["remainingDays"] = $remainingDays;
+    $data["nextEligibleDate"] = $nextEligibleDate->format("Y-m-d");
+    $data["eligibilityStatus"] = $eligibilityStatus;
+
+} else {
+
+    $data["remainingDays"] = 0;
+    $data["nextEligibleDate"] = null;
+    $data["eligibilityStatus"] = "Eligible";
+}
+
+
 $stmt->close();
 $conn->close();
 
 echo json_encode([
     "success" => true,
+    "remainingDays"=> $remainingDays,
+    "eligibilityStatus"=> $eligibilityStatus,
+    "nextEligibleDate"=> $nextEligibleDate,
     "data" => $data ?? ["Successfully Donated" => 0],
     "message" => "Successfully fetched"
 ]);

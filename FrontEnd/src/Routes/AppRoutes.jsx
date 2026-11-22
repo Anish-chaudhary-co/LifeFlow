@@ -16,59 +16,62 @@ import RequestResponse from "../Component/Dashboard/RequestResponse";
 import SuccessfulDonatedConfirm from "../Component/Dashboard/DashComponent/successfulDonatedConfirm";
 import PersonalDetailContext from "../Context/personalDetailContext";
 import ProfileShowContext from "../Context/profileShowContext";
+import EligibleContext from "../Context/eligibleContext";
 import CheckSession from "../Context/checkSession";
 
 const AppRouter = () => {
   return (
     <AuthContext>
-      <Routes>
-        <Route path="/" element={<MainRouter />}>
-          <Route
-            index
-            element={
-              <CheckSession>
-                <AuthContext>
-                  <Home />
-                </AuthContext>
-              </CheckSession>
-            }
-          />
-          <Route path="findDonor" element={<FindDonor />} />
-          <Route
-            path="patients"
-            element={
-              <CheckSession>
-                <AuthContext>
-                  <Patients />
-                </AuthContext>
-              </CheckSession>
-            }
-          />
-          <Route path="requestBlood" element={<RequestBlood />} />
-          <Route path="RegisterSignIn" element={<RegisterSignIn />} />
-          <Route path="signIn" element={<SignIn />} />
-          <Route path="register" element={<Register />} />
-        </Route>
+      <EligibleContext>
+        <Routes>
+          <Route path="/" element={<MainRouter />}>
+            <Route
+              index
+              element={
+                <CheckSession>
+                  <AuthContext>
+                    <Home />
+                  </AuthContext>
+                </CheckSession>
+              }
+            />
+            <Route path="findDonor" element={<FindDonor />} />
+            <Route
+              path="patients"
+              element={
+                <CheckSession>
+                  <AuthContext>
+                    <Patients />
+                  </AuthContext>
+                </CheckSession>
+              }
+            />
+            <Route path="requestBlood" element={<RequestBlood />} />
+            <Route path="RegisterSignIn" element={<RegisterSignIn />} />
+            <Route path="signIn" element={<SignIn />} />
+            <Route path="register" element={<Register />} />
+          </Route>
 
-        {/* for Dashboard */}
-        <Route path="/dashboard" element={<DashBoard />}>
-          <Route index element={<Navigate to="overview" replace />} />
-          <Route path="overview" element={<Overview />} />
-          <Route
-            path="myProfile"
-            element={
-              <PersonalDetailContext>
-                <ProfileShowContext>
-                  <MyProfile />
-                </ProfileShowContext>
-              </PersonalDetailContext>
-            }
-          />
-          <Route path="bloodRequest" element={<BloodRequest />} />
-          <Route path="requestResponse" element={<RequestResponse />} />
-          <Route path="confirmDonor" element={<SuccessfulDonatedConfirm />} />
-        </Route>
-      </Routes>
+          {/* for Dashboard */}
+          <Route path="/dashboard" element={<DashBoard />}>
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<Overview />} />
+            <Route
+              path="myProfile"
+              element={
+                <PersonalDetailContext>
+                  <ProfileShowContext>
+                    <MyProfile />
+                  </ProfileShowContext>
+                </PersonalDetailContext>
+              }
+            />
+            <Route path="bloodRequest" element={<BloodRequest />} />
+            <Route path="requestResponse" element={<RequestResponse />} />
+            <Route path="confirmDonor" element={<SuccessfulDonatedConfirm />} />
+          </Route>
+        </Routes>
+      </EligibleContext>
     </AuthContext>
   );
 };

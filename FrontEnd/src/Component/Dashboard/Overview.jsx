@@ -1,8 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import DasBackground from "../../assets/dasBackground.png";
+import { DonorEligibilityContext } from "../../Context/eligibleContext";
 import { FaTint, FaCalendarAlt } from "react-icons/fa";
 import ActivityChart from "./DashComponent/activeChart";
+
 const Overview = () => {
+  const { eligible, setEligible, setLoading } = useContext(
+    DonorEligibilityContext,
+  );
+
   const date = new Date();
   console.log(date);
   const day = date.getDate();
@@ -23,6 +29,8 @@ const Overview = () => {
         );
         const result = await response.json();
         if (result.success) {
+          setEligible(result.eligibilityStatus);
+
           setOverview(result.data);
           console.log(result.data);
         }
@@ -76,8 +84,16 @@ const Overview = () => {
             <FaCalendarAlt color="red" size={60} />
           </span>
           <span>
-            <p>Next Eligible Date</p>
-            <p className="font-bold text-4xl">{month ?? "-"}</p>
+            <h2>Next Donation Eligibility</h2>
+
+            {overview.eligibilityStatus === "Eligible" ? (
+              <p className="text-green-600">You are eligible to donate!</p>
+            ) : (
+              <p>
+                {overview.remainingDays} days remaining until your next
+                donation.
+              </p>
+            )}
           </span>
         </div>
         <div
@@ -89,7 +105,9 @@ const Overview = () => {
           </span>
           <span>
             <p>Lives Helped</p>
-            <p className="font-bold text-4xl">5</p>
+            <p className="font-bold text-4xl">
+              {overview.successfully_donated}
+            </p>
           </span>
         </div>
       </div>
