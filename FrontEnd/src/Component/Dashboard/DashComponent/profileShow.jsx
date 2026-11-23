@@ -10,6 +10,7 @@ import {
 
 const ProfileShow = () => {
   const { profile } = useContext(profileContext);
+  const { FullName = "" } = profile || {};
 
   return (
     <div className="md:mt-20 md:m-0 md:p-4">
@@ -23,9 +24,7 @@ const ProfileShow = () => {
           <div>
             <div>
               <p className="font-bold text-sm text-rose-500">VERIFIED DONOR</p>
-              <p className="font-bold text-xl md:text-5xl">
-                {profile.FullName}
-              </p>
+              <p className="font-bold text-xl md:text-5xl">{FullName}</p>
               <span></span>
             </div>
           </div>

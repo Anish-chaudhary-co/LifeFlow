@@ -5,16 +5,13 @@ import { FaTint, FaCalendarAlt } from "react-icons/fa";
 import ActivityChart from "./DashComponent/activeChart";
 
 const Overview = () => {
-  const { eligible, setEligible, setLoading } = useContext(
-    DonorEligibilityContext,
-  );
+  const { setEligible } = useContext(DonorEligibilityContext);
 
   const date = new Date();
   console.log(date);
   const day = date.getDate();
   const month = date.getMonth("long");
   const year = date.getFullYear();
-  const [name, setName] = useState("Anish");
   const [overview, setOverview] = useState({});
 
   useEffect(() => {
@@ -48,7 +45,7 @@ const Overview = () => {
         {month}/{day}/{year}
       </div>
       <div className="flex flex-col gap-3">
-        <span className="text-4xl">Hello,{name}.</span>
+        <span className="text-4xl">Hello, Welcome back !!!</span>
         <span className="text-slate-400">
           Your small act can make a lasting difference.
         </span>
@@ -56,10 +53,19 @@ const Overview = () => {
       {/* active Chart */}
       <ActivityChart />
 
-      <div className="flex flex-col gap-2 border border-green-500 rounded-xl p-3 mt-4 w-full bg-green-200">
-        <span className="text-bold">You're eligible to donate</span>
-        <span>Your next donation window opens in 12 days.</span>
-      </div>
+      {overview.eligibilityStatus === "Eligible" ? (
+        <div className="flex flex-col gap-2 border border-green-500 rounded-xl p-3 mt-4 w-full bg-green-200">
+          <span className="text-bold">You're eligible to donate</span>
+          <span>Your next donation window opens in 12 days.</span>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2 border border-red-500 rounded-xl text-red-500 p-3 mt-4 w-full bg-red-200">
+          <span className="text-bold">You're not eligible to donate.</span>
+          <span>
+            Your next donation window opens in {overview.remainingDays} days.
+          </span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-6 md:gap-23 md:grid-cols-3 justify-between w-full mt-4">
         <div
@@ -84,8 +90,6 @@ const Overview = () => {
             <FaCalendarAlt color="red" size={60} />
           </span>
           <span>
-            <h2>Next Donation Eligibility</h2>
-
             {overview.eligibilityStatus === "Eligible" ? (
               <p className="text-green-600">You are eligible to donate!</p>
             ) : (

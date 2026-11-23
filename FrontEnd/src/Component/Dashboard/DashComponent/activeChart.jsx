@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import {
   BarChart,
   Bar,
@@ -8,19 +10,38 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const activityData = [
-  { month: "Jan", donations: 20 },
-  { month: "Feb", donations: 35 },
-  { month: "Mar", donations: 25 },
-  { month: "Apr", donations: 45 },
-  { month: "May", donations: 30 },
-  { month: "Jun", donations: 55 },
-];
-
 function ActivityChart() {
+  const [activityData, setActivityData] = useState([]);
+  const [year, setYear] = useState("");
+
+  useEffect(() => {
+    const fetchActivity = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/LifeFlow/Blood-Donation/BackEnd/Dashboard/monthlyDonation.php",
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+          setActivityData(result.activityData);
+          setYear(result.year);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchActivity();
+  }, []);
+
   return (
     <div className="w-full rounded-xl bg-white p-5 shadow">
-      <h2 className="mb-5 text-xl font-semibold">Donation Activity</h2>
+      <h2 className="mb-5 text-xl font-semibold">Donation Activity {year}</h2>
 
       <div className="h-[300px] w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -29,7 +50,7 @@ function ActivityChart() {
 
             <XAxis dataKey="month" />
 
-            <YAxis />
+            <YAxis allowDecimals={false} />
 
             <Tooltip />
 
