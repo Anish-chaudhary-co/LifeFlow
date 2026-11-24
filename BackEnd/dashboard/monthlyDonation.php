@@ -78,7 +78,6 @@ while ($row = $result->fetch_assoc()) {
     $monthlyCounts[(int)$row["monthNumber"]] = (int)$row["donations"];
 }
 
-// Create all 12 months, including months with zero donations
 $months = [
     "Jan", "Feb", "Mar", "Apr",
     "May", "Jun", "Jul", "Aug",
