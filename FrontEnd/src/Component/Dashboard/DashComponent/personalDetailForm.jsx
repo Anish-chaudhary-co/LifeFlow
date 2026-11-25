@@ -1,4 +1,13 @@
 import { useState, useContext, useEffect } from "react";
+import {
+  FaTint,
+  FaCalendarAlt,
+  FaPhone,
+  FaMapMarkedAlt,
+  FaVenusMars,
+  FaUser,
+  FaShieldAlt,
+} from "react-icons/fa";
 import ProfileShow from "./profileShow";
 import { profileContext } from "../../../Context/profileShowContext";
 
@@ -118,23 +127,31 @@ const PersonalDetailForm = () => {
 
   return (
     <>
-      <div className="mt-20 border p-4 border-slate-200 rounded-2xl shadow-2xl bg-white">
+      <div className=" border p-2 border-slate-200 rounded-2xl shadow-2xl bg-white">
         {isLoadingProfile ? (
           <p role="status">Checking your profile...</p>
         ) : profile ? (
           <ProfileShow />
         ) : (
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-1">
-              <h3 className="text-2xl font-semibold">Personal Detail:</h3>
-              <span className="text-slate-400 font-sans">
-                Your identifying information.
+            <div className="flex items-center gap-4">
+              <span className="py-2 px-2 rounded-4xl bg-rose-500">
+                <FaUser color="white" size={40} />
               </span>
+              <div className="flex flex-col gap-1">
+                <h3 className="text-2xl font-semibold">Personal Detail:</h3>
+                <span className="text-slate-400 font-sans">
+                  Your identifying information.
+                </span>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
               <div>
-                Full Name
+                <span className="flex gap-2 items-center">
+                  <FaUser />
+                  Full Name
+                </span>
                 <input
                   name="fullname"
                   type="text"
@@ -146,7 +163,10 @@ const PersonalDetailForm = () => {
                 />
               </div>
               <div>
-                Date of birth
+                <span className="flex gap-2 items-center">
+                  <FaCalendarAlt />
+                  Date of birth
+                </span>
                 <input
                   name="DOB"
                   type="date"
@@ -157,37 +177,45 @@ const PersonalDetailForm = () => {
                 />
               </div>
               <div>
-                <div className="flex gap-2 md:gap-5">
-                  Gender :
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="male"
-                    required
-                    checked={detailValue.gender === "male"}
-                    onChange={handleChange}
-                  />
-                  Male
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="female"
-                    checked={detailValue.gender === "female"}
-                    onChange={handleChange}
-                  />
-                  Female
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="others"
-                    checked={detailValue.gender === "others"}
-                    onChange={handleChange}
-                  />
-                  Others
+                <div>
+                  <span className="flex gap-2 items-center">
+                    <FaVenusMars />
+                    Gender :
+                  </span>
+                  <div className="flex gap-2 md:gap-4">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="male"
+                      required
+                      checked={detailValue.gender === "male"}
+                      onChange={handleChange}
+                    />
+                    Male
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="female"
+                      checked={detailValue.gender === "female"}
+                      onChange={handleChange}
+                    />
+                    Female
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="others"
+                      checked={detailValue.gender === "others"}
+                      onChange={handleChange}
+                    />
+                    Others
+                  </div>
                 </div>
               </div>
               <div>
-                Address
+                <span className="flex gap-2 items-center">
+                  <FaMapMarkedAlt />
+                  Address
+                </span>
                 <input
                   name="address"
                   type="text"
@@ -199,7 +227,10 @@ const PersonalDetailForm = () => {
                 />
               </div>
               <div>
-                Blood Group
+                <span className="flex gap-2 items-center">
+                  <FaTint />
+                  Blood Group
+                </span>
                 <select
                   name="bloodGroup"
                   value={detailValue.bloodGroup}
@@ -222,7 +253,10 @@ const PersonalDetailForm = () => {
                 </select>
               </div>
               <div>
-                Contact
+                <span className="flex gap-2 items-center">
+                  <FaPhone />
+                  Contact
+                </span>
                 <input
                   name="contact"
                   type="tel"
@@ -235,12 +269,14 @@ const PersonalDetailForm = () => {
               </div>
 
               <div>
-                <input
+                <button
                   type="submit"
-                  value={isSubmitting ? "Saving..." : "Save details"}
                   disabled={isSubmitting}
-                  className="px-4 py-2 rounded-lg bg-rose-400 hover:bg-rose-500 text-white font-bold"
-                />
+                  className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-lg disabled:opacity-50"
+                >
+                  {/* <FaFloppyDisk /> */}
+                  {isSubmitting ? "Saving..." : "Save details"}
+                </button>
               </div>
             </div>
             {message && (
@@ -248,6 +284,22 @@ const PersonalDetailForm = () => {
                 {message}
               </p>
             )}
+
+            <div className="flex gap-2 border border-slate-400 p-4 mt-10 rounded-lg  ">
+              <div>
+                <FaShieldAlt size={40} color="green" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-green-500 text-sm">
+                  PROFILE STATUS
+                </h4>
+                <p>You're ready to make an impact</p>
+                <span className="text-slate-700">
+                  We'll use your details to show relevant donation opportunities
+                  and appointments.
+                </span>
+              </div>
+            </div>
           </form>
         )}
       </div>
