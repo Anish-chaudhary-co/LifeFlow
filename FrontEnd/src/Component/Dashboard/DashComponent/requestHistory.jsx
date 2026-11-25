@@ -2,6 +2,18 @@ import { useState, useEffect } from "react";
 import EditBloodHistory from "./editBloodHistory";
 import ViewResponse from "../viewResponse";
 
+import {
+  FaPhone,
+  FaHospital,
+  FaUser,
+  FaBox,
+  FaTrash,
+  FaEye,
+  FaPen,
+  FaStickyNote,
+  FaMap,
+} from "react-icons/fa";
+
 const RequestHistory = () => {
   const [edit, setEdit] = useState(false);
   const [data, setData] = useState([]);
@@ -91,7 +103,7 @@ const RequestHistory = () => {
   return (
     <>
       {" "}
-      <div className="mt-20">
+      <div>
         {edit && (
           <EditBloodHistory
             onClose={() => setEdit(false)}
@@ -100,7 +112,7 @@ const RequestHistory = () => {
           />
         )}
         <h1 className="text-2xl font-bold">Blood request history</h1>
-        <div className="flex flex-col gap-10 mt-4">
+        <div className="flex flex-col md:gap-10 mt-4">
           {data.map((request, index) => (
             <div
               key={index}
@@ -114,46 +126,59 @@ const RequestHistory = () => {
                   {request.patientName}
                 </h1>
               </div>
-              <div className="flex md:flex-row flex-col justify-between gap-40">
-                <div className="mt-2 text-slate-600">
-                  <p>
-                    {request.unitNeeded}
-                    <strong className="pl-2">unit needed</strong>
+              <div className="flex md:flex-row flex-col gap-4 md:gap-40">
+                <div className="ml-15 md:ml-18 text-slate-600">
+                  <p className="flex gap-2 items-center">
+                    <FaBox />
+                    <p>{request.unitNeeded} unit needed</p>
                   </p>
-                  <p>{request.hospitalName}</p>
-                  <p>{request.hospitalPhone}</p>
-                  <p>
-                    <strong>Personal address:</strong>
+                  <p className="flex gap-2 items-center">
+                    <FaHospital />
+                    {request.hospitalName}
+                  </p>
+                  <p className="flex gap-2 items-center">
+                    <FaPhone />
+                    {request.hospitalPhone}
+                  </p>
+
+                  <p p className="flex gap-2 items-center">
+                    <FaUser /> Personal address:
                     {request.address}
                   </p>
                 </div>
                 <div>
-                  <strong>Notes:</strong>
-                  <div className="border border-slate-500 rounded-2xl bg-rose-400 text-white p-3 h-min">
+                  <p className="flex gap-2 items-center">
+                    <FaStickyNote />
+                    Notes:
+                  </p>
+                  <div className="rounded-2xl bg-rose-300 p-3 h-min">
                     <p className="line-clamp-5 break-all">{request.notes}</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <button
                     type="button"
-                    className="border rounded-lg bg-green-400 text-white font-bold h-10 px-4"
+                    className="flex gap-2 items-center border rounded-lg bg-green-500 text-white font-bold h-10 px-4"
                     onClick={() => handleEditClick(request)}
                   >
+                    <FaPen />
                     Edit
                   </button>
                   <button
                     type="button"
-                    className="border rounded-lg bg-red-400 text-white font-bold h-10 px-4"
+                    className=" flex gap-2 items-center border rounded-lg bg-red-500 text-white font-bold h-10 px-4"
                     onClick={() => handleDelete(request)}
                   >
+                    <FaTrash />
                     Delete
                   </button>
                 </div>
               </div>
               <button
-                className="bg-rose-300 mt-10 px-2 text-sm rounded-2xl"
+                className="flex gap-2 items-center bg-rose-200 mt-10 py-2 px-4 text-sm text-red-500 rounded-2xl"
                 onClick={() => handleResponse(request)}
               >
+                <FaEye color="red" />
                 View response
               </button>
             </div>
